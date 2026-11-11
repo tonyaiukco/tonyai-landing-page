@@ -1,0 +1,13 @@
+TonyAI marka kiti — 2 Kasım 2026
+
+tonyai-linkedin-logo-300.png        LinkedIn şirket sayfası logosu (300×300)
+tonyai-linkedin-kapak-1128x191.png  LinkedIn kapak görseli (yeni slogan)
+tonyai-workspace-logo-320x132.png   Google Workspace kurum logosu (Admin > Account > Personalization)
+tonyai-profil-720.png               hello@ hesabı için profil fotoğrafı (720×720)
+tonyai-imza-logo-240.png            E-posta imzası logosu; Gmail'de 120×32 olarak gösterin (Drive'dan ekleyin)
+tonyai-logo-yatay.png               Yatay logo, açık zemin (1200 genişlik, şeffaf)
+tonyai-logo-yatay-koyu-zemin.png    Yatay logo, koyu zemin
+
+Renkler: orman yeşili #2B5A3E · yaprak #6FA583 · mürekkep #1B211E · kâğıt #F4F6F3
+Yazı: Schibsted Grotesk (başlık ve metin) · IBM Plex Mono (rakamlar, etiketler)
+Logo yönü D "Grup": üç şirket bloğu ve bir yaprak. Logoyu döndürmeyin, renklerini değiştirmeyin, en az 24 px yükseklikte kullanın.

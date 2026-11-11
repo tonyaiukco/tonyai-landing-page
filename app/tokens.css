@@ -1,0 +1,64 @@
+/*
+ * TonyAI design tokens: the single source of truth for colour, type, spacing,
+ * radius and motion. Tailwind reads these through @theme in globals.css.
+ * Direction A "Konsolide": light, finance-grade, one grotesk at two scales,
+ * forest green used only as the accent for actions and data.
+ */
+:root {
+  --paper: #f4f6f3;
+  --surface: #ffffff;
+  --surface-2: #e9ede8;
+  --ink: #1b211e;
+  --ink-2: #4a5550;
+  --ink-3: #5f6963;        /* 5.7:1 on white, 4.9:1 on the lightest band */
+  --line: #d8ddd8;
+  --line-2: #c3cac4;
+
+  --forest: #2b5a3e;
+  --forest-ink: #1f4530;
+  --leaf: #6fa583;
+  --leaf-light: #bfd4c5;   /* small text on forest: 5.5:1 */
+  --forest-tint: #e4eee6;
+  --on-forest: #ffffff;
+  --on-forest-2: #e1ece3;
+
+  --ok-bg: #dcebdd;  --ok-fg: #1f4d36;
+  --warn-bg: #f6e7c4; --warn-fg: #7a4a06;
+  --miss-bg: #f3d9d3; --miss-fg: #8a2a1c;
+
+  --font-sans: var(--font-schibsted), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, Menlo, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+  --text-4xl: clamp(2.5rem, 1.4rem + 3.4vw, 4.5rem);
+
+  --leading-tight: 1.02;
+  --leading-snug: 1.15;
+  --leading-normal: 1.55;
+  --tracking-tight: -0.025em;
+  --tracking-wide: 0.06em;
+
+  --gutter: clamp(1rem, 4vw, 4.5rem);
+  --measure: 62ch;
+  --container: 80rem;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 0 rgba(27, 33, 30, 0.04), 0 24px 48px -28px rgba(27, 33, 30, 0.28);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur-base: 420ms;
+  --dur-slow: 900ms;
+
+  --tap: 2.75rem;
+}
