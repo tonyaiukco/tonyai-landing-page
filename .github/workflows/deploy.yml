@@ -53,4 +53,4 @@ jobs:
 
       - name: Roll out the new image
         if: vars.AZURE_CLIENT_ID != ''
-        run: az containerapp update --name tonyai-site --resource-group tonyai-site --image "$IMAGE:${{ github.sha }}" --output none
+        run: az webapp config container set --name tonyai-site --resource-group tonyai-site --container-image-name "$IMAGE:${{ github.sha }}" --output none

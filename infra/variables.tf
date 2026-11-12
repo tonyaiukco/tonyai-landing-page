@@ -11,13 +11,13 @@ variable "location" {
 }
 
 variable "image" {
-  description = "Image the Container App starts with. Later deployments change it from GitHub Actions; Terraform ignores that drift."
+  description = "Image (without the ghcr.io registry) the web app starts with. Later deployments change it from GitHub Actions; Terraform ignores that drift."
   type        = string
-  default     = "ghcr.io/tonyaiukco/tonyai-landing-page:latest"
+  default     = "tonyaiukco/tonyai-landing-page:latest"
 }
 
 variable "dns_ready" {
-  description = "Set to true once the Namecheap records (www CNAME, @ A, asuid TXTs) resolve; adds the custom domains and their managed certificates."
+  description = "Set to true once the Namecheap records (www CNAME, @ A, asuid TXTs) resolve; adds the custom domains, their managed certificates and bindings."
   type        = bool
   default     = false
 }

@@ -1,16 +1,12 @@
-output "app_fqdn" {
-  description = "Target of the www CNAME at Namecheap; the site is also reachable here."
-  value       = azurerm_container_app.site.ingress[0].fqdn
-}
-
-output "static_ip" {
-  description = "Target of the @ A record at Namecheap."
-  value       = azurerm_container_app_environment.site.static_ip_address
+output "default_hostname" {
+  description = "Target of the www CNAME at Namecheap; `dig +short` on it gives the IP for the @ A record."
+  value       = azurerm_linux_web_app.site.default_hostname
 }
 
 output "domain_verification_id" {
   description = "Value of both asuid TXT records (asuid and asuid.www) at Namecheap."
-  value       = azurerm_container_app_environment.site.custom_domain_verification_id
+  value       = azurerm_linux_web_app.site.custom_domain_verification_id
+  sensitive   = true
 }
 
 output "deploy_client_id" {

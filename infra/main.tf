@@ -5,45 +5,43 @@ resource "azurerm_resource_group" "site" {
   location = var.location
 }
 
-# Logs are streamed only; no Log Analytics workspace.
-resource "azurerm_container_app_environment" "site" {
+# Linux B1: the smallest plan with custom domains, free managed certificates and always-on.
+resource "azurerm_service_plan" "site" {
+  name                = "tonyai-site-plan"
+  location            = azurerm_resource_group.site.location
+  resource_group_name = azurerm_resource_group.site.name
+  os_type             = "Linux"
+  sku_name            = "B1"
+}
+
+resource "azurerm_linux_web_app" "site" {
   name                = "tonyai-site"
   location            = azurerm_resource_group.site.location
   resource_group_name = azurerm_resource_group.site.name
-}
+  service_plan_id     = azurerm_service_plan.site.id
 
-resource "azurerm_container_app" "site" {
-  name                         = "tonyai-site"
-  container_app_environment_id = azurerm_container_app_environment.site.id
-  resource_group_name          = azurerm_resource_group.site.name
-  revision_mode                = "Single"
+  # Redirects HTTP to HTTPS.
+  https_only = true
 
-  template {
-    # One warm replica so the first visitor never waits for a cold start.
-    min_replicas = 1
-    max_replicas = 2
+  ftp_publish_basic_authentication_enabled       = false
+  webdeploy_publish_basic_authentication_enabled = false
 
-    container {
-      name   = "site"
-      image  = var.image
-      cpu    = 0.25
-      memory = "0.5Gi"
+  app_settings = {
+    WEBSITES_PORT = "8080"
+  }
+
+  site_config {
+    always_on  = true
+    ftps_state = "Disabled"
+    application_stack {
+      docker_registry_url = "https://ghcr.io"
+      docker_image_name   = var.image
     }
   }
 
-  # allow_insecure_connections = false redirects HTTP to HTTPS.
-  ingress {
-    external_enabled           = true
-    target_port                = 8080
-    allow_insecure_connections = false
-    traffic_weight {
-      latest_revision = true
-      percentage      = 100
-    }
-  }
-
+  # GitHub Actions rolls out each new image; Terraform only sets the first one.
   lifecycle {
-    ignore_changes = [template[0].container[0].image]
+    ignore_changes = [site_config[0].application_stack[0].docker_image_name]
   }
 }
 
@@ -62,7 +60,6 @@ resource "azurerm_federated_identity_credential" "github_main" {
   audience                  = ["api://AzureADTokenExchange"]
 }
 
-# Resource group scope: `az containerapp update` also needs join rights on the environment.
 resource "azurerm_role_assignment" "deploy" {
   scope                = azurerm_resource_group.site.id
   role_definition_name = "Contributor"
@@ -70,31 +67,31 @@ resource "azurerm_role_assignment" "deploy" {
   principal_type       = "ServicePrincipal"
 }
 
-# Custom domains are added unbound; the managed certificates are bound afterwards with
-# `az containerapp hostname bind` (see README), hence the ignore_changes.
+# Custom domains need the Namecheap records first (see README), hence the dns_ready switch.
 locals {
-  hostnames = var.dns_ready ? {
-    www  = { name = "www.tonyai.io", validation = "CNAME" }
-    apex = { name = "tonyai.io", validation = "HTTP" }
-  } : {}
+  hostnames = var.dns_ready ? { www = "www.tonyai.io", apex = "tonyai.io" } : {}
 }
 
-resource "azurerm_container_app_custom_domain" "site" {
-  for_each         = local.hostnames
-  name             = each.value.name
-  container_app_id = azurerm_container_app.site.id
+resource "azurerm_app_service_custom_hostname_binding" "site" {
+  for_each            = local.hostnames
+  hostname            = each.value
+  app_service_name    = azurerm_linux_web_app.site.name
+  resource_group_name = azurerm_resource_group.site.name
 
+  # Set by azurerm_app_service_certificate_binding below.
   lifecycle {
-    ignore_changes = [certificate_binding_type, container_app_environment_certificate_id]
+    ignore_changes = [ssl_state, thumbprint]
   }
 }
 
-resource "azurerm_container_app_environment_managed_certificate" "site" {
-  for_each                     = local.hostnames
-  name                         = "tonyai-site-${each.key}"
-  container_app_environment_id = azurerm_container_app_environment.site.id
-  subject_name                 = each.value.name
-  domain_control_validation    = each.value.validation
+resource "azurerm_app_service_managed_certificate" "site" {
+  for_each                   = local.hostnames
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.site[each.key].id
+}
 
-  depends_on = [azurerm_container_app_custom_domain.site]
+resource "azurerm_app_service_certificate_binding" "site" {
+  for_each            = local.hostnames
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.site[each.key].id
+  certificate_id      = azurerm_app_service_managed_certificate.site[each.key].id
+  ssl_state           = "SniEnabled"
 }
