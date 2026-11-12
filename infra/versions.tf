@@ -10,6 +10,5 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id                = var.subscription_id
-  resource_providers_to_register = ["Microsoft.Web"]
+  subscription_id = var.subscription_id
 }

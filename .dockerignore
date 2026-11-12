@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+.git
+.github
+.claude
+.code-review-graph
+infra
+openspec
+docs
+*.md

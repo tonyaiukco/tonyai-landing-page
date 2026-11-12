@@ -1,16 +1,29 @@
-output "default_host_name" {
-  description = "Target for the www CNAME and the apex ALIAS at Namecheap."
-  value       = azurerm_static_web_app.site.default_host_name
+output "app_fqdn" {
+  description = "Target of the www CNAME at Namecheap; the site is also reachable here."
+  value       = azurerm_container_app.site.ingress[0].fqdn
 }
 
-output "apex_validation_token" {
-  description = "Value of the TXT record on @ that proves ownership of tonyai.io."
-  value       = azurerm_static_web_app_custom_domain.apex.validation_token
-  sensitive   = true
+output "static_ip" {
+  description = "Target of the @ A record at Namecheap."
+  value       = azurerm_container_app_environment.site.static_ip_address
 }
 
-output "api_key" {
-  description = "Deploy token; goes to the AZURE_STATIC_WEB_APPS_API_TOKEN GitHub secret."
-  value       = azurerm_static_web_app.site.api_key
-  sensitive   = true
+output "domain_verification_id" {
+  description = "Value of both asuid TXT records (asuid and asuid.www) at Namecheap."
+  value       = azurerm_container_app_environment.site.custom_domain_verification_id
+}
+
+output "deploy_client_id" {
+  description = "GitHub variable AZURE_CLIENT_ID."
+  value       = azurerm_user_assigned_identity.deploy.client_id
+}
+
+output "tenant_id" {
+  description = "GitHub variable AZURE_TENANT_ID."
+  value       = data.azurerm_client_config.current.tenant_id
+}
+
+output "subscription_id" {
+  description = "GitHub variable AZURE_SUBSCRIPTION_ID."
+  value       = var.subscription_id
 }

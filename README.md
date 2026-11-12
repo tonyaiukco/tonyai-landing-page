@@ -16,47 +16,62 @@ npm run build      # writes the finished site to ./out
 
 ## Deploying
 
-The site runs on Azure Static Web Apps (Free plan, resource group `tonyai-site`) and is served at `https://tonyai.io` and `https://www.tonyai.io`. Every push to `main` builds the site in GitHub Actions (`.github/workflows/deploy.yml`) and uploads `out/`; a failed build leaves the live site unchanged. Hosting rules (trailing slashes, 404 page, cache headers) live in `public/staticwebapp.config.json`.
+The site runs on Azure Container Apps in Sweden Central (resource group `tonyai-site`; every resource is in `swedencentral`) and is served at `https://tonyai.io` and `https://www.tonyai.io`. The `Dockerfile` builds the static export and serves `out/` with nginx (`nginx.conf`: trailing slashes, 404 page, cache headers) on port 8080.
 
-Infrastructure is Terraform in `infra/` with local state. The state holds the deploy token and the repo is public, so `*.tfstate` and `infra/.terraform/` are git-ignored; never commit them. If the state is lost the site keeps running; bring the resources back under Terraform with `terraform import`.
+Every push to `main` runs `.github/workflows/deploy.yml`: it builds the image, pushes it to `ghcr.io/tonyaiukco/tonyai-landing-page` (`:<sha>` and `:latest`), signs in to Azure with OIDC and rolls the Container App to the new image. A failed build stops before the rollout, so the live site is untouched. No secret is stored in GitHub: the workflow uses three repository variables (`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`) and federated credentials on the `tonyai-site-deploy` identity.
+
+Infrastructure is Terraform in `infra/` with local state. `*.tfstate` and `infra/.terraform/` are git-ignored; never commit them (the repo is public). If the state is lost the site keeps running; bring the resources back under Terraform with `terraform import`.
 
 ### First-time setup
 
-DNS is at Namecheap (Domain List → tonyai.io → Advanced DNS). Leave the existing MX, SPF and verification TXT records alone.
+1. Push to `main` once so the image exists, then make the package public (GitHub → profile → Packages → `tonyai-landing-page` → Package settings → Change visibility → Public). Check:
+
+```bash
+gh api /users/tonyaiukco/packages/container/tonyai-landing-page --jq .visibility
+```
+
+2. Create the environment, the app and the deploy identity, then hand the identity to GitHub and deploy:
 
 ```bash
 az login
 terraform -chdir=infra init
-terraform -chdir=infra apply -target=azurerm_static_web_app.site   # 1. create the Static Web App
-terraform -chdir=infra output default_host_name                    # e.g. xxxx.azurestaticapps.net
-```
-
-2. At Namecheap add `CNAME  www  →  <default_host_name>`.
-
-```bash
-terraform -chdir=infra apply                                       # 3. add both custom domains
-terraform -chdir=infra output -raw apex_validation_token
-```
-
-4. At Namecheap add `TXT  @  →  <apex_validation_token>` and `ALIAS  @  →  <default_host_name>`.
-5. Wait until both domains show `Ready` (certificates are issued automatically; minutes to a few hours). If the apply timed out while waiting, run `terraform -chdir=infra apply` again once the records resolve.
-
-```bash
-az staticwebapp hostname list -n tonyai-site -g tonyai-site -o table
-```
-
-6. Hand the deploy token to GitHub and run the first deployment:
-
-```bash
-terraform -chdir=infra output -raw api_key | gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN
+terraform -chdir=infra apply
+gh variable set AZURE_CLIENT_ID --body "$(terraform -chdir=infra output -raw deploy_client_id)"
+gh variable set AZURE_TENANT_ID --body "$(terraform -chdir=infra output -raw tenant_id)"
+gh variable set AZURE_SUBSCRIPTION_ID --body "$(terraform -chdir=infra output -raw subscription_id)"
 gh workflow run deploy.yml
+terraform -chdir=infra output   # app_fqdn, static_ip, domain_verification_id
+```
+
+3. At Namecheap (Domain List → tonyai.io → Advanced DNS) add these records. Leave the existing MX, SPF and verification TXT records alone. The CNAME must point straight at the app; if CAA records are ever added they must allow DigiCert.
+
+| Type | Host | Value |
+|---|---|---|
+| CNAME | `www` | `<app_fqdn>` |
+| TXT | `asuid.www` | `<domain_verification_id>` |
+| A | `@` | `<static_ip>` |
+| TXT | `asuid` | `<domain_verification_id>` |
+
+4. Once the records resolve on Namecheap's servers (`dig @dns1.registrar-servers.com www.tonyai.io CNAME`), add the custom domains and their managed certificates, and wait until both certificates read `Succeeded`:
+
+```bash
+terraform -chdir=infra apply -var dns_ready=true
+az containerapp env certificate list -g tonyai-site -n tonyai-site --managed-certificates-only -o table
+```
+
+5. Bind the certificates. From now on always pass `-var dns_ready=true` to Terraform; the plan must show no changes.
+
+```bash
+az containerapp hostname bind -g tonyai-site -n tonyai-site --hostname www.tonyai.io --certificate tonyai-site-www
+az containerapp hostname bind -g tonyai-site -n tonyai-site --hostname tonyai.io --certificate tonyai-site-apex
+terraform -chdir=infra plan -var dns_ready=true
 ```
 
 ### Day to day and rollback
 
-- Content: push to `main`. To roll back, revert the commit and push.
-- Deploy token leaked: `az staticwebapp secrets reset-api-key -n tonyai-site -g tonyai-site`, then repeat the `gh secret set` line above.
-- Remove the site: delete the three Namecheap records, then `terraform -chdir=infra destroy`.
+- Content: push to `main`. To roll back, revert the commit and push, or point the app at an earlier image: `az containerapp update -n tonyai-site -g tonyai-site --image ghcr.io/tonyaiukco/tonyai-landing-page:<sha>`.
+- Cost: one replica stays warm (`min_replicas = 1` in `infra/main.tf`). Set it to `0` to pay almost nothing at the price of a cold start for the first visitor.
+- Remove the site: delete the four Namecheap records, then `terraform -chdir=infra destroy -var dns_ready=true`.
 - Other domains (`tonyai.com`, `tonyai.com.tr`, `tonyai.co.uk`) should 301 to `https://tonyai.io` at the registrar.
 
 ## The contact form

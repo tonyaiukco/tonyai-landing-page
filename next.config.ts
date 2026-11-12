@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-/** Static export: `next build` writes a plain HTML/CSS/JS site to ./out, which is uploaded to Azure Static Web Apps (see README). */
+/** Static export: `next build` writes a plain HTML/CSS/JS site to ./out, which the Dockerfile serves with nginx on Azure Container Apps (see README). */
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,

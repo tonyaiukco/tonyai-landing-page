@@ -4,35 +4,40 @@
 
 - [x] 1.1 `.gitignore`'a `infra/.terraform/`, `*.tfstate` ve `*.tfstate.*` ekle; `git check-ignore infra/terraform.tfstate infra/.terraform/x` iki yolu da ignore edilmiş olarak gösterir
 - [x] 1.2 `content/copy.ts`'teki iki "Giriş yap" bağlantısını (`nav.login.href`, footer "Şirket" sütunu) `https://qa.tonyai.io` yap; `npm run build` sonrası `grep -r "app.tonyai.io" out/` sonuç döndürmez, `grep -rl "qa.tonyai.io" out/index.html` dosyayı bulur
-- [x] 1.3 `public/staticwebapp.config.json` ekle (`trailingSlash: "always"`, 404 → `/404.html`, `/_next/static/*` için immutable cache); `npm run build` sonrası dosya `out/staticwebapp.config.json` olarak durur ve `python3 -m json.tool` ile geçerli JSON çıkar
+- [x] 1.3 Static Web Apps'e ait `public/staticwebapp.config.json`'ı kaldır; `npm run build` sonrası `out/staticwebapp.config.json` yoktur
 
-## 2. Terraform yapılandırması
+## 2. İmaj
 
-- [x] 2.1 Terraform CLI'ı kur (`brew install hashicorp/tap/terraform`); `terraform version` 1.9 veya üstünü gösterir
-- [x] 2.2 `infra/versions.tf`, `infra/variables.tf`, `infra/main.tf`, `infra/outputs.tf` dosyalarını design.md Decision 1–3'e göre yaz (RG `tonyai-site`, SWA `tonyai-site` Free/`westeurope`, `www` cname-delegation ve apex dns-txt-token domain'leri, `default_host_name`/`apex_validation_token`/`api_key` çıktıları); `terraform -chdir=infra init` ve `terraform -chdir=infra validate` hatasız biter, `terraform fmt -check -recursive infra` temiz çıkar
-- [x] 2.3 `infra/.terraform.lock.hcl` commit'e alınır, state dosyaları alınmaz; `git status --short infra` yalnızca `.tf` dosyalarını ve lock dosyasını gösterir
+- [x] 2.1 `nginx.conf`, `Dockerfile` ve `.dockerignore` ekle (design.md Decision 3); `docker build -t tonyai-site .` başarılı biter
+- [x] 2.2 İmajı yerelde çalıştırıp kontrol et (`docker run -p 8080:8080 tonyai-site`): `/`, `/sirket/`, `/kaynaklar/tsrs-kisa-rehber/`, `/tasarim/c/` 200; `/olmayan-sayfa/` 404 ve gövdesi sitenin 404 sayfası; `/sirket` 301 ile `Location: /sirket/`; `/_next/static/` altındaki bir dosyada `Cache-Control: ... immutable`
 
-## 3. Dağıtım workflow'u
+## 3. Terraform yapılandırması
 
-- [x] 3.1 `.github/workflows/deploy.yml` ekle (`push: main` + `workflow_dispatch`, Node 22, `npm ci`, `npm run build`, `Azure/static-web-apps-deploy@v1` ile `app_location: out`, `skip_app_build: true`, `skip_api_build: true`, `concurrency` grubu, token `secrets.AZURE_STATIC_WEB_APPS_API_TOKEN`); `python3 -c "import yaml,sys; yaml.safe_load(open('.github/workflows/deploy.yml'))"` hatasız biter
-- [x] 3.2 `README.md`'nin "Deploying" bölümünü bu kurulumla değiştir (Terraform iki aşamalı ilk kurulum, Namecheap kayıtları, deploy token'ın GitHub'a aktarılması, `main` push = canlı, geri alma) ve ürün adresi satırını `qa.tonyai.io` (geçici) olarak güncelle; `next.config.ts` yorumunu Azure Static Web Apps'e göre düzelt. README'deki komutlar Görev 4'te yazıldığı gibi çalıştırılarak doğrulanır
-- [ ] 3.3 Grup 1–3 değişikliklerini commit'leyip `main`'e push et; GitHub Actions'ta workflow tetiklenir, build adımı yeşil geçer (secret henüz olmadığından upload adımının başarısız olması beklenir)
+- [x] 3.1 Terraform CLI'ı kur (`brew install hashicorp/tap/terraform`); `terraform version` 1.9 veya üstünü gösterir
+- [x] 3.2 `infra/*.tf` dosyalarını Container Apps için yeniden yaz (design.md Decision 2, 4, 5, 6): RG, ortam, uygulama (`ignore_changes` imaj), identity + federated credential + rol, `dns_ready` ile korunan custom domain ve managed sertifikalar, çıktılar; `terraform -chdir=infra validate` hatasız, `terraform fmt -check -recursive infra` temiz, `terraform -chdir=infra plan` bütün kaynakları `swedencentral`'da gösterir ve custom domain/sertifika içermez
+- [x] 3.3 `infra/.terraform.lock.hcl` commit'e alınır, state dosyaları alınmaz; `git status --short infra` yalnızca `.tf` dosyalarını ve lock dosyasını gösterir
 
-## 4. Azure kurulumu ve DNS
+## 4. Dağıtım workflow'u ve doküman
 
-- [ ] 4.1 `terraform -chdir=infra apply -target=azurerm_static_web_app.site` çalıştır; `terraform -chdir=infra output default_host_name` bir `*.azurestaticapps.net` adresi döndürür
-- [ ] 4.2 Deploy token'ı GitHub'a aktar (`terraform -chdir=infra output -raw api_key | gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN`) ve workflow'u `gh workflow run deploy.yml` ile yeniden çalıştır; çalışma yeşil biter ve `curl -sI https://<default_host_name>/` 200 döner
-- [ ] 4.3 Geçici adreste kontrol et: `/`, `/sirket/`, `/kaynaklar/tsrs-kisa-rehber/`, `/tasarim/c/` 200 döner; `/olmayan-sayfa/` 404 döner ve gövdesi sitenin 404 sayfasıdır; `/sirket` (sondaki `/` olmadan) `/sirket/`'e yönlenir
-- [ ] 4.4 (Kullanıcı, Namecheap) `CNAME www → <default_host_name>` kaydını ekle; `dig +short CNAME www.tonyai.io` hedefi gösterir
-- [ ] 4.5 `terraform -chdir=infra apply` ile iki custom domain'i ekle; `terraform -chdir=infra output apex_validation_token` bir değer döndürür
-- [ ] 4.6 (Kullanıcı, Namecheap) `TXT @ → <apex_validation_token>` ve `ALIAS @ → <default_host_name>` kayıtlarını ekle, mevcut kayıtlara dokunma; `dig +short TXT tonyai.io` yeni token'ı ve önceki SPF/doğrulama kayıtlarını birlikte gösterir, `dig +short MX tonyai.io` hâlâ `smtp.google.com`'u gösterir
-- [ ] 4.7 Domain doğrulaması ve sertifikaların tamamlanmasını bekle; `az staticwebapp hostname list -n tonyai-site -g tonyai-site -o table` iki domain'i de `Ready` gösterir (apply zaman aşımına düştüyse kayıtlar yayıldıktan sonra `terraform -chdir=infra apply` tekrar çalıştırılır ve değişiklik göstermez)
+- [x] 4.1 `.github/workflows/deploy.yml`'ı yeniden yaz (design.md Decision 4: GHCR build/push, `vars.AZURE_CLIENT_ID` yoksa Azure adımlarını atlayan OIDC login + `az containerapp update`); YAML ayrıştırılır
+- [x] 4.2 `README.md`'nin "Deploying" bölümünü Container Apps kurulumuyla değiştir (GHCR görünürlüğü, aşama A/B/C, Namecheap kayıtları, GitHub değişkenleri, `main` push = canlı, geri alma); `next.config.ts` yorumunu güncelle. README'deki komutlar Grup 5'te yazıldığı gibi çalıştırılarak doğrulanır
+- [ ] 4.3 Değişiklikleri commit'leyip `main`'e push et; workflow imajı `ghcr.io/tonyaiukco/tonyai-landing-page`'e `:sha` ve `:latest` ile yükler, Azure adımları atlanır, çalışma yeşil biter
+- [ ] 4.4 (Kullanıcı, GitHub) GHCR paketinin görünürlüğünü public yap; `gh api /users/tonyaiukco/packages/container/tonyai-landing-page --jq .visibility` `public` döner
 
-## 5. Canlı doğrulama
+## 5. Azure kurulumu ve DNS
 
-- [ ] 5.1 `site-hosting` senaryolarını canlıda kontrol et: `https://tonyai.io/`, `https://tonyai.io/kaynaklar/tsrs-kisa-rehber/` ve `https://www.tonyai.io/sirket/` 200 döner; `curl -sI http://tonyai.io/` HTTPS'e yönlenir; `https://tonyai.io/olmayan-sayfa/` 404 döner; tarayıcıda iki domain de sertifika uyarısı vermez
-- [ ] 5.2 `site-navigation` senaryolarını canlıda kontrol et: masaüstü menü, mobil menü ve footer'daki "Giriş yap" bağlantıları `https://qa.tonyai.io`'ya gider; `qa.tonyai.io`'nun yanıt verip vermediğini ayrıca not et
-- [ ] 5.3 Otomatik dağıtımı doğrula: küçük bir içerik değişikliğini `main`'e push et, birkaç dakika içinde `https://tonyai.io`'da göründüğünü kontrol et; `git status` Terraform state dosyalarını göstermez
+- [ ] 5.1 (Kullanıcı onayıyla) Aşama A: `terraform -chdir=infra apply`; `terraform -chdir=infra output` `app_fqdn`, `static_ip`, `domain_verification_id` ve deploy kimliği değerlerini gösterir
+- [ ] 5.2 `deploy_client_id`, `tenant_id`, `subscription_id` çıktılarını `gh variable set AZURE_CLIENT_ID/AZURE_TENANT_ID/AZURE_SUBSCRIPTION_ID` ile repoya aktar ve `gh workflow run deploy.yml` çalıştır; çalışma Azure adımlarıyla birlikte yeşil biter
+- [ ] 5.3 Geçici adreste kontrol et: `https://<app_fqdn>/` için 2.2'deki kontroller aynen geçer; `curl -sI http://<app_fqdn>/` HTTPS'e yönlenir
+- [ ] 5.4 (Kullanıcı, Namecheap) `CNAME www → <app_fqdn>`, `TXT asuid.www → <domain_verification_id>`, `A @ → <static_ip>`, `TXT asuid → <domain_verification_id>` kayıtlarını ekle, mevcut kayıtlara dokunma; `dig @dns1.registrar-servers.com` dört kaydı da gösterir, `dig +short MX tonyai.io` hâlâ `smtp.google.com`'u ve `dig +short TXT tonyai.io` önceki SPF/doğrulama kayıtlarını gösterir
+- [ ] 5.5 (Kullanıcı onayıyla) Aşama B: `terraform -chdir=infra apply -var dns_ready=true`; `az containerapp env certificate list -g tonyai-site -n tonyai-site --managed-certificates-only -o table` iki sertifikayı `Succeeded` gösterir
+- [ ] 5.6 (Kullanıcı onayıyla) Aşama C: iki hostname'i sertifikasına bağla (`az containerapp hostname bind`); `az containerapp hostname list -g tonyai-site -n tonyai-site -o table` iki host'u `SniEnabled` gösterir ve `terraform -chdir=infra plan -var dns_ready=true` değişiklik göstermez
+
+## 6. Canlı doğrulama
+
+- [ ] 6.1 `site-hosting` senaryolarını canlıda kontrol et: `https://tonyai.io/`, `https://tonyai.io/kaynaklar/tsrs-kisa-rehber/` ve `https://www.tonyai.io/sirket/` 200 döner; `curl -sI http://tonyai.io/` HTTPS'e yönlenir; `https://tonyai.io/olmayan-sayfa/` 404 döner; iki domain de geçerli sertifika sunar (`curl` sertifika hatası vermez); `az resource list -g tonyai-site --query "[].location"` yalnızca `swedencentral` döndürür
+- [ ] 6.2 `site-navigation` senaryolarını canlıda kontrol et: masaüstü menü, mobil menü ve footer'daki "Giriş yap" bağlantıları `https://qa.tonyai.io`'ya gider; `qa.tonyai.io`'nun yanıt verip vermediğini ayrıca not et
+- [ ] 6.3 Otomatik dağıtımı doğrula: küçük bir içerik değişikliğini `main`'e push et, birkaç dakika içinde `https://tonyai.io`'da göründüğünü kontrol et; `git status` Terraform state dosyalarını göstermez
 
 ## Workflow follow-up
 

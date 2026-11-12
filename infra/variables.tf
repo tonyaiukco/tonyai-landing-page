@@ -5,7 +5,19 @@ variable "subscription_id" {
 }
 
 variable "location" {
-  description = "Region for the resource group and Static Web App metadata; content is served from the global edge."
+  description = "Region for every resource, next to the other TonyAI resources."
   type        = string
-  default     = "westeurope"
+  default     = "swedencentral"
+}
+
+variable "image" {
+  description = "Image the Container App starts with. Later deployments change it from GitHub Actions; Terraform ignores that drift."
+  type        = string
+  default     = "ghcr.io/tonyaiukco/tonyai-landing-page:latest"
+}
+
+variable "dns_ready" {
+  description = "Set to true once the Namecheap records (www CNAME, @ A, asuid TXTs) resolve; adds the custom domains and their managed certificates."
+  type        = bool
+  default     = false
 }
