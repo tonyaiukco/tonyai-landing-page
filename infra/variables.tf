@@ -5,19 +5,13 @@ variable "subscription_id" {
 }
 
 variable "location" {
-  description = "Region for every resource, next to the other TonyAI resources."
+  description = "Region for every resource. Static Web Apps is offered in West Europe (not in Sweden Central); content is served from the global edge either way."
   type        = string
-  default     = "swedencentral"
-}
-
-variable "image" {
-  description = "Image (without the ghcr.io registry) the web app starts with. Later deployments change it from GitHub Actions; Terraform ignores that drift."
-  type        = string
-  default     = "tonyaiukco/tonyai-landing-page:latest"
+  default     = "westeurope"
 }
 
 variable "dns_ready" {
-  description = "Set to true once the Namecheap records (www CNAME, @ A, asuid TXTs) resolve; adds the custom domains, their managed certificates and bindings."
+  description = "Set to true once `CNAME www -> <default_host_name>` resolves at Namecheap; adds www.tonyai.io."
   type        = bool
   default     = false
 }

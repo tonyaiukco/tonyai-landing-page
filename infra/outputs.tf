@@ -1,11 +1,11 @@
-output "default_hostname" {
-  description = "Target of the www CNAME at Namecheap; `dig +short` on it gives the IP for the @ A record."
-  value       = azurerm_linux_web_app.site.default_hostname
+output "default_host_name" {
+  description = "Target of the www CNAME and the @ ALIAS at Namecheap."
+  value       = azurerm_static_web_app.site.default_host_name
 }
 
-output "domain_verification_id" {
-  description = "Value of both asuid TXT records (asuid and asuid.www) at Namecheap."
-  value       = azurerm_linux_web_app.site.custom_domain_verification_id
+output "apex_validation_token" {
+  description = "Value of the TXT record on @ that proves ownership of tonyai.io."
+  value       = azurerm_static_web_app_custom_domain.apex.validation_token
   sensitive   = true
 }
 

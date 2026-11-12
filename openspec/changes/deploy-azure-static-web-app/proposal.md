@@ -1,18 +1,18 @@
 # Proposal
 
-> Not: Change'in adı ilk plandan (Azure Static Web Apps) kaldı. Static Web Apps Sweden Central'da sunulmuyor; bütün kaynakların Sweden Central'da olması şart. Container Apps denendi ama abonelik Sweden Central'da tek Container Apps ortamına izin veriyor ve o ortam QA'ya ait. Barındırma bu yüzden Azure App Service'e (Linux, B1) taşındı.
+> Not: Barındırma bölgesi için önce Sweden Central denendi. Static Web Apps orada sunulmuyor; Container Apps'te abonelik bölgede tek ortama izin veriyor ve o ortam QA'nın; App Service B1 için iki kaynak grubunda da `No available instances` kapasite hatası alındı. Kullanıcı bölgeyi West Europe olarak değiştirdi ve barındırma, ilk plandaki gibi Azure Static Web Apps (Free) oldu.
 
 ## Why
 
-Site bugün yalnızca yerelde çalışıyor; `tonyai.io` ve `www.tonyai.io` için DNS kaydı yok. Pazarlama sitesini canlıya almak ve her `main` push'unda kendiliğinden güncellenmesini sağlamak için bir barındırma ve dağıtım düzenine ihtiyaç var. Bütün altyapı, diğer TonyAI kaynakları gibi Sweden Central'da durmalı. Ürün henüz `app.tonyai.io`'da yayında olmadığından, "Giriş yap" bağlantıları şimdilik çalışan QA ortamına (`qa.tonyai.io`) yönlenmeli.
+Site bugün yalnızca yerelde çalışıyor; `tonyai.io` ve `www.tonyai.io` için DNS kaydı yok. Pazarlama sitesini canlıya almak ve her `main` push'unda kendiliğinden güncellenmesini sağlamak için bir barındırma ve dağıtım düzenine ihtiyaç var. Ürün henüz `app.tonyai.io`'da yayında olmadığından, "Giriş yap" bağlantıları şimdilik çalışan QA ortamına (`qa.tonyai.io`) yönlenmeli.
 
 ## What Changes
 
-- Bu repoya `infra/` altında sade bir Terraform yapılandırması eklenir (azurerm provider, yerel state, remote backend/test/politika yok). Bütün kaynaklar `swedencentral`'da: kaynak grubu, Linux App Service planı (B1) ve web uygulaması, `tonyai.io` + `www.tonyai.io` custom domain'leri ve ücretsiz managed sertifikaları, GitHub Actions'ın sırsız (OIDC) dağıtım yapması için bir managed identity.
-- Siteyi build edip nginx ile sunan bir `Dockerfile` ve nginx yapılandırması eklenir; bilinmeyen adresler sitenin kendi `404.html` sayfasını gösterir.
-- `main`'e her push'ta imajı build edip GitHub Container Registry'ye (GHCR) yükleyen ve web uygulamasını yeni imaja geçiren bir GitHub Actions workflow'u eklenir.
-- Namecheap'te girilecek DNS kayıtları (`www` CNAME, `@` A, iki `asuid` TXT) ve kurulum sırası belgelenir; mevcut MX/SPF/doğrulama TXT kayıtlarına dokunulmaz.
-- `.gitignore`'a Terraform state ve çalışma dosyaları eklenir (repo public).
+- Bu repoya `infra/` altında sade bir Terraform yapılandırması eklenir (azurerm provider, yerel state, remote backend/test/politika yok). Bütün kaynaklar `westeurope`'ta: kaynak grubu `tonyai-landing`, Azure Static Web App (Free), `tonyai.io` + `www.tonyai.io` custom domain'leri ve GitHub Actions'ın sırsız (OIDC) dağıtım yapması için bir managed identity.
+- `main`'e her push'ta siteyi build edip (`npm run build` → `out/`), Azure'a OIDC ile girip deploy token'ını çalışma anında okuyan ve Static Web App'e yükleyen bir GitHub Actions workflow'u eklenir.
+- `public/staticwebapp.config.json` eklenir; bilinmeyen adresler sitenin kendi `404.html` sayfasını gösterir.
+- Namecheap'te girilecek DNS kayıtları (`www` CNAME, `@` TXT doğrulama + ALIAS) ve kurulum sırası belgelenir; mevcut MX/SPF/doğrulama TXT kayıtlarına dokunulmaz.
+- `.gitignore`'a Terraform state ve çalışma dosyaları eklenir (repo public; state deploy token'ını içerir).
 - Üst menü ve footer'daki "Giriş yap" bağlantıları `https://app.tonyai.io` yerine geçici olarak `https://qa.tonyai.io`'ya yönlenir.
 - `README.md` ve `next.config.ts` içindeki barındırma/ürün adresi anlatımı güncellenir. `docs/kayit-ve-davet-akisi.md` kalıcı ürün adresini (`app.tonyai.io`) tarif ettiği için değişmez.
 
@@ -27,10 +27,10 @@ Site bugün yalnızca yerelde çalışıyor; `tonyai.io` ve `www.tonyai.io` içi
 
 ## Impact
 
-- **Yeni dosyalar:** `infra/*.tf`, `Dockerfile`, `.dockerignore`, `nginx.conf`, `.github/workflows/deploy.yml`.
+- **Yeni dosyalar:** `infra/*.tf`, `.github/workflows/deploy.yml`, `public/staticwebapp.config.json`.
 - **Değişen dosyalar:** `content/copy.ts` (2 bağlantı), `README.md`, `next.config.ts` (yorum), `.gitignore`.
-- **Azure (`swedencentral`):** `Azure subscription 1` aboneliğinde yeni kaynak grubu `tonyai-landing`, App Service planı (B1, Linux; sabit ~13 $/ay) ve web uygulaması, managed identity ve kaynak grubu üzerinde rol ataması. QA'nın Container Apps ortamına dokunulmaz.
-- **GitHub:** GHCR'de `tonyai-landing-page` imaj paketi (public); repoya üç Actions değişkeni (client/tenant/subscription ID; sır değil).
-- **DNS (Namecheap, elle):** `www` CNAME, `@` A, `asuid` ve `asuid.www` TXT kayıtları.
+- **Azure (`westeurope`):** `Azure subscription 1` aboneliğinde kaynak grubu `tonyai-landing`, Static Web App (Free, ücretsiz), managed identity ve Static Web App üzerinde rol ataması. QA kaynaklarına dokunulmaz.
+- **GitHub:** repoya üç Actions değişkeni (client/tenant/subscription ID; sır değil). Container Apps/App Service denemelerinden kalan `ghcr.io/tonyaiukco/tonyai-landing-page` imaj paketi artık kullanılmıyor.
+- **DNS (Namecheap, elle):** `www` CNAME, `@` TXT doğrulama ve `@` ALIAS kayıtları.
 - **Yerel araç:** Terraform CLI.
 - **Bağımlılık:** "Giriş yap" bağlantısının çalışması `qa.tonyai.io`'nun HTTPS üzerinden yanıt vermesine bağlıdır; şu an zaman aşımına düşüyor.

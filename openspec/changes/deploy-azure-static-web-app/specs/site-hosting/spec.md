@@ -60,12 +60,12 @@ Site için yapılan DNS değişiklikleri `tonyai.io` domain'inin mevcut e-posta 
 - **WHEN** site DNS kayıtları eklendikten sonra `tonyai.io` için MX ve TXT kayıtları sorgulanır
 - **THEN** önceki MX kaydı ve SPF ile doğrulama TXT kayıtları aynen yerinde durur
 
-### Requirement: Hosting resources stay in Sweden Central
-Siteyi barındıran bütün Azure kaynakları `swedencentral` bölgesinde SHALL bulunmalıdır.
+### Requirement: Hosting resources stay in West Europe
+Siteyi barındıran bütün Azure kaynakları `westeurope` bölgesinde SHALL bulunmalıdır.
 
 #### Scenario: Kaynakların bölgesi
 - **WHEN** sitenin kaynak grubundaki kaynaklar bölgeleriyle listelenir
-- **THEN** kaynak grubu dahil her kaynağın bölgesi `swedencentral`'dır
+- **THEN** kaynak grubu dahil her kaynağın bölgesi `westeurope`'tur
 
 ### Requirement: Deployment secrets stay out of the repository
 Siteyi yayınlamaya yetki veren hiçbir sır (deploy kimlik bilgisi, Terraform state) public repoya SHALL commit'lenmemelidir.
