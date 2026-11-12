@@ -16,7 +16,7 @@ npm run build      # writes the finished site to ./out
 
 ## Deploying
 
-The site runs on Azure App Service (Linux, plan `B1`) in Sweden Central (resource group `tonyai-site`; every resource is in `swedencentral`) and is served at `https://tonyai.io` and `https://www.tonyai.io`. The `Dockerfile` builds the static export and serves `out/` with nginx (`nginx.conf`: trailing slashes, 404 page, cache headers) on port 8080; the web app runs that image.
+The site runs on Azure App Service (Linux, plan `B1`) in Sweden Central (resource group `tonyai-landing`; every resource is in `swedencentral`) and is served at `https://tonyai.io` and `https://www.tonyai.io`. The `Dockerfile` builds the static export and serves `out/` with nginx (`nginx.conf`: trailing slashes, 404 page, cache headers) on port 8080; the web app runs that image.
 
 Every push to `main` runs `.github/workflows/deploy.yml`: it builds the image, pushes it to `ghcr.io/tonyaiukco/tonyai-landing-page` (`:<sha>` and `:latest`, public package), signs in to Azure with OIDC and points the web app at the new image. A failed build stops before the rollout, so the live site is untouched. No secret is stored in GitHub: the workflow uses three repository variables (`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`) and federated credentials on the `tonyai-site-deploy` identity.
 
@@ -62,7 +62,7 @@ terraform -chdir=infra plan -var dns_ready=true
 
 ### Day to day and rollback
 
-- Content: push to `main`. To roll back, revert the commit and push, or point the app at an earlier image: `az webapp config container set -n tonyai-site -g tonyai-site --container-image-name ghcr.io/tonyaiukco/tonyai-landing-page:<sha>`.
+- Content: push to `main`. To roll back, revert the commit and push, or point the app at an earlier image: `az webapp config container set -n tonyai-site -g tonyai-landing --container-image-name ghcr.io/tonyaiukco/tonyai-landing-page:<sha>`.
 - Cost: the `B1` plan is a fixed monthly price (about 13 USD in Sweden Central).
 - Remove the site: delete the four Namecheap records, then `terraform -chdir=infra destroy -var dns_ready=true`.
 - Other domains (`tonyai.com`, `tonyai.com.tr`, `tonyai.co.uk`) should 301 to `https://tonyai.io` at the registrar.

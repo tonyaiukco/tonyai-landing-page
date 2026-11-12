@@ -1,7 +1,7 @@
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_resource_group" "site" {
-  name     = "tonyai-site"
+  name     = "tonyai-landing"
   location = var.location
 }
 

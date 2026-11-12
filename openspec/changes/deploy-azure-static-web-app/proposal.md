@@ -29,7 +29,7 @@ Site bugün yalnızca yerelde çalışıyor; `tonyai.io` ve `www.tonyai.io` içi
 
 - **Yeni dosyalar:** `infra/*.tf`, `Dockerfile`, `.dockerignore`, `nginx.conf`, `.github/workflows/deploy.yml`.
 - **Değişen dosyalar:** `content/copy.ts` (2 bağlantı), `README.md`, `next.config.ts` (yorum), `.gitignore`.
-- **Azure (`swedencentral`):** `Azure subscription 1` aboneliğinde yeni kaynak grubu `tonyai-site`, App Service planı (B1, Linux; sabit ~13 $/ay) ve web uygulaması, managed identity ve kaynak grubu üzerinde rol ataması. QA'nın Container Apps ortamına dokunulmaz.
+- **Azure (`swedencentral`):** `Azure subscription 1` aboneliğinde yeni kaynak grubu `tonyai-landing`, App Service planı (B1, Linux; sabit ~13 $/ay) ve web uygulaması, managed identity ve kaynak grubu üzerinde rol ataması. QA'nın Container Apps ortamına dokunulmaz.
 - **GitHub:** GHCR'de `tonyai-landing-page` imaj paketi (public); repoya üç Actions değişkeni (client/tenant/subscription ID; sır değil).
 - **DNS (Namecheap, elle):** `www` CNAME, `@` A, `asuid` ve `asuid.www` TXT kayıtları.
 - **Yerel araç:** Terraform CLI.

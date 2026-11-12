@@ -7,6 +7,7 @@
 - **Bölge şartı:** bütün kaynaklar `swedencentral`'da.
   - Azure Static Web Apps yalnızca Central US, East US 2, West US 2, West Europe ve East Asia'da sunuluyor (`az provider show -n Microsoft.Web`, 2026-11-13) ve içeriği her durumda global edge'e dağıtıyor.
   - Container Apps `swedencentral`'da var ama abonelik bölge başına en fazla 1 ortama izin veriyor (`ManagedEnvironmentCount 1/1`) ve o ortam QA'nın (`tonyaiqt-staging-env`, `tonyai-qatmp-apps`). İlk apply `MaxNumberOfRegionalEnvironmentsInSubExceeded` ile durdu.
+  - App Service planı ilk denemede `tonyai-site` kaynak grubunda `No available instances` (409, kapasite) hatası aldı. Microsoft'un önerdiği çözümle kaynaklar yeni bir kaynak grubuna (`tonyai-landing`) taşındı; yeni grup App Service'e farklı bir kapasite birimine yerleşme şansı verir.
 - DNS Namecheap BasicDNS'te. Apex ve `www` için kayıt yok. Apex'te korunması gereken kayıtlar: Google MX, SPF, ACS'in `ms-domain-verification` ve `google-site-verification` TXT.
 - Azure: `Azure subscription 1` (`cb7efc2f-…`), `deniz@tonyai.io` abonelikte Owner.
 - Repo `tonyaiukco/tonyai-landing-page` public; ilk push'tan sonra GHCR paketi anonim olarak çekilebiliyor (public).
@@ -35,7 +36,7 @@
 ### 2. Barındırma: Azure App Service (Linux, B1) + container
 | Kaynak | Ad | Not |
 |---|---|---|
-| Resource group | `tonyai-site` | `swedencentral` |
+| Resource group | `tonyai-landing` | `swedencentral` |
 | App Service plan | `tonyai-site-plan` | Linux, `B1` |
 | Linux web app | `tonyai-site` | GHCR imajı, `WEBSITES_PORT=8080`, `always_on`, `https_only`, FTP/WebDeploy basic auth kapalı |
 | User-assigned identity | `tonyai-site-deploy` | GitHub OIDC için |
@@ -67,7 +68,7 @@
 
 Azure değişkenleri tanımlı değilse 2. ve 3. adımlar atlanır; böylece Terraform'dan önce yapılan push yalnızca imajı yayınlar.
 
-Terraform tarafı: `azurerm_user_assigned_identity` + `azurerm_federated_identity_credential` (issuer `https://token.actions.githubusercontent.com`, subject `repo:tonyaiukco/tonyai-landing-page:ref:refs/heads/main`, audience `api://AzureADTokenExchange`) + `tonyai-site` kaynak grubu kapsamında `Contributor`.
+Terraform tarafı: `azurerm_user_assigned_identity` + `azurerm_federated_identity_credential` (issuer `https://token.actions.githubusercontent.com`, subject `repo:tonyaiukco/tonyai-landing-page:ref:refs/heads/main`, audience `api://AzureADTokenExchange`) + `tonyai-landing` kaynak grubu kapsamında `Contributor`.
 - *Alternatif:* Service principal sırrı ya da publish profile GitHub secret'ında — uzun ömürlü sır; reddedildi.
 - Build başarısız olursa push ve rollout adımları çalışmaz; canlı imaj değişmez.
 
@@ -94,6 +95,7 @@ App Service bir hostname'i ancak DNS doğrulandıktan sonra ekler (`asuid` TXT +
 - [Yerel state yalnızca bir makinede] → Kaybolursa site çalışmaya devam eder; `terraform import` ile kaynaklar geri bağlanır.
 - [Managed sertifika DNS yayılmadan çıkmaz; apex için A kaydının doğrudan uygulamayı göstermesi gerekir] → Aşama B, kayıtlar Namecheap'in kendi sunucularında (`dig @dns1.registrar-servers.com`) görüldükten sonra çalıştırılır. CAA eklenirse DigiCert'e izin vermeli.
 - [Web uygulamasının gelen IP'si nadiren değişebilir (ör. plan farklı bir ölçek birimine taşınırsa)] → Site düşerse `dig` ile yeni IP okunup Namecheap'teki `A` kaydı güncellenir.
+- [Sweden Central'da B1 kapasitesi yine yetmeyebilir] → Önce birkaç saat sonra yeniden denenir; olmazsa aynı bölgede daha yeni donanımlı bir SKU (Premium v3) değerlendirilir.
 - [Sabit aylık maliyet] → B1 en küçük uygun plan; site trafiği artarsa ölçek planı değiştirilir.
 - [`az webapp config container set` uygulamayı yeniden başlatır; birkaç saniyelik kesinti olabilir] → Tek örnekli küçük bir pazarlama sitesi için kabul edilir; gerekirse ileride staging slot + swap.
 - [`qa.tonyai.io` şu an HTTPS'te zaman aşımına düşüyor] → Yayını engellemez; "Giriş yap" bağlantısının çalışması QA ortamına bağlı.
