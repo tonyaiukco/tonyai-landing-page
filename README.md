@@ -2,7 +2,7 @@
 
 > **Status (10 Nov 2026):** the chosen design is **Atmosfer**, served at `/tasarim/c/` while the other routes still use the first light design. Next step is rolling Atmosfer out to every page and making it `/`. Design history, brand files and decisions: see `docs/`.
 
-Static marketing site for tonyai.io, built with Next.js (App Router, static export), TypeScript and Tailwind. The product lives separately at app.tonyai.io; this site only links to it.
+Static marketing site for tonyai.io, built with Next.js (App Router, static export), TypeScript and Tailwind. The product lives separately (for now at qa.tonyai.io, later app.tonyai.io); this site only links to it via the "Giriş yap" links in `content/copy.ts`.
 
 ## Run it
 
@@ -14,23 +14,50 @@ npm run build      # writes the finished site to ./out
 
 `out/` is plain HTML, CSS, JS and fonts. Serve it from any web server or CDN. No Node process is needed in production.
 
-## Deploying next to the app
+## Deploying
 
-- Point `tonyai.io` and `www.tonyai.io` at the folder or bucket that holds `out/`; keep `app.tonyai.io` for the application.
-- Serve with gzip or brotli, long cache headers for `/_next/static/*` (file names are content-hashed), and `index.html` for directory URLs (`/sirket/` → `/sirket/index.html`); the build uses trailing slashes.
-- Redirect `tonyai.com`, `tonyai.com.tr` and `tonyai.co.uk` to `https://tonyai.io` with a 301.
+The site runs on Azure Static Web Apps (Free plan, resource group `tonyai-site`) and is served at `https://tonyai.io` and `https://www.tonyai.io`. Every push to `main` builds the site in GitHub Actions (`.github/workflows/deploy.yml`) and uploads `out/`; a failed build leaves the live site unchanged. Hosting rules (trailing slashes, 404 page, cache headers) live in `public/staticwebapp.config.json`.
 
-```nginx
-server {
-  server_name tonyai.io www.tonyai.io;
-  root /var/www/tonyai-site/out;
-  index index.html;
-  gzip on; gzip_types text/html text/css application/javascript image/svg+xml font/woff2;
-  location /_next/static/ { add_header Cache-Control "public, max-age=31536000, immutable"; }
-  location / { try_files $uri $uri/ $uri/index.html =404; }
-  error_page 404 /404.html;
-}
+Infrastructure is Terraform in `infra/` with local state. The state holds the deploy token and the repo is public, so `*.tfstate` and `infra/.terraform/` are git-ignored; never commit them. If the state is lost the site keeps running; bring the resources back under Terraform with `terraform import`.
+
+### First-time setup
+
+DNS is at Namecheap (Domain List → tonyai.io → Advanced DNS). Leave the existing MX, SPF and verification TXT records alone.
+
+```bash
+az login
+terraform -chdir=infra init
+terraform -chdir=infra apply -target=azurerm_static_web_app.site   # 1. create the Static Web App
+terraform -chdir=infra output default_host_name                    # e.g. xxxx.azurestaticapps.net
 ```
+
+2. At Namecheap add `CNAME  www  →  <default_host_name>`.
+
+```bash
+terraform -chdir=infra apply                                       # 3. add both custom domains
+terraform -chdir=infra output -raw apex_validation_token
+```
+
+4. At Namecheap add `TXT  @  →  <apex_validation_token>` and `ALIAS  @  →  <default_host_name>`.
+5. Wait until both domains show `Ready` (certificates are issued automatically; minutes to a few hours). If the apply timed out while waiting, run `terraform -chdir=infra apply` again once the records resolve.
+
+```bash
+az staticwebapp hostname list -n tonyai-site -g tonyai-site -o table
+```
+
+6. Hand the deploy token to GitHub and run the first deployment:
+
+```bash
+terraform -chdir=infra output -raw api_key | gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN
+gh workflow run deploy.yml
+```
+
+### Day to day and rollback
+
+- Content: push to `main`. To roll back, revert the commit and push.
+- Deploy token leaked: `az staticwebapp secrets reset-api-key -n tonyai-site -g tonyai-site`, then repeat the `gh secret set` line above.
+- Remove the site: delete the three Namecheap records, then `terraform -chdir=infra destroy`.
+- Other domains (`tonyai.com`, `tonyai.com.tr`, `tonyai.co.uk`) should 301 to `https://tonyai.io` at the registrar.
 
 ## The contact form
 
