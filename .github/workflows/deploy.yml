@@ -72,9 +72,10 @@ jobs:
       # The previous revision keeps serving until the new one is ready; fail if it never gets there.
       - name: Wait for the new revision
         run: |
+          rev() { az containerapp show --name "$APP" --resource-group "$RESOURCE_GROUP" --query "properties.$1" --output tsv; }
           for _ in $(seq 1 36); do
-            read -r latest ready < <(az containerapp show --name "$APP" --resource-group "$RESOURCE_GROUP" \
-              --query "[properties.latestRevisionName, properties.latestReadyRevisionName]" --output tsv | tr '\n' ' ')
+            latest=$(rev latestRevisionName)
+            ready=$(rev latestReadyRevisionName)
             if [ -n "$latest" ] && [ "$latest" = "$ready" ]; then echo "$latest is ready"; exit 0; fi
             sleep 5
           done

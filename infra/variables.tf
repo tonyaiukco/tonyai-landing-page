@@ -17,9 +17,9 @@ variable "image" {
 }
 
 variable "github_repository" {
-  description = "owner/name of the repository whose main branch may deploy."
+  description = "Repository whose main branch may deploy, as GitHub writes it in the OIDC subject: owner@owner-id/name@repo-id (ids from `gh api repos/<owner>/<name>`)."
   type        = string
-  default     = "tonyaiukco/tonyai-landing-page"
+  default     = "tonyaiukco@297710583/tonyai-landing-page@1451717935"
 }
 
 variable "dns_ready" {
