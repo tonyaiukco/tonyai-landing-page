@@ -307,7 +307,7 @@ export const copy = {
     columns: [
       { title: "Platform", links: [{ label: "Özellikler", href: "/#platform" }, { label: "Yöntem", href: "/#yontem" }, { label: "Demo", href: "/#demo" }] },
       { title: "Kaynaklar", links: [{ label: "Yazılar", href: "/kaynaklar/" }, { label: "TSRS rehberi", href: "/kaynaklar/tsrs-kisa-rehber/" }, { label: "Sözlük", href: "/kaynaklar/#sozluk" }] },
-      { title: "Şirket", links: [{ label: "Hakkımızda", href: "/sirket/" }, { label: "Demo talep edin", href: "/demo/" }, { label: "Bize Ulaşın", href: "/bize-ulasin/" }, { label: "Giriş yap", href: "https://qa.tonyai.io" }] },
+      { title: "Şirket", links: [{ label: "Hakkımızda", href: "/sirket/" }, { label: "Demo talep edin", href: "/demo/" }, { label: "Bize Ulaşın", href: "/bize-ulasin/" }, { label: "Giriş yap", href: "https://qa.tonyai.io" }, { label: "Kayıt ol", href: "https://qa.tonyai.io/register" }] },
     ],
     legal: [
       { label: "KVKK Aydınlatma Metni", href: "/kvkk/" },
