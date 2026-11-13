@@ -46,7 +46,7 @@ export function RegisterForm() {
   const label = "text-[0.9rem] font-[540]";
   const err = (k: string) => errors[k] ? <p id={`${id}-${k}-err`} className="text-[0.8rem] text-miss-fg">{errors[k]}</p> : null;
   const inv = (k: string) => ({ "aria-invalid": !!errors[k], "aria-describedby": errors[k] ? `${id}-${k}-err` : undefined });
-  const F = ({ k, type = "text", auto }: { k: "firstName" | "lastName" | "company" | "title" | "email"; type?: string; auto?: string }) => (
+  const row = (k: "firstName" | "lastName" | "company" | "title" | "email", auto: string, type = "text") => (
     <div className="flex flex-col gap-2">
       <label htmlFor={`${id}-${k}`} className={label}>{f[k]}{k === "email" && <span className="ml-2 font-normal text-ink-3">({f.emailHint})</span>}</label>
       <input id={`${id}-${k}`} name={k} type={type} autoComplete={auto} inputMode={type === "email" ? "email" : undefined} className={field} {...inv(k)} />
@@ -57,12 +57,12 @@ export function RegisterForm() {
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5 rounded-[var(--radius-lg)] border border-line bg-surface p-6 sm:p-8" aria-describedby={`${id}-privacy`}>
       <div className="grid gap-5 sm:grid-cols-2">
-        <F k="firstName" auto="given-name" />
-        <F k="lastName" auto="family-name" />
-        <F k="company" auto="organization" />
-        <F k="title" auto="organization-title" />
+        {row("firstName", "given-name")}
+        {row("lastName", "family-name")}
+        {row("company", "organization")}
+        {row("title", "organization-title")}
       </div>
-      <F k="email" type="email" auto="email" />
+      {row("email", "email", "email")}
       <div className="hidden" aria-hidden="true"><label htmlFor={`${id}-website`}>Web sitesi</label><input id={`${id}-website`} name="website" type="text" tabIndex={-1} autoComplete="off" /></div>
       <div className="flex flex-col gap-1">
         <label className="flex min-h-11 items-start gap-3 text-[0.9rem] text-ink-2">

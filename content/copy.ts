@@ -51,7 +51,7 @@ export const copy = {
       { label: "Şirket", href: "/sirket/" },
       { label: "Bize Ulaşın", href: "/bize-ulasin/" },
     ],
-    login: { label: "Giriş yap", href: "https://app.tonyai.io" },
+    login: { label: "Giriş yap", href: "https://qa.tonyai.io" },
     cta: { label: "Demo talep edin", href: "/demo/" },
     langSwitch: { current: "TR", other: "EN", soon: "İngilizce sürüm yakında" },
     menuOpen: "Menüyü aç",
@@ -306,7 +306,7 @@ export const copy = {
     columns: [
       { title: "Platform", links: [{ label: "Özellikler", href: "/#platform" }, { label: "Yöntem", href: "/#yontem" }, { label: "Demo", href: "/#demo" }] },
       { title: "Kaynaklar", links: [{ label: "Yazılar", href: "/kaynaklar/" }, { label: "TSRS rehberi", href: "/kaynaklar/tsrs-kisa-rehber/" }, { label: "Sözlük", href: "/kaynaklar/#sozluk" }] },
-      { title: "Şirket", links: [{ label: "Hakkımızda", href: "/sirket/" }, { label: "Demo talep edin", href: "/demo/" }, { label: "Bize Ulaşın", href: "/bize-ulasin/" }, { label: "Giriş yap", href: "https://app.tonyai.io" }] },
+      { title: "Şirket", links: [{ label: "Hakkımızda", href: "/sirket/" }, { label: "Demo talep edin", href: "/demo/" }, { label: "Bize Ulaşın", href: "/bize-ulasin/" }, { label: "Giriş yap", href: "https://qa.tonyai.io" }] },
     ],
     legal: [
       { label: "KVKK Aydınlatma Metni", href: "/kvkk/" },

@@ -1,0 +1,10 @@
+.git
+.github
+.claude
+.code-review-graph
+.next
+node_modules
+out
+infra
+docs
+openspec

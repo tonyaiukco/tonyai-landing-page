@@ -1,0 +1,94 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: tonyaiacr
+  IMAGE: tonyaiacr.azurecr.io/tonyai/landing
+  APP: tonyai-landing
+  RESOURCE_GROUP: tonyai-landing
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  # Runs only for main, and only once the AZURE_* repository variables exist (set after the first terraform apply).
+  deploy:
+    needs: check
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.AZURE_CLIENT_ID != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - run: az acr login --name "$REGISTRY"
+
+      - uses: docker/setup-buildx-action@v4
+
+      # The Dockerfile runs `npm ci && npm run build`; a failed build stops here and the live site is untouched.
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_FORM_ENDPOINT=${{ vars.NEXT_PUBLIC_FORM_ENDPOINT }}
+            NEXT_PUBLIC_REGISTER_ENDPOINT=${{ vars.NEXT_PUBLIC_REGISTER_ENDPOINT }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Roll out the new image
+        run: az containerapp update --name "$APP" --resource-group "$RESOURCE_GROUP" --image "$IMAGE:$GITHUB_SHA" --output none
+
+      # The previous revision keeps serving until the new one is ready; fail if it never gets there.
+      - name: Wait for the new revision
+        run: |
+          for _ in $(seq 1 36); do
+            read -r latest ready < <(az containerapp show --name "$APP" --resource-group "$RESOURCE_GROUP" \
+              --query "[properties.latestRevisionName, properties.latestReadyRevisionName]" --output tsv | tr '\n' ' ')
+            if [ -n "$latest" ] && [ "$latest" = "$ready" ]; then echo "$latest is ready"; exit 0; fi
+            sleep 5
+          done
+          echo "::error::Revision $latest did not become ready; $ready is still serving"
+          exit 1
+
+      - name: Smoke test
+        run: |
+          base="https://$(az containerapp show --name "$APP" --resource-group "$RESOURCE_GROUP" --query properties.configuration.ingress.fqdn --output tsv)"
+          expect() {
+            code=$(curl --silent --output /dev/null --write-out '%{http_code}' --retry 5 --retry-delay 3 --retry-all-errors "$base$2")
+            if [ "$code" != "$1" ]; then echo "::error::$2 returned $code, expected $1"; exit 1; fi
+            echo "$2 -> $code"
+          }
+          expect 200 /
+          expect 200 /sirket/
+          expect 404 /boyle-bir-sayfa-yok/

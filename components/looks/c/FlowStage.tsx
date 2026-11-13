@@ -17,11 +17,12 @@ export function FlowStage() {
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
-    setShown(0);
     const el = root.current;
     if (!el) return;
     const timers: number[] = [];
+    // The observer reports once right after observe(); that first report hides the rows.
     const io = new IntersectionObserver(([entry]) => {
+      setShown(0);
       if (!entry.isIntersecting) return;
       io.disconnect();
       f.steps.forEach((_, i) => { timers.push(window.setTimeout(() => setShown(i + 1), 300 + i * 320)); });

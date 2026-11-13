@@ -12,29 +12,75 @@ npm run dev        # http://localhost:3000
 npm run build      # writes the finished site to ./out
 ```
 
-`out/` is plain HTML, CSS, JS and fonts. Serve it from any web server or CDN. No Node process is needed in production.
+`out/` is plain HTML, CSS, JS and fonts. No Node process is needed in production; nginx serves the folder (see `nginx.conf`).
 
-## Deploying next to the app
+## Hosting and deployment
 
-- Point `tonyai.io` and `www.tonyai.io` at the folder or bucket that holds `out/`; keep `app.tonyai.io` for the application.
-- Serve with gzip or brotli, long cache headers for `/_next/static/*` (file names are content-hashed), and `index.html` for directory URLs (`/sirket/` → `/sirket/index.html`); the build uses trailing slashes.
-- Redirect `tonyai.com`, `tonyai.com.tr` and `tonyai.co.uk` to `https://tonyai.io` with a 301.
+The site runs on Azure Container Apps in Sweden Central as an nginx image that serves `out/`.
 
-```nginx
-server {
-  server_name tonyai.io www.tonyai.io;
-  root /var/www/tonyai-site/out;
-  index index.html;
-  gzip on; gzip_types text/html text/css application/javascript image/svg+xml font/woff2;
-  location /_next/static/ { add_header Cache-Control "public, max-age=31536000, immutable"; }
-  location / { try_files $uri $uri/ $uri/index.html =404; }
-  error_page 404 /404.html;
-}
+| What | Where |
+| --- | --- |
+| Resource group | `tonyai-landing` (environment `tonyai-landing-env`, app `tonyai-landing`, logs `tonyai-landing-logs`) |
+| Image | `tonyaiacr.azurecr.io/tonyai/landing:<commit sha>` (registry shared with the QA application) |
+| Infrastructure | Terraform in `infra/`; state in the `landing` container of storage account `tonyaiqtqabe` |
+| Pipeline | `.github/workflows/deploy.yml` |
+
+**Deploying.** Every push to `main` runs lint and build, pushes the image, rolls the app and smoke-tests it. Pull requests only run lint and build. The workflow signs in to Azure with GitHub OIDC (identity `tonyai-landing-deploy`, `main` branch only); there are no stored secrets, only the repository variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_SUBSCRIPTION_ID`. To set the form endpoints, add the repository variables `NEXT_PUBLIC_FORM_ENDPOINT` and `NEXT_PUBLIC_REGISTER_ENDPOINT` and re-run the workflow.
+
+**Rolling back.** Point the app at an earlier commit's image; nothing is rebuilt:
+
+```bash
+az containerapp update --name tonyai-landing --resource-group tonyai-landing \
+  --image tonyaiacr.azurecr.io/tonyai/landing:<commit sha>
 ```
+
+**Checking it locally.**
+
+```bash
+docker build -t tonyai-landing:local .
+docker run --rm -p 8080:8080 tonyai-landing:local   # http://localhost:8080
+```
+
+### Changing the infrastructure
+
+You need the Azure CLI signed in (`az login`) with access to the subscription, and Terraform 1.9 or newer. The state storage account only admits listed IP addresses; if `terraform init` is refused, add your address to the firewall of `tonyaiqtqabe`.
+
+```bash
+cd infra
+terraform init
+terraform plan
+terraform apply
+```
+
+Terraform creates the app with the image in `var.image` and ignores the image afterwards, because the workflow owns it.
+
+### Setting up from scratch
+
+1. Build the first image in Azure (the app cannot be created without one):
+
+   ```bash
+   az acr build --registry tonyaiacr --image tonyai/landing:bootstrap .
+   ```
+
+2. `terraform apply` in `infra/`.
+3. Copy the three values of `terraform output github_variables` into repository variables with `gh variable set`.
+4. Push to `main`; from here the workflow deploys.
+5. Add the DNS records below, then run `terraform apply -var dns_ready=true`.
+
+### DNS (Namecheap)
+
+| Host | Type | Value |
+| --- | --- | --- |
+| `@` | A | `terraform output -raw static_ip` |
+| `asuid` | TXT | `terraform output -raw domain_verification_id` |
+| `www` | CNAME | `terraform output -raw app_fqdn` |
+| `asuid.www` | TXT | `terraform output -raw domain_verification_id` |
+
+The apex uses an A record because it also carries the mail (MX, SPF) records. The IP belongs to the Container Apps environment and changes only if the environment is recreated; update the A record if that ever happens. `www.tonyai.io` answers with a 301 to `https://tonyai.io`, and the default `azurecontainerapps.io` hostname is served with `X-Robots-Tag: noindex`.
 
 ## The contact form
 
-The site has no backend. Provide an HTTPS endpoint that accepts `POST` with a JSON body (`name, company, email, phone, topic, size, message, consent, page, lang`) and returns 2xx, then set `NEXT_PUBLIC_FORM_ENDPOINT=https://...` in `.env.production` and rebuild. Without it, the form opens the visitor's mail program pre-filled to hello@tonyai.io. Drop any submission where the honeypot field `website` is filled.
+The site has no backend. Provide an HTTPS endpoint that accepts `POST` with a JSON body (`name, company, email, phone, topic, size, message, consent, page, lang`) and returns 2xx, then set the repository variable `NEXT_PUBLIC_FORM_ENDPOINT=https://...` and re-run the deploy workflow (locally: `.env.production` and rebuild). Without it, the form opens the visitor's mail program pre-filled to hello@tonyai.io. Drop any submission where the honeypot field `website` is filled.
 
 ## Editing content
 

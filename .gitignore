@@ -4,3 +4,8 @@
 node_modules/
 .next/
 out/
+
+# Terraform
+.terraform/
+*.tfstate*
+*.tfvars
