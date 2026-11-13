@@ -26,23 +26,23 @@
 
 - [x] 4.1 Add `.github/workflows/deploy.yml` with the `check` job (npm ci, lint, build; no `id-token`) and the `deploy` job (OIDC login, `az acr login`, Buildx build and push tagged with the SHA, `az containerapp update`, curl smoke test for `/` 200, `/sirket/` 200, unknown path 404; skipped while `vars.AZURE_CLIENT_ID` is empty); verify the file passes `actionlint` or a dry parse with `gh workflow view` after push
 - [x] 4.2 Set the repository variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` from the Terraform outputs and verify `gh variable list` shows the three and `gh secret list` shows no Azure or registry secret
-- [ ] 4.3 Push to `main` (operator confirms) and verify the run succeeds, the app's image tag equals the pushed commit SHA, and the live default FQDN serves that commit
-- [ ] 4.4 Verify the rollback command: run `az containerapp update` with the `bootstrap` tag, confirm the previous content is served, then re-run the workflow to return to the latest commit
-- [ ] 4.5 Replace the README "Deploying next to the app" section with setup, bootstrap, DNS table, deploy, rollback and the static-IP note; verify each documented command matches the one actually used in 3.x and 4.x
+- [x] 4.3 Push to `main` (operator confirms) and verify the run succeeds, the app's image tag equals the pushed commit SHA, and the live default FQDN serves that commit
+- [x] 4.4 Verify the rollback command: run `az containerapp update` with the previous commit's tag, confirm that revision becomes ready and serves, then return to the latest commit the same way
+- [x] 4.5 Replace the README "Deploying next to the app" section with setup, bootstrap, DNS table, deploy, rollback and the static-IP note; verify each documented command matches the one actually used in 3.x and 4.x
 
 ## 5. Custom domains
 
-- [ ] 5.1 Hand the operator the four Namecheap records (values from the Terraform outputs) and verify with `dig` that `@` A, `asuid` TXT, `www` CNAME and `asuid.www` TXT resolve and the existing MX and SPF records are unchanged
-- [ ] 5.2 Check whether the pinned azurerm provider binds managed certificates in the same apply; implement that, or fall back to unbound domains plus `az containerapp hostname bind` and document the command in the README; verify `terraform validate` passes
-- [ ] 5.3 Apply with `dns_ready=true` (operator confirms the plan) and verify both hostnames show a bound managed certificate in `az containerapp hostname list`
+- [x] 5.1 Hand the operator the four Namecheap records (values from the Terraform outputs) and verify with `dig` that `@` A, `asuid` TXT, `www` CNAME and `asuid.www` TXT resolve and the existing MX and SPF records are unchanged
+- [x] 5.2 Check whether the pinned azurerm provider binds managed certificates in the same apply; implement that, or fall back to unbound domains plus `az containerapp hostname bind` and document the command in the README; verify `terraform validate` passes
+- [x] 5.3 Apply with `dns_ready=true` (operator confirms the plan), bind the certificates, then make `true` the default and verify both hostnames show a bound managed certificate in `az containerapp hostname list`
 
 ## 6. Live verification
 
-- [ ] 6.1 Verify `https://tonyai.io/` returns 200 with a valid certificate and no `X-Robots-Tag`, and `http://tonyai.io/sirket/` redirects to HTTPS
-- [ ] 6.2 Verify `https://tonyai.io/sitemap.xml` and `/robots.txt` are served and a page under `/kaynaklar/<slug>/` returns 200
-- [ ] 6.3 Verify `https://www.tonyai.io/demo/?utm_source=x` returns 301 to `https://tonyai.io/demo/?utm_source=x` with a valid certificate
-- [ ] 6.4 Verify a request made in 6.1 is queryable in the Log Analytics workspace and that `qa.tonyai.io` and `api.qa.tonyai.io` still respond
-- [ ] 6.5 Verify a final `terraform plan` reports no changes
+- [x] 6.1 Verify `https://tonyai.io/` returns 200 with a valid certificate and no `X-Robots-Tag`, and `http://tonyai.io/sirket/` redirects to HTTPS
+- [x] 6.2 Verify `https://tonyai.io/sitemap.xml` and `/robots.txt` are served and a page under `/kaynaklar/<slug>/` returns 200
+- [x] 6.3 Verify `https://www.tonyai.io/demo/?utm_source=x` returns 301 to `https://tonyai.io/demo/?utm_source=x` with a valid certificate
+- [x] 6.4 Verify a request made in 6.1 is queryable in the Log Analytics workspace and that `qa.tonyai.io` and `api.qa.tonyai.io` still respond
+- [x] 6.5 Verify a final `terraform plan` reports no changes
 
 ## Workflow follow-up
 

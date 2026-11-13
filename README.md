@@ -62,10 +62,19 @@ Terraform creates the app with the image in `var.image` and ignores the image af
    az acr build --registry tonyaiacr --image tonyai/landing:bootstrap .
    ```
 
-2. `terraform apply` in `infra/`.
+2. `terraform apply -var dns_ready=false` in `infra/` (the domains come in step 5).
 3. Copy the three values of `terraform output github_variables` into repository variables with `gh variable set`.
 4. Push to `main`; from here the workflow deploys.
-5. Add the DNS records below, then run `terraform apply -var dns_ready=true`.
+5. Add the DNS records below, run `terraform apply` again without the `-var`, then bind the two certificates it issued:
+
+   ```bash
+   az containerapp hostname bind --hostname tonyai.io --certificate tonyai-landing-apex --validation-method HTTP \
+     --name tonyai-landing --resource-group tonyai-landing --environment tonyai-landing-env
+   az containerapp hostname bind --hostname www.tonyai.io --certificate tonyai-landing-www --validation-method CNAME \
+     --name tonyai-landing --resource-group tonyai-landing --environment tonyai-landing-env
+   ```
+
+   Terraform adds the domains and certificates but cannot bind them, so this step is by hand; the certificates renew on their own afterwards.
 
 ### DNS (Namecheap)
 

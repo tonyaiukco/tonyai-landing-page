@@ -60,7 +60,7 @@ Images go to `tonyaiacr.azurecr.io/tonyai/landing`, tagged with the commit SHA. 
 | Identity | Used by | Roles |
 |---|---|---|
 | `tonyai-landing-pull` | the Container App | `AcrPull` on `tonyaiacr` |
-| `tonyai-landing-deploy` | GitHub Actions (federated credential, subject `repo:tonyaiukco/tonyai-landing-page:ref:refs/heads/main`) | `AcrPush` on `tonyaiacr`, `Contributor` on resource group `tonyai-landing` |
+| `tonyai-landing-deploy` | GitHub Actions (federated credential, subject `repo:tonyaiukco@297710583/tonyai-landing-page@1451717935:ref:refs/heads/main`; GitHub writes the owner and repository with their immutable ids) | `AcrPush` on `tonyaiacr`, `Contributor` on resource group `tonyai-landing` |
 
 Resource-group scope for the deploy identity is needed because updating the app also requires join rights on the environment.
 
@@ -91,7 +91,7 @@ One root module in `infra/` (`versions.tf`, `main.tf`, `variables.tf`, `outputs.
 
 ### 9. Custom domains in two stages
 
-A boolean variable `dns_ready` (default `false`) gates the custom domains so the first apply does not depend on DNS. After the operator adds the records, a second apply with `dns_ready = true` adds `tonyai.io` (HTTP validation) and `www.tonyai.io` (CNAME validation) with managed certificates.
+A boolean variable `dns_ready` gates the custom domains so a first apply does not depend on DNS. It is passed as `false` when an environment is first built; after the operator adds the records, an apply with `dns_ready = true` adds `tonyai.io` (HTTP validation) and `www.tonyai.io` (CNAME validation) with managed certificates. The default is `true`, so an ordinary apply on the live stack never removes the domains.
 
 | Host | Type | Value |
 |---|---|---|
@@ -100,7 +100,7 @@ A boolean variable `dns_ready` (default `false`) gates the custom domains so the
 | `www` | CNAME | app FQDN |
 | `asuid.www` | TXT | domain verification ID |
 
-The apex uses an A record because it already carries MX and TXT records. Whether the pinned provider can bind a managed certificate in the same apply is checked during implementation (task 5.2); if it cannot, the domains are added unbound with `ignore_changes` on the binding and bound once with `az containerapp hostname bind`, as `ef5a302` did.
+The apex uses an A record because it already carries MX and TXT records. The azurerm provider (5.14) cannot bind a managed certificate: the domain resource only reads the managed certificate id. The domains are therefore added unbound with `ignore_changes` on the binding, and each certificate is bound once with `az containerapp hostname bind` (documented in the README), as `ef5a302` did.
 
 ### 10. Workflow
 

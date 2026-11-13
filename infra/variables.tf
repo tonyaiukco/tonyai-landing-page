@@ -23,7 +23,7 @@ variable "github_repository" {
 }
 
 variable "dns_ready" {
-  description = "Set to true once the Namecheap records (@ A, www CNAME, asuid TXTs) resolve; adds the custom domains and their managed certificates."
+  description = "Adds the custom domains and their managed certificates. Set to false only when building a new environment before the Namecheap records (@ A, www CNAME, asuid TXTs) point at it."
   type        = bool
-  default     = false
+  default     = true
 }
