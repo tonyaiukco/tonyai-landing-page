@@ -2,7 +2,7 @@
 
 > **Status (10 Nov 2026):** the chosen design is **Atmosfer**, served at `/tasarim/c/` while the other routes still use the first light design. Next step is rolling Atmosfer out to every page and making it `/`. Design history, brand files and decisions: see `docs/`.
 
-Static marketing site for tonyai.io, built with Next.js (App Router, static export), TypeScript and Tailwind. The product lives separately (for now at qa.tonyai.io, later app.tonyai.io); this site only links to it via the "Giriş yap" links in `content/copy.ts`.
+Static marketing site for tonyai.io, built with Next.js (App Router, static export), TypeScript and Tailwind. The product lives separately at app.tonyai.io; this site only links to it.
 
 ## Run it
 
@@ -14,61 +14,23 @@ npm run build      # writes the finished site to ./out
 
 `out/` is plain HTML, CSS, JS and fonts. Serve it from any web server or CDN. No Node process is needed in production.
 
-## Deploying
+## Deploying next to the app
 
-The site runs on Azure Static Web Apps (Free plan) in West Europe (resource group `tonyai-landing`; every resource is in `westeurope`, content is served from Azure's global edge) and is served at `https://tonyai.io` and `https://www.tonyai.io`. Hosting rules (trailing slashes, 404 page, cache headers) live in `public/staticwebapp.config.json`.
+- Point `tonyai.io` and `www.tonyai.io` at the folder or bucket that holds `out/`; keep `app.tonyai.io` for the application.
+- Serve with gzip or brotli, long cache headers for `/_next/static/*` (file names are content-hashed), and `index.html` for directory URLs (`/sirket/` → `/sirket/index.html`); the build uses trailing slashes.
+- Redirect `tonyai.com`, `tonyai.com.tr` and `tonyai.co.uk` to `https://tonyai.io` with a 301.
 
-Every push to `main` runs `.github/workflows/deploy.yml`: it builds the site, signs in to Azure with OIDC, reads the Static Web App's deploy token at run time and uploads `out/`. A failed build stops before the upload, so the live site is untouched. No secret is stored in GitHub: the workflow uses three repository variables (`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`) and federated credentials on the `tonyai-site-deploy` identity.
-
-Infrastructure is Terraform in `infra/` with local state. The state holds the deploy token and the repo is public, so `*.tfstate` and `infra/.terraform/` are git-ignored; never commit them. If the state is lost the site keeps running; bring the resources back under Terraform with `terraform import`.
-
-### First-time setup
-
-1. Create the Static Web App, the apex domain and the deploy identity, then hand the identity to GitHub and deploy:
-
-```bash
-az login
-terraform -chdir=infra init
-terraform -chdir=infra apply
-gh variable set AZURE_CLIENT_ID --body "$(terraform -chdir=infra output -raw deploy_client_id)"
-gh variable set AZURE_TENANT_ID --body "$(terraform -chdir=infra output -raw tenant_id)"
-gh variable set AZURE_SUBSCRIPTION_ID --body "$(terraform -chdir=infra output -raw subscription_id)"
-gh workflow run deploy.yml
+```nginx
+server {
+  server_name tonyai.io www.tonyai.io;
+  root /var/www/tonyai-site/out;
+  index index.html;
+  gzip on; gzip_types text/html text/css application/javascript image/svg+xml font/woff2;
+  location /_next/static/ { add_header Cache-Control "public, max-age=31536000, immutable"; }
+  location / { try_files $uri $uri/ $uri/index.html =404; }
+  error_page 404 /404.html;
+}
 ```
-
-2. Read the values for DNS:
-
-```bash
-terraform -chdir=infra output -raw default_host_name       # CNAME and ALIAS target
-terraform -chdir=infra output -raw apex_validation_token   # TXT value on @
-```
-
-3. At Namecheap (Domain List → tonyai.io → Advanced DNS) add these records. Leave the existing MX, SPF and verification TXT records alone; the new TXT goes beside them.
-
-| Type | Host | Value |
-|---|---|---|
-| CNAME | `www` | `<default_host_name>` |
-| TXT | `@` | `<apex_validation_token>` |
-| ALIAS | `@` | `<default_host_name>` |
-
-4. Once the CNAME resolves on Namecheap's servers (`dig @dns1.registrar-servers.com www.tonyai.io CNAME`), add `www.tonyai.io`. From now on always pass `-var dns_ready=true`; a second plan must show no changes.
-
-```bash
-terraform -chdir=infra apply -var dns_ready=true
-```
-
-5. Wait until both domains show `Ready` (certificates are issued automatically; minutes to a few hours):
-
-```bash
-az staticwebapp hostname list -n tonyai-site -g tonyai-landing -o table
-```
-
-### Day to day and rollback
-
-- Content: push to `main`. To roll back, revert the commit and push.
-- Deploy token leaked: `az staticwebapp secrets reset-api-key -n tonyai-site -g tonyai-landing`; the workflow reads the new one on its next run.
-- Remove the site: delete the three Namecheap records, then `terraform -chdir=infra destroy -var dns_ready=true`.
-- Other domains (`tonyai.com`, `tonyai.com.tr`, `tonyai.co.uk`) should 301 to `https://tonyai.io` at the registrar.
 
 ## The contact form
 

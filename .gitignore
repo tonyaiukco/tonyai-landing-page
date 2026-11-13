@@ -4,8 +4,3 @@
 node_modules/
 .next/
 out/
-
-# Terraform (state holds the deploy token; repo is public)
-infra/.terraform/
-*.tfstate
-*.tfstate.*
