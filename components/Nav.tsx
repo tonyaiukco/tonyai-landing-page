@@ -34,14 +34,15 @@ export function Nav() {
     <header className={`sticky top-0 z-50 transition-[background-color,box-shadow] duration-200 ${scrolled ? "bg-paper/90 backdrop-blur-md shadow-[0_1px_0_var(--line)]" : "bg-transparent"}`}>
       <div className="container flex h-[4.5rem] items-center justify-between gap-6">
         <Link href="/" aria-label="TonyAI ana sayfa" className="flex min-h-11 items-center"><Logo /></Link>
-        <nav aria-label="Ana menü" className="hidden items-center gap-8 text-[0.95rem] font-[520] lg:flex">
+        <nav aria-label="Ana menü" className="hidden items-center gap-5 whitespace-nowrap text-[0.95rem] font-[520] lg:flex xl:gap-8">
           {copy.nav.items.map((item) => (
             <Link key={item.href} href={item.href} className="flex min-h-11 items-center text-ink transition-colors hover:text-forest">{item.label}</Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-5 lg:flex">
+        <div className="hidden items-center gap-4 whitespace-nowrap lg:flex xl:gap-5">
           {lang}
           <a href={copy.nav.login.href} className="flex min-h-11 items-center text-[0.95rem] font-[520] text-ink transition-colors hover:text-forest">{copy.nav.login.label}</a>
+          <a href={copy.nav.register.href} className="flex min-h-11 items-center text-[0.95rem] font-[520] text-ink transition-colors hover:text-forest">{copy.nav.register.label}</a>
           <Link href={copy.nav.cta.href} className="btn btn-primary" data-magnetic>{copy.nav.cta.label}</Link>
         </div>
         <button type="button" className="flex h-11 w-11 items-center justify-center rounded-md text-ink lg:hidden" aria-expanded={open} aria-controls="mobil-menu" aria-label={open ? copy.nav.menuClose : copy.nav.menuOpen} onClick={() => setOpen((v) => !v)}>
@@ -56,6 +57,7 @@ export function Nav() {
             <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="flex min-h-12 items-center text-[1.05rem] font-[520]">{item.label}</Link>
           ))}
           <a href={copy.nav.login.href} className="flex min-h-12 items-center text-[1.05rem] font-[520]">{copy.nav.login.label}</a>
+          <a href={copy.nav.register.href} className="flex min-h-12 items-center text-[1.05rem] font-[520]">{copy.nav.register.label}</a>
           <div className="flex items-center justify-between gap-4 py-3">
             <Link href={copy.nav.cta.href} onClick={() => setOpen(false)} className="btn btn-primary flex-1">{copy.nav.cta.label}</Link>
             {lang}

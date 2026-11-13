@@ -198,6 +198,13 @@
   .look-c .c-nav-right { display: flex; }
   .look-c .c-nav-burger, .look-c .c-nav-mobile { display: none; }
 }
+/* Between the desktop breakpoint and 1200px the pill is tight: keep every label on one line. */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .look-c .c-nav-links { gap: 0; }
+  .look-c .c-nav-links a, .look-c .c-nav-login { padding: 0 0.5rem; white-space: nowrap; }
+  .look-c .c-nav-lang { padding: 0 0.3rem; }
+  .look-c .c-nav .c-btn { padding-inline: 1rem; white-space: nowrap; }
+}
 
 /* ---------- Hero ---------- */
 .look-c .c-hero { position: relative; overflow: hidden; }

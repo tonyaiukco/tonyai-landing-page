@@ -52,6 +52,7 @@ export const copy = {
       { label: "Bize Ulaşın", href: "/bize-ulasin/" },
     ],
     login: { label: "Giriş yap", href: "https://qa.tonyai.io" },
+    register: { label: "Kayıt ol", href: "https://qa.tonyai.io/register" },
     cta: { label: "Demo talep edin", href: "/demo/" },
     langSwitch: { current: "TR", other: "EN", soon: "İngilizce sürüm yakında" },
     menuOpen: "Menüyü aç",

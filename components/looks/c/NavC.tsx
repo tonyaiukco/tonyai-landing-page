@@ -25,6 +25,7 @@ export function NavC() {
         <div className="c-nav-right">
           <span className="c-nav-lang" title={copy.nav.langSwitch.soon}><strong>{copy.nav.langSwitch.current}</strong><span aria-hidden="true">/</span><span aria-label={copy.nav.langSwitch.soon}>{copy.nav.langSwitch.other}</span></span>
           <a href={copy.nav.login.href} className="c-nav-login">{copy.nav.login.label}</a>
+          <a href={copy.nav.register.href} className="c-nav-login">{copy.nav.register.label}</a>
           <Link href={copy.nav.cta.href} className="c-btn c-btn-primary">{copy.nav.cta.label}</Link>
         </div>
         <button type="button" className="c-nav-burger" aria-expanded={open} aria-controls="c-mobil-menu" aria-label={open ? copy.nav.menuClose : copy.nav.menuOpen} onClick={() => setOpen((v) => !v)}>
@@ -37,6 +38,7 @@ export function NavC() {
         <nav aria-label="Mobil menü">
           {copy.nav.items.map((item) => (<Link key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</Link>))}
           <a href={copy.nav.login.href}>{copy.nav.login.label}</a>
+          <a href={copy.nav.register.href}>{copy.nav.register.label}</a>
           <Link href={copy.nav.cta.href} onClick={() => setOpen(false)} className="c-btn c-btn-primary">{copy.nav.cta.label}</Link>
         </nav>
       </div>
