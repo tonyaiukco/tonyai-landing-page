@@ -41,3 +41,11 @@ Routes checked at 390 / 1440: `/tasarim/d/`, plus `/` and `/tasarim/c/` for regr
 **Shared code touched:** the audit-trail demo record moved from `components/AuditTrail.tsx` to `demo.auditTrail` in `content/copy.ts`; lens label and hint added as `copy.compliance.audit.lens`. Built HTML of `/` and screenshots of `/` and `/tasarim/c/` at both widths are identical to a fresh build of `main`.
 
 **Open:** the owner's review of D against C; a real product screen for the demo block; everything still open from pass 3.
+
+## Pass 5 — 2026-11-14 (look D inner pages)
+
+Routes checked at 390 / 1440: `/tasarim/d/sirket/`, `/tasarim/d/kaynaklar/`, `/tasarim/d/kaynaklar/tsrs-kisa-rehber/`, `/tasarim/d/bize-ulasin/`, plus `/tasarim/d/` and the live `/bize-ulasin/` for regressions. One `h1` each, no horizontal scroll, no target under 44 px, no page errors.
+
+**Why:** on the live preview, "Kaynaklar", "Şirket" and "Bize Ulaşın" opened the live pages in the old design. The look now has its own versions and its nav and footer stay beneath `/tasarim/d/`. Demo, login, register and the legal pages still open the live ones.
+
+**Checked:** nav clicked through from the homepage and from an inner page: Platform, Yöntem, Kaynaklar, Şirket and Bize Ulaşın all stay beneath `/tasarim/d/`, as do article links and the way back. Every inner page carries `noindex, nofollow`; the sitemap and the pages outside `/tasarim/` still have no link into it. The contact page reuses the live form, redressed from outside; the live `/bize-ulasin/` is pixel-identical to production at both widths. Lighthouse mobile on `/tasarim/d/bize-ulasin/`: 100 / 100.

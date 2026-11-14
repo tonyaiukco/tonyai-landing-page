@@ -17,6 +17,25 @@ Each alternative homepage look SHALL be served at `/tasarim/<letter>/`, where `<
 - **WHEN** a visitor requests `/tasarim/c/` after look D is added
 - **THEN** the look C page is returned unchanged
 
+### Requirement: Preview navigation stays inside the preview
+A preview look SHALL provide its own versions of the pages its main navigation points to (Kaynaklar and its articles, Şirket, Bize Ulaşın) beneath its route, and its navigation and footer links to those pages and to homepage sections SHALL stay beneath that route.
+
+#### Scenario: Navigation link
+- **WHEN** a visitor on `/tasarim/d/` activates "Kaynaklar", "Şirket" or "Bize Ulaşın" in the navigation
+- **THEN** the address is `/tasarim/d/kaynaklar/`, `/tasarim/d/sirket/` or `/tasarim/d/bize-ulasin/` and the page is shown in look D
+
+#### Scenario: Article link
+- **WHEN** a visitor on `/tasarim/d/kaynaklar/` opens an article
+- **THEN** the address is beneath `/tasarim/d/kaynaklar/` and the article is shown in look D
+
+#### Scenario: Section link from an inner page
+- **WHEN** a visitor on `/tasarim/d/sirket/` activates "Platform" in the navigation
+- **THEN** they arrive at the platform section of `/tasarim/d/`
+
+#### Scenario: Inner pages are hidden too
+- **WHEN** the HTML of any page beneath `/tasarim/d/` is inspected
+- **THEN** it contains a robots meta tag whose content includes `noindex` and `nofollow`
+
 ### Requirement: Preview looks are hidden from search
 Every preview look page SHALL carry a robots meta tag with `noindex` and `nofollow`, and SHALL NOT be listed in `sitemap.xml`.
 

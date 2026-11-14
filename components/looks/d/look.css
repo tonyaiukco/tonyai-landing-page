@@ -421,3 +421,97 @@
 @keyframes look-d-draw { to { stroke-dashoffset: 0; } }
 @keyframes look-d-fade { to { opacity: 1; } }
 @keyframes look-d-rise { from { opacity: 0; transform: translateY(24px); } }
+
+/* ---------- Inner pages: Şirket, Kaynaklar, Bize Ulaşın ---------- */
+.look-d .d-nav [aria-current="page"] { background-size: 100% 2px; }
+.look-d .d-intro { background: linear-gradient(var(--d-white) 30%, var(--d-mist)); padding-block: clamp(3rem, 7vw, 6.5rem) clamp(3rem, 6vw, 5.5rem); }
+.look-d .d-intro .d-h1 { max-width: 19ch; }
+.look-d .d-prose { display: grid; gap: 1.4rem; max-width: 38rem; font-size: 1.125rem; line-height: 1.7; }
+.look-d .d-prose .d-lead { color: var(--d-fg); }
+
+/* Şirket */
+.look-d .d-story > .d-main { padding-block: var(--d-pad) var(--d-band); display: grid; gap: clamp(2rem, 4vw, 3.25rem); align-content: start; }
+.look-d .d-facts { align-self: start; position: sticky; top: 6.5rem; margin-top: var(--d-pad); }
+.look-d .d-facts .d-panel-in { gap: 1.5rem; }
+.look-d .d-facts .d-cap { color: var(--d-emerald); font-size: 0.75rem; }
+.look-d .d-facts dd { font-size: 1.125rem; font-weight: 500; line-height: 1.4; margin-top: 0.25rem; }
+.look-d .d-principles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.5rem clamp(1.5rem, 3vw, 3rem); margin-top: 1.5rem; }
+.look-d .d-principles li { display: grid; gap: 0.6rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--d-rule); }
+.look-d .d-principles-n { font-size: 2.75rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--d-mint); }
+.look-d .d-principles .d-h3 { font-size: 1.4rem; font-weight: 700; margin-top: 0.4rem; }
+.look-d .d-principles p { color: var(--d-on-teal-2); }
+.look-d .d-team { display: grid; }
+.look-d .d-team li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1.25rem; align-items: center; padding-block: 1.25rem; border-bottom: 1px solid var(--d-rule); }
+.look-d .d-team li:first-child { border-top: 1px solid var(--d-rule); }
+.look-d .d-team-mark { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; background: var(--d-mist); }
+.look-d .d-team .d-cap { color: var(--d-emerald); }
+@media (max-width: 899px) {
+  .look-d .d-story > .d-main { padding-bottom: var(--d-pad); }
+  .look-d .d-facts { position: static; margin-top: 0; }
+  .look-d .d-principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) { .look-d .d-principles { grid-template-columns: minmax(0, 1fr); } }
+
+/* Kaynaklar */
+.look-d .d-articles-band { padding-bottom: var(--d-band); }
+.look-d .d-articles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+.look-d .d-articles a { display: grid; gap: 0.9rem; align-content: start; height: 100%; padding: 2rem 1.75rem 1.5rem; background: var(--d-white); border-top: 4px solid var(--d-mint); transition: background-color 0.3s var(--d-ease), color 0.3s var(--d-ease); }
+.look-d .d-articles .d-cap { color: var(--d-emerald); font-size: 0.75rem; }
+.look-d .d-articles .d-h3 { font-size: 1.4rem; font-weight: 700; }
+.look-d .d-articles .d-link { margin-top: auto; padding-top: 0.5rem; }
+.look-d .d-articles a:hover { background: var(--d-teal); color: var(--d-white); }
+.look-d .d-articles a:hover :is(.d-cap, .d-link, .d-arrow) { color: var(--d-mint); }
+.look-d .d-articles a:hover .d-arrow { transform: translateX(5px); }
+.look-d .d-gloss { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 2rem clamp(2rem, 5vw, 5rem); align-items: start; }
+.look-d .d-gloss .d-h2 { position: sticky; top: 7rem; color: var(--d-emerald); }
+.look-d .d-gloss dl > div { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 0.4rem 2rem; padding-block: 1.35rem; border-bottom: 1px solid var(--d-rule); }
+.look-d .d-gloss dl > div:first-child { border-top: 1px solid var(--d-rule); }
+.look-d .d-gloss dt { font-size: 1.125rem; font-weight: 700; }
+@media (max-width: 899px) {
+  .look-d .d-articles, .look-d .d-gloss { grid-template-columns: minmax(0, 1fr); }
+  .look-d .d-gloss .d-h2 { position: static; }
+}
+@media (max-width: 520px) { .look-d .d-gloss dl > div { grid-template-columns: minmax(0, 1fr); } }
+
+/* Yazı */
+.look-d .d-article > .d-main { padding-block: clamp(2rem, 5vw, 4rem) var(--d-band); display: grid; gap: 1.5rem; align-content: start; }
+.look-d .d-article .d-eyebrow { margin: 1rem 0 0; }
+.look-d .d-article .d-h2 { font-size: clamp(2rem, 3.6vw, 3.1rem); }
+.look-d .d-article :is(.d-h2) + .d-lead { margin-top: 0; }
+.look-d .d-article .d-prose { margin-top: 1rem; }
+.look-d .d-link-back .d-arrow { transform: rotate(180deg); }
+.look-d .d-link-back:hover .d-arrow { transform: rotate(180deg) translateX(5px); }
+.look-d .d-more { display: grid; width: 100%; }
+.look-d .d-more a { display: grid; gap: 0.4rem; padding-block: 1.25rem; border-bottom: 1px solid var(--d-rule); }
+.look-d .d-more li:first-child a { border-top: 1px solid var(--d-rule); }
+.look-d .d-more .d-cap { font-size: 0.75rem; color: var(--d-emerald); }
+.look-d .d-more a:hover .d-h3 { color: var(--d-emerald); }
+@media (max-width: 899px) { .look-d .d-article > .d-main { padding-bottom: var(--d-pad); } }
+
+/* Bize Ulaşın: the shared ContactForm, redressed through its own tokens and a few overrides */
+.look-d .d-contact > .d-main { padding-block: 0 var(--d-band); }
+.look-d .d-contact > .d-panel { align-self: start; margin-bottom: var(--d-band); }
+.look-d .d-contact .d-panel-in { gap: 1.75rem; }
+.look-d .d-contact-steps { display: grid; gap: 1rem; }
+.look-d .d-contact-steps li { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: 0.75rem; color: var(--d-on-teal-2); }
+.look-d .d-contact-steps span { font-weight: 800; color: var(--d-mint); }
+.look-d .d-contact-note { padding: 0.8rem 1rem; border: 1px solid var(--d-mint); font-size: 0.9375rem; }
+.look-d .d-contact .d-cap { color: var(--d-on-teal-2); font-size: 0.75rem; }
+.look-d .d-contact-mail { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: 1.25rem; font-weight: 600; color: var(--d-mint); }
+.look-d .d-form { --ink-2: var(--d-teal); --ink-3: #2f5f5a; --line: var(--d-mist-2); --line-2: #9fbdb3; --surface: var(--d-white); --forest-tint: var(--d-white); }
+.look-d .d-form :is(form, [role="status"]) { background: var(--d-white); border: 0; border-top: 4px solid var(--d-mint); border-radius: 0; padding: clamp(1.5rem, 3.5vw, 2.75rem); }
+.look-d .d-form :is(input:not([type="checkbox"]), select, textarea) { border-radius: 0; border-width: 1.5px; font-family: inherit; color: var(--d-teal); }
+.look-d .d-form :is(input, select, textarea):focus-visible { outline: 2px solid var(--d-teal); outline-offset: 2px; border-radius: 0; }
+.look-d .d-form label { font-weight: 600; }
+.look-d .d-form a { text-decoration: underline; text-underline-offset: 3px; }
+.look-d .d-form .btn {
+  min-height: 3.25rem; padding: 0.5rem 1.75rem; border-radius: 0; background: var(--d-mint); color: var(--d-teal); cursor: pointer;
+  font-family: inherit; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+}
+.look-d .d-form .btn:hover { background: var(--d-teal); color: var(--d-mint); }
+.look-d .d-form .btn:focus-visible { outline: 2px solid var(--d-teal); outline-offset: 3px; border-radius: 0; }
+@media (max-width: 899px) {
+  .look-d .d-contact > .d-main { padding-bottom: 0; }
+  .look-d .d-contact > .d-panel { margin-bottom: 0; }
+}
+.look-d .d-form label:has(input[type="checkbox"]) { font-weight: 400; }

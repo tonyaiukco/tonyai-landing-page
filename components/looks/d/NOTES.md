@@ -38,6 +38,10 @@ The component only sets `--t` (0–1). CSS places the lens, clips the mint detai
 
 The record itself moved from `components/AuditTrail.tsx` to `demo.auditTrail` in `content/copy.ts`; the lens label and hint are `copy.compliance.audit.lens`.
 
+## Inner pages
+
+Added after the first live review, so the navigation never drops out of the preview: `/tasarim/d/sirket/`, `/tasarim/d/kaynaklar/` (and its three articles) and `/tasarim/d/bize-ulasin/`, in `PagesD.tsx`, from the same copy the live pages use. `app/tasarim/d/layout.tsx` carries the shell and the `noindex` tag for all of them; `here()` in `parts.tsx` keeps homepage anchors and these three paths beneath `/tasarim/d/`. The contact page reuses the live `ContactForm` and redresses it from outside (`.look-d .d-form` overrides its tokens and squares its fields), so there is still one form. Demo, login, register and the legal pages open the live ones.
+
 ## QA
 
 `qa/shoot.py` screenshots 1440 and 390 after scrolling through, plus a reduced-motion pass, and reports console errors, `h1` count, horizontal overflow and tap targets under 44 px. Final run (2026-11-14): no errors, one `h1`, no overflow, no small targets at either width. Lighthouse mobile on the static build: performance 100, accessibility 100 (LCP 1.1 s, TBT 10 ms, CLS 0), two runs. Lens checked by mouse drag, arrow keys, touch drag, vertical touch swipe (page scrolls), JS disabled and reduced motion.
