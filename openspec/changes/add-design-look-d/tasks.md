@@ -67,6 +67,7 @@
 - [x] 9.5 Screenshot the four new pages at 1440 and 390 and verify no console errors, no horizontal overflow and no tap target under 44 px
 - [x] 9.6 Click through the nav in a browser from the homepage and from an inner page and verify the address never leaves `/tasarim/d/` for Platform, Yöntem, Kaynaklar, Şirket and Bize Ulaşın
 - [x] 9.7 Re-run the hiding checks (sitemap, no links into `/tasarim/` from outside) and Lighthouse on the contact page; record the pass in `docs/qa.md` and the pages in `NOTES.md`
+- [x] 9.8 Re-run the reveal observer on every route change (it lives in the layout, which stays mounted) and verify in a browser that after Kaynaklar → Platform and Şirket → Yöntem no element in view is left hidden, at 1440 and 390
 
 ## Workflow follow-up
 
