@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { copy } from "@/content/copy";
 import { Logo } from "@/components/Logo";
 import { Arrow } from "./Illustrations";
-import { here } from "./parts";
+import { HOME, here } from "./parts";
 
 /** Flat white bar: uppercase links, square mint button. Mobile menu is a full-width sheet below the bar. */
 export function NavD() {
   const [open, setOpen] = useState(false);
+  const path = usePathname().replace(/\/$/, "");
+  /** Marks the inner page the visitor is on; homepage anchors never count as current. */
+  const current = (href: string) => (!href.includes("#") && path.startsWith(here(href).replace(/\/$/, "")) ? "page" as const : undefined);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -20,9 +24,9 @@ export function NavD() {
   return (
     <header className="d-nav">
       <div className="d-wrap d-nav-bar">
-        <Link href="/tasarim/d/" aria-label="TonyAI ana sayfa" className="d-nav-logo"><Logo /></Link>
+        <Link href={HOME} aria-label="TonyAI ana sayfa" className="d-nav-logo"><Logo /></Link>
         <nav aria-label="Ana menü" className="d-nav-links">
-          {copy.nav.items.map((item) => (<Link key={item.href} href={here(item.href)}>{item.label}</Link>))}
+          {copy.nav.items.map((item) => (<Link key={item.href} href={here(item.href)} aria-current={current(item.href)}>{item.label}</Link>))}
         </nav>
         <div className="d-nav-right">
           <a href={copy.nav.login.href}>{copy.nav.login.label}</a>
@@ -37,7 +41,7 @@ export function NavD() {
       </div>
       <div id="d-mobil-menu" hidden={!open} className="d-nav-mobile">
         <nav aria-label="Mobil menü">
-          {copy.nav.items.map((item) => (<Link key={item.href} href={here(item.href)} onClick={() => setOpen(false)}>{item.label}</Link>))}
+          {copy.nav.items.map((item) => (<Link key={item.href} href={here(item.href)} aria-current={current(item.href)} onClick={() => setOpen(false)}>{item.label}</Link>))}
           <a href={copy.nav.login.href}>{copy.nav.login.label}</a>
           <a href={copy.nav.register.href}>{copy.nav.register.label}</a>
           <Link href={copy.nav.cta.href} onClick={() => setOpen(false)} className="d-btn">{copy.nav.cta.label}<Arrow /></Link>

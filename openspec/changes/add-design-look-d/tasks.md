@@ -58,6 +58,16 @@
 - [x] 8.5 Add a pass entry to `docs/qa.md` with the routes checked, widths, Lighthouse scores and open points, and verify the entry names `/tasarim/d/`
 - [x] 8.6 Run `openspec validate add-design-look-d --strict` and verify it passes
 
+## 9. Inner pages
+
+- [x] 9.1 Move the look's shell (styles, font, wrapper, nav, footer, `noindex` metadata) into `app/tasarim/d/layout.tsx` and verify the homepage HTML still has one `h1`, the robots tag and the twelve sections
+- [x] 9.2 Make `here()` keep homepage anchors and the three inner paths beneath `/tasarim/d/`, mark the current page in the nav, and verify in the built HTML that the nav's five links all start with `/tasarim/d/`
+- [x] 9.3 Build Şirket, Kaynaklar, the article page and Bize Ulaşın in look D from the live pages' copy and verify each route is exported with one `h1` and the robots tag
+- [x] 9.4 Redress the shared contact form under `.look-d .d-form` without editing it and verify the live `/bize-ulasin/` screenshot is unchanged
+- [x] 9.5 Screenshot the four new pages at 1440 and 390 and verify no console errors, no horizontal overflow and no tap target under 44 px
+- [x] 9.6 Click through the nav in a browser from the homepage and from an inner page and verify the address never leaves `/tasarim/d/` for Platform, Yöntem, Kaynaklar, Şirket and Bize Ulaşın
+- [x] 9.7 Re-run the hiding checks (sitemap, no links into `/tasarim/` from outside) and Lighthouse on the contact page; record the pass in `docs/qa.md` and the pages in `NOTES.md`
+
 ## Workflow follow-up
 
 - Commit, open a pull request and wait for the owner's go-ahead before merging; merging to `main` deploys to production.

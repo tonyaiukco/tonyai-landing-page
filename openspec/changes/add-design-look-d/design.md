@@ -97,6 +97,16 @@ GSAP was planned "where needed" and turned out not to be: nothing here is scroll
 
 Page metadata sets `robots: { index: false, follow: false }`. The route is not added to `app/sitemap.ts`, and no component outside `components/looks/d/` links to it. This matches look C. `app/robots.ts` is left alone: listing the path under `disallow` would advertise it and would stop crawlers from seeing the `noindex` tag.
 
+### 11. Inner pages
+
+Added after the first review on the live site: the navigation's "Kaynaklar", "Şirket" and "Bize Ulaşın" opened the live pages in the old design. The look now has its own versions at `/tasarim/d/kaynaklar/` (plus `[slug]` for the three articles), `/tasarim/d/sirket/` and `/tasarim/d/bize-ulasin/`, built in `PagesD.tsx` from the same copy objects the live pages use.
+
+- `app/tasarim/d/layout.tsx` holds the stylesheet and font imports, the `.look-d` wrapper, nav, footer and the `noindex` metadata, so every page beneath the route inherits them.
+- `here()` in `parts.tsx` rewrites links: homepage anchors become `/tasarim/d/#…` (absolute, so they work from inner pages) and the three inner paths get the `/tasarim/d` prefix. Everything else (demo, login, register, legal) is left pointing at the live site.
+- The contact page reuses the live `ContactForm` so there is one form to maintain. It is redressed from outside: the look overrides the form's colour tokens and squares its fields and button under `.look-d .d-form`. The live component is not edited.
+
+Alternative considered: disabling those links in the preview. Rejected because it hides exactly what the owner wants to judge.
+
 ## Risks / Trade-offs
 
 - [Vector-only pages can read as flatter than the reference, whose weight comes from 3D renders] → Put the effort into the hero drawing and the treeline; say so in `NOTES.md` so the owner judges the direction knowing photography could be added later.

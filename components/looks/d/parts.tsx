@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 
-/** Homepage anchors ("/#platform") stay inside the preview. */
-export const here = (href: string) => (href.startsWith("/#") ? href.slice(1) : href);
+export const HOME = "/tasarim/d/";
+
+/** Keeps a link inside the preview when the look has its own version of the target: homepage anchors and the three inner pages. */
+export const here = (href: string) =>
+  href.startsWith("/#") ? HOME + href.slice(1) : /^\/(kaynaklar|sirket|bize-ulasin)\//.test(href) ? HOME + href.slice(1) : href;
 
 /**
  * Two-tone heading: the copy's title broken after `at` words, one line in the accent colour.
