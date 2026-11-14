@@ -31,6 +31,16 @@ export const demo = {
   ],
   locations: 14,
   categories: 11,
+  /** One record's audit trail: the stages it passes and what is kept with it. */
+  auditStages: ["Taslak", "İncelemede", "Onaylandı"],
+  auditTrail: [
+    { k: "Kayıt", v: "Elektrik · Ç1 2026 · Üretim A.Ş." },
+    { k: "Giren", v: "Veri sorumlusu · 14 Nis 2026 10:42" },
+    { k: "Kaynak belge", v: "Fatura 2026-03-ELK-0417.pdf" },
+    { k: "Emisyon faktörü", v: "0,442 tCO₂e/MWh · Türkiye şebeke, 2024" },
+    { k: "İnceleyen", v: "Grup sürdürülebilirlik · 16 Nis 2026" },
+    { k: "Sonuç", v: "19,89 tCO₂e · Kapsam 2" },
+  ],
 };
 
 export const copy = {
@@ -254,6 +264,10 @@ export const copy = {
         "Onay akışı: taslak, inceleme, onay; yorumlar ve değişiklik geçmişiyle",
         "Raporda: yöntem notları ve kanıt bağlantıları, denetçiyle paylaşıma hazır",
       ],
+      lens: {
+        label: "Denetim merceği",
+        hint: "Merceği kaydın üzerinde gezdirin; ok tuşları da çalışır.",
+      },
     },
     security: {
       title: "Veri güvenliği",

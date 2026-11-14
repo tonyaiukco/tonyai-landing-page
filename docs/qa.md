@@ -31,3 +31,13 @@ Routes checked at 390 / 820 / 1440: `/tasarim/c/` (chosen design), `/kayit/`, `/
 **Changes:** hero right side is a five-verb flow with keywords (Topla · Hesapla · Onayla · Raporla · Öngör; standards named per Emre: ISO 14064-1, IPCC AR6, GHG Protokolü; GRI, TSRS, IFRS S2); the invoice example lives under "Nasıl çalışır" as an "Örnek" line per step; "Önce / Sonra" is one picture (narrow stacked spreadsheet windows, wordless, vs one TonyAI screen) with Emre's four bullets; FAQ first item open; register flow added; all "Geliştiriliyor"/2027 wording removed earlier in the day (rev 2). Looks A and B deleted.
 
 **Open before launch:** roll Atmosfer out to every route and make it `/` (currently `/tasarim/c/`); hosting fact in the security text; English version.
+
+## Pass 4 — 2026-11-14 (fourth look: Orman, `/tasarim/d/`)
+
+Routes checked at 390 / 1440: `/tasarim/d/`, plus `/` and `/tasarim/c/` for regressions. `/tasarim/d/`: one `h1`, no horizontal scroll, no target under 44 px, no page errors, also with reduced motion and with JavaScript disabled.
+
+**New:** look D "Orman", modelled on the DUOL sustainability page: teal, mint, mist and white, Outfit, line drawings, a generated treeline, segment meters and a draggable audit lens (mouse, touch, arrow keys; a plain list without JS or with reduced motion). Scoped under `.look-d`, `noindex, nofollow`, not in the sitemap, linked from nowhere. Notes and self-critique in `components/looks/d/NOTES.md`; contrast table from `components/looks/d/qa/contrast.py`. Lighthouse mobile on the static build: 100 / 100 (performance / accessibility), two runs.
+
+**Shared code touched:** the audit-trail demo record moved from `components/AuditTrail.tsx` to `demo.auditTrail` in `content/copy.ts`; lens label and hint added as `copy.compliance.audit.lens`. Built HTML of `/` and screenshots of `/` and `/tasarim/c/` at both widths are identical to a fresh build of `main`.
+
+**Open:** the owner's review of D against C; a real product screen for the demo block; everything still open from pass 3.
