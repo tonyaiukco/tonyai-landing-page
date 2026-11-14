@@ -1,18 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { demo } from "@/content/copy";
 import { prefersReducedMotion } from "@/lib/format";
 
 /** One record moves Taslak → İncelemede → Onaylandı as the section passes; its sources appear line by line. Scrubbed, no pin. */
-const stages = ["Taslak", "İncelemede", "Onaylandı"];
-const trail = [
-  { k: "Kayıt", v: "Elektrik · Ç1 2026 · Üretim A.Ş." },
-  { k: "Giren", v: "Veri sorumlusu · 14 Nis 2026 10:42" },
-  { k: "Kaynak belge", v: "Fatura 2026-03-ELK-0417.pdf" },
-  { k: "Emisyon faktörü", v: "0,442 tCO₂e/MWh · Türkiye şebeke, 2024" },
-  { k: "İnceleyen", v: "Grup sürdürülebilirlik · 16 Nis 2026" },
-  { k: "Sonuç", v: "19,89 tCO₂e · Kapsam 2" },
-];
+const { auditStages: stages, auditTrail: trail } = demo;
 
 export function AuditTrail() {
   const root = useRef<HTMLDivElement>(null);
