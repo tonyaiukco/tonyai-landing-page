@@ -7,8 +7,6 @@
 
 .look-h {
   --h-moss: #1f3d2b;
-  --h-moss-2: #2a4f39;
-  --h-moss-3: #38654a;
   --h-moss-deep: #17301f;
   --h-sage: #9ec8a9;
   --h-sage-2: #c9d6c6;
@@ -19,8 +17,7 @@
   --h-sand-2: #e3d7c2;
   --h-sand-3: #d3c3a6;        /* rules on sand */
   --h-paper: #f6f1e8;
-  --h-on-moss-2: #c9d6c6;
-  --h-ink-2: #4d5a52;         /* secondary text on sand and paper */
+  --h-ink-2: #4d5a52;         /* secondary text on sand and paper; form field borders (6.4:1) */
 
   --h-font: "DM Sans Variable", "DM Sans", "Helvetica Neue", Arial, sans-serif;
   --h-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", Georgia, serif;
@@ -44,6 +41,9 @@
   --forest: var(--h-moss);
   --leaf: var(--h-terra);
   --ink: var(--h-moss);
+  --logo-dark-block: var(--h-paper);
+  --logo-dark-leaf: var(--h-terra-light);
+  --logo-dark-text: var(--h-paper);
 
   position: relative;
   min-height: 100vh;
@@ -69,7 +69,7 @@
 .look-h .h-sand { background: var(--h-sand); --h-rule: var(--h-sand-3); --h-meter-off: var(--h-sand-3); }
 .look-h .h-moss {
   background: var(--h-moss); color: var(--h-paper);
-  --h-fg: var(--h-paper); --h-fg-2: var(--h-on-moss-2); --h-accent: var(--h-terra-light); --h-rule: rgba(255, 255, 255, 0.2); --h-meter-off: rgba(255, 255, 255, 0.22);
+  --h-fg: var(--h-paper); --h-fg-2: var(--h-sage-2); --h-accent: var(--h-terra-light); --h-rule: rgba(246, 241, 232, 0.2); --h-meter-off: rgba(246, 241, 232, 0.22);
 }
 .look-h .h-moss :is(.h-sand, .h-paper) { color: var(--h-moss); --h-fg: var(--h-moss); --h-fg-2: var(--h-moss); --h-accent: var(--h-terra-ink); --h-rule: var(--h-sand-3); --h-meter-off: var(--h-sand-3); }
 
@@ -222,7 +222,7 @@
 .look-h .h-diff-grid li { display: grid; gap: 0.8rem; align-content: start; }
 .look-h .h-diff-grid .h-ico, .look-h .h-modules .h-ico { color: var(--h-accent); margin-bottom: 0.4rem; }
 .look-h .h-diff-grid .h-h3 { color: var(--h-terra-light); }
-.look-h .h-diff-grid p { color: var(--h-on-moss-2); }
+.look-h .h-diff-grid p { color: var(--h-sage-2); }
 .look-h .h-h3-lg span { display: block; margin-top: 0.35rem; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--h-fg-2); }
 @media (max-width: 899px) {
   .look-h .h-diff-grid { grid-template-columns: minmax(0, 1fr); }
@@ -290,10 +290,10 @@
 }
 
 /* ---------- Compliance and the audit lens ---------- */
-.look-h .h-comp .h-lead { color: var(--h-on-moss-2); }
+.look-h .h-comp .h-lead { color: var(--h-sage-2); }
 .look-h .h-lens { margin-top: clamp(3rem, 6vw, 5rem); }
 .look-h .h-lens-base, .look-h .h-lens-handle, .look-h .h-lens-hint { display: none; }
-.look-h .h-lens-detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+.look-h .h-lens-detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1px; background: rgba(246, 241, 232, 0.2); border: 1px solid rgba(246, 241, 232, 0.2); }
 .look-h .h-lens-cell { display: grid; align-content: center; gap: 0.5rem; padding: 1.25rem 1.1rem; background: var(--h-moss); }
 .look-h .h-lens-k { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--h-terra-light); }
 .look-h .h-lens-v { font-size: 1.0625rem; font-weight: 500; line-height: 1.35; font-variant-numeric: tabular-nums; }
@@ -335,14 +335,14 @@
     background: var(--h-terra-light); color: var(--h-moss); padding: 0.45rem 0.9rem 0.85rem; clip-path: polygon(0 0, 100% 0, 100% 68%, 50% 100%, 0 68%);
     font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
   }
-  .look-h .h-lens-hint { display: block; font-size: 0.9375rem; color: var(--h-on-moss-2); }
+  .look-h .h-lens-hint { display: block; font-size: 0.9375rem; color: var(--h-sage-2); }
 }
 
 .look-h .h-standards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.5rem clamp(1.5rem, 3vw, 3rem); margin-top: clamp(3.5rem, 7vw, 6rem); }
 .look-h .h-standards li { display: grid; gap: 0.5rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--h-rule); }
-.look-h .h-standards .h-cap { font-size: 0.75rem; color: var(--h-on-moss-2); }
+.look-h .h-standards .h-cap { font-size: 0.75rem; color: var(--h-sage-2); }
 .look-h .h-standards .h-h3 { font-size: 1.6rem; font-weight: 700; color: var(--h-terra-light); }
-.look-h .h-standards p, .look-h .h-comp-cols p { color: var(--h-on-moss-2); }
+.look-h .h-standards p, .look-h .h-comp-cols p { color: var(--h-sage-2); }
 .look-h .h-comp-cols { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2.5rem clamp(2rem, 5vw, 5rem); margin-top: clamp(3rem, 6vw, 5rem); }
 .look-h .h-comp-cols > div { display: grid; gap: 1rem; align-content: start; }
 .look-h .h-ticks { display: grid; gap: 0.8rem; }
@@ -363,7 +363,7 @@
 .look-h .h-ba .h-ticks { font-size: 1.125rem; }
 .look-h .h-proof-foot { border-bottom: clamp(2rem, 4vw, 3.5rem) solid var(--h-moss); }
 .look-h .h-proof-said { grid-column: 1 / 3; background: var(--h-moss); color: var(--h-paper); padding: var(--h-pad) clamp(2rem, 5vw, 5rem) var(--h-pad) max(var(--h-gutter), calc((100vw - var(--h-main) - var(--h-side)) / 2)); display: grid; gap: 1.25rem; align-content: center; }
-.look-h .h-proof-said .h-disclaimer { color: var(--h-on-moss-2); }
+.look-h .h-proof-said .h-disclaimer { color: var(--h-sage-2); }
 .look-h .h-proof-figure { grid-column: 3 / -1; position: relative; display: grid; align-content: end; justify-items: start; padding-top: var(--h-pad); min-width: 0; }
 .look-h .h-proof-num { display: block; font-size: clamp(4.5rem, 9.8vw, 8.8rem); font-weight: 700; letter-spacing: -0.045em; line-height: 0.8; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .look-h .h-proof-unit { order: -2; font-size: clamp(1.75rem, 3.4vw, 3rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: var(--h-terra-ink); margin: 0 0 0.35em clamp(2rem, 4.6vw, 4.25rem); }
@@ -398,14 +398,14 @@
 /* ---------- Footer ---------- */
 .look-h .h-footer { background: var(--h-moss-deep); padding-block: clamp(3.5rem, 6vw, 5.5rem) 2rem; }
 .look-h .h-footer-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 3rem clamp(2rem, 5vw, 5rem); }
-.look-h .h-footer-brand { display: grid; gap: 0.6rem; justify-items: start; align-content: start; color: var(--h-on-moss-2); }
+.look-h .h-footer-brand { display: grid; gap: 0.6rem; justify-items: start; align-content: start; color: var(--h-sage-2); }
 .look-h .h-footer-brand p { margin-top: 0.75rem; max-width: 20rem; font-size: 1.125rem; font-weight: 300; color: var(--h-paper); }
 .look-h .h-footer-brand a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--h-terra-light); font-weight: 600; }
 .look-h .h-footer-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
 .look-h .h-footer h3 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--h-terra-light); margin-bottom: 0.5rem; }
-.look-h .h-footer li a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--h-on-moss-2); transition: color 0.2s; }
+.look-h .h-footer li a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--h-sage-2); transition: color 0.2s; }
 .look-h .h-footer li a:hover { color: var(--h-paper); }
-.look-h .h-footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 2rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.16); font-size: 0.875rem; color: var(--h-on-moss-2); }
+.look-h .h-footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 2rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid rgba(246, 241, 232, 0.16); font-size: 0.875rem; color: var(--h-sage-2); }
 .look-h .h-footer-bottom ul { display: flex; flex-wrap: wrap; gap: 0 1.75rem; }
 @media (max-width: 899px) {
   .look-h .h-footer-top { grid-template-columns: minmax(0, 1fr); }
@@ -450,7 +450,7 @@
 .look-h .h-principles li { display: grid; gap: 0.6rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--h-rule); }
 .look-h .h-principles-n { font-size: 2.75rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--h-terra-light); }
 .look-h .h-principles .h-h3 { font-size: 1.4rem; font-weight: 700; margin-top: 0.4rem; }
-.look-h .h-principles p { color: var(--h-on-moss-2); }
+.look-h .h-principles p { color: var(--h-sage-2); }
 .look-h .h-team { display: grid; }
 .look-h .h-team li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1.25rem; align-items: center; padding-block: 1.25rem; border-bottom: 1px solid var(--h-rule); }
 .look-h .h-team li:first-child { border-top: 1px solid var(--h-rule); }
@@ -504,12 +504,16 @@
 .look-h .h-contact > .h-panel { align-self: start; margin-bottom: var(--h-band); }
 .look-h .h-contact .h-panel-in { gap: 1.75rem; }
 .look-h .h-contact-steps { display: grid; gap: 1rem; }
-.look-h .h-contact-steps li { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: 0.75rem; color: var(--h-on-moss-2); }
+.look-h .h-contact-steps li { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: 0.75rem; color: var(--h-sage-2); }
 .look-h .h-contact-steps span { font-weight: 800; color: var(--h-terra-light); }
 .look-h .h-contact-note { padding: 0.8rem 1rem; border: 1px solid var(--h-terra-light); font-size: 0.9375rem; }
-.look-h .h-contact .h-cap { color: var(--h-on-moss-2); font-size: 0.75rem; }
+.look-h .h-contact .h-cap { color: var(--h-sage-2); font-size: 0.75rem; }
 .look-h .h-contact-mail { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: 1.25rem; font-weight: 600; color: var(--h-terra-light); }
-.look-h .h-form { --ink-2: var(--h-moss); --ink-3: #4d5a52; --line: var(--h-sand-2); --line-2: #c2ae8c; --surface: var(--h-paper); --forest-tint: var(--h-paper); }
+.look-h .h-form {
+  --ink: var(--h-moss); --ink-2: var(--h-moss); --ink-3: var(--h-ink-2);
+  --line: var(--h-sand-2); --line-2: var(--h-ink-2); --surface: var(--h-paper); --forest-tint: var(--h-paper);
+  --miss-fg: var(--h-terra-ink); --miss-bg: var(--h-sand);
+}
 .look-h .h-form :is(form, [role="status"]) { background: var(--h-paper); border: 0; border-top: 4px solid var(--h-terra-light); border-radius: 0; padding: clamp(1.5rem, 3.5vw, 2.75rem); }
 .look-h .h-form :is(input:not([type="checkbox"]), select, textarea) { border-radius: 0; border-width: 1.5px; font-family: inherit; color: var(--h-moss); }
 .look-h .h-form :is(input, select, textarea):focus-visible { outline: 2px solid var(--h-moss); outline-offset: 2px; border-radius: 0; }
@@ -549,4 +553,8 @@
 .look-h .h-legal section { display: grid; gap: 0.5rem; padding-top: 1.5rem; border-top: 1px solid var(--h-rule); }
 .look-h .h-legal section p { color: var(--h-ink-2); }
 .look-h .h-notfound .h-btn { margin-top: 2.5rem; }
+
+/* Outside .look-h: the body behind the page and the skip link, in the palette's paper and moss */
+body:has(.look-h) { background: #f6f1e8; }
+body:has(.look-h) .skip-link { background: #1f3d2b; color: #f6f1e8; border-radius: 0; }
 
