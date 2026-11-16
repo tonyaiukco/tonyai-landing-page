@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local code graph output (git-ignored)
+    ".code-review-graph/**",
   ]),
 ]);
 

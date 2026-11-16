@@ -1,6 +1,6 @@
 # Homepage look
 
-Route: `/` · components in `components/looks/home/` · all CSS scoped under `.look-h` in `look.css`.
+Routes: every page except the `/tasarim/` previews · components in `components/looks/home/` · all CSS scoped under `.look-h` in `look.css`.
 
 Look D ("Orman", `/tasarim/d/`) chosen as the homepage, with the changes below. Look D itself is unchanged and stays as a preview for comparison.
 
@@ -11,8 +11,12 @@ Look D ("Orman", `/tasarim/d/`) chosen as the homepage, with the changes below. 
 - **Band opener:** look E's skyline of rounded blocks in place of D's conifer treeline.
 - **Line drawings:** no conifers, clouds or birds. The group and horizon drawings are look E's, with sprouts made of the logo's leaf and rounded blocks.
 - **Copy, as on look C:** the hero ends in the five-verb flow (`copy.hero.flow`); the "3 kapsam" facts strip and the consolidated-total block under "TonyAI farkı" are gone; the hosting placeholder is not shown.
-- **Links:** `here()` returns links unchanged, so navigation goes to the live inner pages.
+- **Links:** `here()` returns links unchanged.
+
+## Pages
+
+`Shell.tsx` (`SiteShell`) puts the navigation, footer and reveal motion around every page and loads the fonts and `look.css`. `PagesH.tsx` holds the inner pages: Şirket, Kaynaklar and its articles, Bize Ulaşın (ported from look D's `PagesD.tsx`), plus Demo and Kayıt (`FormPageH`, the shared form beside numbered points), the two thank-you pages (`ThanksH`), the legal pages (`LegalH`, through `components/LegalPage.tsx`) and the 404 page (`NotFoundH`). The shared `ContactForm` and `RegisterForm` are redressed from outside through `.h-form`.
 
 ## Still open
 
-From the design comparison: real product screens, source tags on figures, the demo video, C's before/after windows in place of the oversized 164.700, page height under 9,000 px at 1440 px, and the inner pages in this look.
+From the design comparison: real product screens, source tags on figures, the demo video, and C's before/after windows in place of the oversized 164.700, page height under 9,000 px at 1440 px.

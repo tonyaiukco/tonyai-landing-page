@@ -433,7 +433,7 @@
 @keyframes look-h-fade { to { opacity: 1; } }
 @keyframes look-h-rise { from { opacity: 0; transform: translateY(24px); } }
 
-/* ---------- Inner pages: Şirket, Kaynaklar, Bize Ulaşın ---------- */
+/* ---------- Inner pages ---------- */
 .look-h .h-nav [aria-current="page"] { background-size: 100% 2px; }
 .look-h .h-intro { background: linear-gradient(var(--h-paper) 30%, var(--h-sand)); padding-block: clamp(3rem, 7vw, 6.5rem) clamp(3rem, 6vw, 5.5rem); }
 .look-h .h-intro .h-h1 { max-width: 19ch; }
@@ -516,13 +516,37 @@
 .look-h .h-form label { font-weight: 600; }
 .look-h .h-form a { text-decoration: underline; text-underline-offset: 3px; }
 .look-h .h-form .btn {
-  min-height: 3.25rem; padding: 0.5rem 1.75rem; border-radius: 0; background: var(--h-terra-light); color: var(--h-moss); cursor: pointer;
+  min-height: 3.25rem; padding: 0.5rem 1.75rem; border-radius: 0; background: var(--h-terra-ink); color: var(--h-paper); cursor: pointer;
   font-family: inherit; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
 }
-.look-h .h-form .btn:hover { background: var(--h-moss); color: var(--h-terra-light); }
+.look-h .h-form .btn:hover { background: var(--h-moss); color: var(--h-paper); }
 .look-h .h-form .btn:focus-visible { outline: 2px solid var(--h-moss); outline-offset: 3px; border-radius: 0; }
 @media (max-width: 899px) {
   .look-h .h-contact > .h-main { padding-bottom: 0; }
   .look-h .h-contact > .h-panel { margin-bottom: 0; }
 }
 .look-h .h-form label:has(input[type="checkbox"]) { font-weight: 400; }
+
+/* Demo, Kayıt: numbered points beside the form */
+.look-h .h-points { display: grid; }
+.look-h .h-points li { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: 0.4rem 1rem; padding-block: 1.4rem; border-bottom: 1px solid var(--h-rule); }
+.look-h .h-points li:first-child { border-top: 1px solid var(--h-rule); }
+.look-h .h-points .h-h3 { grid-column: 2; }
+.look-h .h-points p { grid-column: 2; color: var(--h-fg-2); }
+.look-h .h-points-n { grid-row: span 2; font-family: var(--h-display); font-size: 1.5rem; font-weight: 700; line-height: 1.1; color: var(--h-terra-light); }
+
+/* Teşekkürler: what happens next, then two actions */
+.look-h .h-next { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem clamp(1.5rem, 3vw, 3rem); }
+.look-h .h-next li { display: grid; gap: 0.6rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--h-rule); }
+.look-h .h-next .h-principles-n { font-size: 2.25rem; color: var(--h-terra); }
+.look-h .h-next-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: clamp(2.5rem, 5vw, 4rem); }
+@media (max-width: 899px) { .look-h .h-next { grid-template-columns: minmax(0, 1fr); } }
+
+/* Legal pages and 404 */
+.look-h .h-legal { padding-block: clamp(2rem, 5vw, 4rem) var(--h-band); }
+.look-h .h-legal-in { max-width: 46rem; display: grid; gap: 2rem; }
+.look-h .h-legal-banner { padding: 0.8rem 1rem; border-left: 3px solid var(--h-terra); background: var(--h-sand); font-size: 0.9375rem; }
+.look-h .h-legal section { display: grid; gap: 0.5rem; padding-top: 1.5rem; border-top: 1px solid var(--h-rule); }
+.look-h .h-legal section p { color: var(--h-ink-2); }
+.look-h .h-notfound .h-btn { margin-top: 2.5rem; }
+
