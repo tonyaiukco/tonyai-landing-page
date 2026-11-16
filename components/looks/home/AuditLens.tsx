@@ -9,7 +9,7 @@ const lens = copy.compliance.audit.lens;
 
 /**
  * One record laid out as a chain from entry to result. The base layer shows only the two ends;
- * a round lens (its name on a small pill inside the ring), dragged sideways or stepped with the arrow keys, shows what is kept in between.
+ * a round lens, dragged sideways or stepped with the arrow keys, shows what is kept in between.
  * The component only sets --t (0–1); look.css places the lens, the clip and, on narrow screens,
  * slides the strip under it. Without JS or under reduced motion the CSS shows the full list instead.
  */
@@ -34,36 +34,36 @@ export function AuditLens() {
   };
 
   return (
-    <div className="e-lens" style={{ "--t": t } as React.CSSProperties}>
+    <div className="h-lens" style={{ "--t": t } as React.CSSProperties}>
       <div
         ref={stage}
-        className="e-lens-stage"
+        className="h-lens-stage"
         onPointerDown={(e) => { if (e.pointerType === "mouse" && e.button !== 0) return; dragging.current = true; e.currentTarget.setPointerCapture(e.pointerId); fromPointer(e.clientX); }}
         onPointerMove={(e) => { if (dragging.current) fromPointer(e.clientX); }}
         onPointerUp={() => { dragging.current = false; }}
         onPointerCancel={() => { dragging.current = false; }}
       >
-        <div className="e-lens-strip">
-          <div className="e-lens-base" aria-hidden="true">
+        <div className="h-lens-strip">
+          <div className="h-lens-base" aria-hidden="true">
             {trail.map((row, i) => (
-              <div key={row.k} className="e-lens-cell">
-                <span className="e-lens-k">{row.k}</span>
-                {i === 0 || i === last ? <span className="e-lens-v">{row.v}</span> : <span className="e-lens-bars"><i /><i /><i /></span>}
+              <div key={row.k} className="h-lens-cell">
+                <span className="h-lens-k">{row.k}</span>
+                {i === 0 || i === last ? <span className="h-lens-v">{row.v}</span> : <span className="h-lens-bars"><i /><i /><i /></span>}
               </div>
             ))}
           </div>
-          <dl className="e-lens-detail">
+          <dl className="h-lens-detail">
             {trail.map((row) => (
-              <div key={row.k} className="e-lens-cell">
-                <dt className="e-lens-k">{row.k}</dt>
-                <dd className="e-lens-v">{row.v}</dd>
+              <div key={row.k} className="h-lens-cell">
+                <dt className="h-lens-k">{row.k}</dt>
+                <dd className="h-lens-v">{row.v}</dd>
               </div>
             ))}
           </dl>
         </div>
         <div
           ref={handle}
-          className="e-lens-handle"
+          className="h-lens-handle"
           role="slider"
           tabIndex={0}
           aria-label={lens.label}
@@ -74,10 +74,10 @@ export function AuditLens() {
           aria-valuetext={`${trail[idx].k}: ${trail[idx].v}`}
           onKeyDown={onKey}
         >
-          <span className="e-lens-tag" aria-hidden="true">{lens.label}</span>
+          <span className="h-lens-grip" aria-hidden="true">{lens.label}</span>
         </div>
       </div>
-      <p className="e-lens-hint">{lens.hint}</p>
+      <p className="h-lens-hint">{lens.hint}</p>
     </div>
   );
 }

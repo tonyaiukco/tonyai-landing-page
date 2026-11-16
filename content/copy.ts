@@ -302,7 +302,7 @@ export const copy = {
       },
       {
         q: "Verilerimiz nerede saklanıyor, fiyatlandırma nasıl?",
-        a: "Verileriniz şifreli saklanır ve yalnızca yetkilendirdiğiniz kullanıcılar erişir. [Barındırma konumu ve sertifikalar: teyit bekliyor] Fiyat, yapınıza ve şirket sayınıza göre teklif olarak hazırlanır.",
+        a: "Verileriniz şifreli saklanır ve yalnızca yetkilendirdiğiniz kullanıcılar erişir. Fiyat, yapınıza ve şirket sayınıza göre teklif olarak hazırlanır.",
       },
     ],
   },

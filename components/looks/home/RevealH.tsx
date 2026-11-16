@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation";
 import { prefersReducedMotion } from "@/lib/format";
 
 /**
- * Adds .is-in to [data-reveal] elements inside .look-e as they enter: blocks fade up, line drawings draw on,
- * dot grids fill in sequence. The hidden states live behind a scripting + motion media query in look.css,
+ * Adds .is-in to [data-reveal] elements inside .look-h as they enter: blocks fade up, line drawings draw on,
+ * meters fill in sequence. The hidden states live behind a scripting + motion media query in look.css,
  * so without JS or under reduced motion everything is already at rest.
  * It lives in the layout, which stays mounted between the look's pages, so it observes again on every route change;
  * otherwise a page reached by an in-app link would keep its content hidden.
  */
-export function RevealE() {
+export function RevealH() {
   const path = usePathname();
   useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>(".look-e [data-reveal]"));
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".look-h [data-reveal]"));
     if (prefersReducedMotion() || !("IntersectionObserver" in window)) { els.forEach((e) => e.classList.add("is-in")); return; }
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); } });

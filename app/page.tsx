@@ -1,26 +1,29 @@
-import { Nav } from "@/components/Nav";
-import { Hero } from "@/components/Hero";
-import { Strip, Difference, Platform, DemoSection, Journey, Compliance, Faq, FinalCta } from "@/components/Sections";
-import { Footer } from "@/components/Footer";
-import { Interactions } from "@/components/Interactions";
+import "@fontsource-variable/bricolage-grotesque/opsz.css";
+import "@fontsource-variable/dm-sans/wght.css";
+import "@/components/looks/home/look.css";
+import { NavH } from "@/components/looks/home/NavH";
+import { HeroH } from "@/components/looks/home/HeroH";
+import { StripH, DifferenceH, PlatformH, DemoH, JourneyH, ComplianceH, ProofH, FaqH, FinalCtaH, FooterH } from "@/components/looks/home/SectionsH";
+import { RevealH } from "@/components/looks/home/RevealH";
 
 export default function Home() {
   return (
-    <>
-      <Nav />
+    <div className="look-h">
+      <NavH />
       <main id="icerik">
-        <Hero />
-        <Strip />
-        <Difference />
-        <Platform />
-        <DemoSection />
-        <Journey />
-        <Compliance />
-        <Faq />
-        <FinalCta />
+        <HeroH />
+        <StripH />
+        <DifferenceH />
+        <PlatformH />
+        <DemoH />
+        <JourneyH />
+        <ComplianceH />
+        <ProofH />
+        <FaqH />
+        <FinalCtaH />
       </main>
-      <Footer />
-      <Interactions />
-    </>
+      <FooterH />
+      <RevealH />
+    </div>
   );
 }

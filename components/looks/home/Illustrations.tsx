@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 /**
- * Look E line art. Every stroke is 1.5 px in currentColor, so one drawing works on forest ink and on paper.
- * Paths carry pathLength=1 so `.e-draw` can draw them on with stroke-dashoffset.
+ * Look D line art. Every stroke is 1.5 px in currentColor, so one drawing works on moss and on sand.
+ * Paths carry pathLength=1 so `.h-draw` can draw them on with stroke-dashoffset.
  */
 
 const circ = (cx: number, cy: number, r: number) => `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`;
@@ -40,15 +42,15 @@ function Paths({ name }: { name: GlyphName }) {
 
 export function Glyph({ name, size = 48, className = "" }: { name: GlyphName; size?: number; className?: string }) {
   return (
-    <svg className={`e-ico ${className}`} width={size} height={size} viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className={`h-ico ${className}`} width={size} height={size} viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <Paths name={name} />
-      {name === "forecast" && <path className="e-nodraw" d="M33 18l8-9" strokeDasharray="2.5 3.5" />}
+      {name === "forecast" && <path className="h-nodraw" d="M33 18l8-9" strokeDasharray="2.5 3.5" />}
     </svg>
   );
 }
 
 export const Arrow = () => (
-  <svg className="e-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12h17" /><path d="m14 6 6 6-6 6" /></svg>
+  <svg className="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12h17" /><path d="m14 6 6 6-6 6" /></svg>
 );
 export const Plus = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M12 4v16" /><path d="M4 12h16" /></svg>
@@ -56,6 +58,16 @@ export const Plus = () => (
 export const Play = ({ size = 14 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3" /></svg>
 );
+
+/** Filled map pin with a number, for the journey route. */
+export function Pin({ children }: { children: ReactNode }) {
+  return (
+    <span className="h-pin" aria-hidden="true">
+      <svg width="44" height="54" viewBox="0 0 44 54"><path d="M22 53C22 53 3 33.5 3 21a19 19 0 0 1 38 0c0 12.5-19 32-19 32z" fill="currentColor" /></svg>
+      <b>{children}</b>
+    </span>
+  );
+}
 
 /** The logo's leaf: two quarter-circle arcs between its lower-left point (x, y) and a point `s` up and to the right. */
 const leaf = (x: number, y: number, s: number) => `M${x} ${y}a${s} ${s} 0 0 1 ${s} ${-s}a${s} ${s} 0 0 1 ${-s} ${s}z`;
@@ -69,10 +81,41 @@ const block = (x: number, b: number, w: number, h: number) => {
   return `M${x} ${b}V${b - h + r}a${r} ${r} 0 0 1 ${r} ${-r}h${w - 2 * r}a${r} ${r} 0 0 1 ${r} ${r}V${b}`;
 };
 
+/**
+ * Hero: three dashed groups overlap; six facilities sit in them and the shared middle is the consolidated total.
+ * `labels` are the six sector names, in subsidiary order.
+ */
+export function HeroDrawing({ labels }: { labels: string[] }) {
+  const spots: Array<[GlyphName, number, number]> = [
+    ["factory", 95, 200], ["energy", 196, 128], ["truck", 440, 122], ["warehouse", 548, 200], ["crates", 128, 330], ["shop", 218, 382],
+  ];
+  const groups = [{ cx: 220, cy: 200, rx: 200, ry: 110 }, { cx: 420, cy: 190, rx: 200, ry: 110 }, { cx: 320, cy: 320, rx: 210, ry: 115 }];
+  return (
+    <svg className="h-hero-svg h-draw" viewBox="0 0 640 450" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <defs>
+        <clipPath id="h-hero-b"><ellipse {...groups[1]} /></clipPath>
+        <clipPath id="h-hero-c"><ellipse {...groups[2]} /></clipPath>
+      </defs>
+      {groups.map((g) => (<ellipse key={g.cx} className="h-hero-zone" {...g} />))}
+      <g clipPath="url(#h-hero-c)"><ellipse className="h-hero-core" {...groups[0]} clipPath="url(#h-hero-b)" /></g>
+      <g className="h-hero-total">
+        <path className="h-nodraw" d="M298 228v30a22 8.5 0 0 0 44 0v-30z" />
+        <ellipse cx="320" cy="228" rx="22" ry="8.5" />
+      </g>
+      {spots.map(([name, x, y], i) => (
+        <g key={name}>
+          <g transform={`translate(${x - 24} ${y - 24})`}><Paths name={name} /></g>
+          <text className="h-hero-tag" x={x} y={y + 37} textAnchor="middle">{labels[i]}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 /** "TonyAI farkı": a head office wired to three subsidiaries, with sprouts growing beside them. */
 export function GroupDrawing() {
   return (
-    <svg className="e-group-svg e-draw" viewBox="0 28 520 318" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className="h-group-svg h-draw" viewBox="0 28 520 318" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path pathLength={1} d="M10 320h500" /><path pathLength={1} d="M48 334h120" /><path pathLength={1} d="M330 334h70" />
       {/* Head office */}
       <path pathLength={1} d="M218 62h84v104h-84z" /><path pathLength={1} d="M260 62V40h16v9h-16" />
@@ -97,7 +140,7 @@ export function HorizonDrawing() {
     return `M${p(62)}L${p(i % 2 ? 82 : 98)}`;
   });
   return (
-    <svg className="e-horizon-svg e-draw" viewBox="0 96 420 164" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className="h-horizon-svg h-draw" viewBox="0 96 420 164" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path pathLength={1} d="M162 236a48 48 0 0 1 96 0" />
       {rays.map((d) => (<path key={d} pathLength={1} d={d} />))}
       <path pathLength={1} d="M0 236h420" /><path pathLength={1} d="M40 250h110" /><path pathLength={1} d="M250 250h60" />
@@ -108,7 +151,7 @@ export function HorizonDrawing() {
   );
 }
 
-/* ---------- Skyline: rows of rounded blocks of uneven height, the logo's squares standing side by side ---------- */
+/* ---------- Skyline: rows of rounded blocks of uneven height, standing in for look D's treeline (from look E) ---------- */
 
 /** Small deterministic generator so the skyline is the same on every build. */
 function seeded(seed: number) {
@@ -140,18 +183,18 @@ const ROWS = { back: row(11, 70, 130, 96, 176), mid: row(23, 56, 108, 60, 128), 
 /** One front block carries the logo's leaf above it. */
 const LEAF_ON = ROWS.front[Math.floor(ROWS.front.length * 0.62)];
 
-/** Sits at the top of a forest-ink band. The band above shows through as the ground. */
+/** Sits at the top of a moss band. The band above shows through as the ground. */
 export function Skyline() {
   return (
-    <div className="e-sky" aria-hidden="true">
+    <div className="h-sky" aria-hidden="true">
       <svg viewBox={`0 0 ${SKY_W} ${SKY_H}`} preserveAspectRatio="xMidYMax slice">
         {(["back", "mid", "front"] as const).map((layer) => (
-          <g key={layer} className={`e-sky-${layer}`}>
+          <g key={layer} className={`h-sky-${layer}`}>
             {/* Each block runs past the foot of the drawing, so only its top corners show. */}
             {ROWS[layer].map((b) => (<rect key={b.x} x={b.x} y={SKY_H - b.h} width={b.w} height={b.h + b.w} rx={b.w / 4} />))}
           </g>
         ))}
-        <path className="e-sky-leaf" d={leaf(LEAF_ON.x, SKY_H - LEAF_ON.h - 8, LEAF_ON.w)} />
+        <path className="h-sky-leaf" d={leaf(LEAF_ON.x, SKY_H - LEAF_ON.h - 8, LEAF_ON.w)} />
       </svg>
     </div>
   );

@@ -8,8 +8,8 @@ import { Logo } from "@/components/Logo";
 import { Arrow } from "./Illustrations";
 import { HOME, here } from "./parts";
 
-/** Flat white bar: sentence-case links, rounded amber button. Mobile menu is a full-width sheet below the bar. */
-export function NavE() {
+/** Flat paper bar: uppercase links, square terracotta button. Mobile menu is a full-width sheet below the bar. */
+export function NavH() {
   const [open, setOpen] = useState(false);
   const path = usePathname().replace(/\/$/, "");
   /** Marks the inner page the visitor is on; homepage anchors never count as current. */
@@ -22,29 +22,29 @@ export function NavE() {
   }, [open]);
 
   return (
-    <header className="e-nav">
-      <div className="e-wrap e-nav-bar">
-        <Link href={HOME} aria-label="TonyAI ana sayfa" className="e-nav-logo"><Logo /></Link>
-        <nav aria-label="Ana menü" className="e-nav-links">
+    <header className="h-nav">
+      <div className="h-wrap h-nav-bar">
+        <Link href={HOME} aria-label="TonyAI ana sayfa" className="h-nav-logo"><Logo /></Link>
+        <nav aria-label="Ana menü" className="h-nav-links">
           {copy.nav.items.map((item) => (<Link key={item.href} href={here(item.href)} aria-current={current(item.href)}>{item.label}</Link>))}
         </nav>
-        <div className="e-nav-right">
+        <div className="h-nav-right">
           <a href={copy.nav.login.href}>{copy.nav.login.label}</a>
           <a href={copy.nav.register.href}>{copy.nav.register.label}</a>
-          <Link href={copy.nav.cta.href} className="e-btn e-btn-sm">{copy.nav.cta.label}<Arrow /></Link>
+          <Link href={copy.nav.cta.href} className="h-btn h-btn-sm">{copy.nav.cta.label}<Arrow /></Link>
         </div>
-        <button type="button" className="e-nav-burger" aria-expanded={open} aria-controls="e-mobil-menu" aria-label={open ? copy.nav.menuClose : copy.nav.menuOpen} onClick={() => setOpen((v) => !v)}>
+        <button type="button" className="h-nav-burger" aria-expanded={open} aria-controls="h-mobil-menu" aria-label={open ? copy.nav.menuClose : copy.nav.menuOpen} onClick={() => setOpen((v) => !v)}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
             {open ? (<><path d="M6 6l12 12" /><path d="M18 6L6 18" /></>) : (<><path d="M3 8h18" /><path d="M3 16h18" /></>)}
           </svg>
         </button>
       </div>
-      <div id="e-mobil-menu" hidden={!open} className="e-nav-mobile">
+      <div id="h-mobil-menu" hidden={!open} className="h-nav-mobile">
         <nav aria-label="Mobil menü">
           {copy.nav.items.map((item) => (<Link key={item.href} href={here(item.href)} aria-current={current(item.href)} onClick={() => setOpen(false)}>{item.label}</Link>))}
           <a href={copy.nav.login.href}>{copy.nav.login.label}</a>
           <a href={copy.nav.register.href}>{copy.nav.register.label}</a>
-          <Link href={copy.nav.cta.href} onClick={() => setOpen(false)} className="e-btn">{copy.nav.cta.label}<Arrow /></Link>
+          <Link href={copy.nav.cta.href} onClick={() => setOpen(false)} className="h-btn">{copy.nav.cta.label}<Arrow /></Link>
         </nav>
       </div>
     </header>
