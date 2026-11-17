@@ -33,7 +33,7 @@ Pages outside `/tasarim/` SHALL use look D's ground plan in the product palette:
 
 #### Scenario: Homepage sections
 - **WHEN** the homepage is scrolled from top to bottom
-- **THEN** "TonyAI farkı", the method and assurance section, the illustrative case's quote panel, the closing call to action and the footer have a `#1C5E3A` ground, and every other section has a `#FFFFFF` or `#E9FAF2` ground
+- **THEN** "TonyAI farkı", the method and assurance section, the closing call to action and the footer have a `#1C5E3A` ground, and every other section has a `#FFFFFF` or `#E9FAF2` ground
 
 #### Scenario: Inner pages
 - **WHEN** Şirket, Demo, Kayıt or Bize Ulaşın is opened
