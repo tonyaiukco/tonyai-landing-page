@@ -29,11 +29,11 @@ Since 17 November 2026 the homepage look is built on look D ("Orman", `/tasarim/
   - "TonyAI farkı" (`GroupTree`): three labelled tiers, holding, companies and locations, with the counts from the demo data. It is `role="img"` with a label from the copy.
   - Journey: numbered block markers on a straight line.
   - "Önce" (`Windows`): a pile of spreadsheet windows, decorative.
-- **Bright green is kept small.** `#39c656` is the ground of buttons, the FAQ toggle and the video label, and the colour of small blocks and large accent type. It is not the ground of a card or panel; the hero's first total card was, and outweighed the heading.
+- **Bright green is kept small.** `#39c656` is the ground of buttons, the FAQ toggle and the video label, and the colour of small blocks and large accent type. Apart from the lens, it is not the ground of a card or panel; the hero's first total card was, and outweighed the heading.
 - **Source tags.** `Sourced` in `parts.tsx` shows a figure and, beneath it, the records or calculation it comes from: the hero total, the total and the three scope totals in the "Sonra" screen, and journey steps 02 and 03 (through the copy's `figure` field). A source line names records or a calculation; how much a total covers and whether it is approved go in a separate note. The parts shown beside a total are covered by its line. The last journey step's scenario percentages carry none.
-- **Content.** The hero has the primary button under the text and the five-verb flow along its foot (five columns; a ruled list under 900 px). It has no standards list, because the strip below says it once, and no "Demoyu izleyin" link until the video exists. "TonyAI farkı" is a numbered, ruled list beside the heading, with no foot. Platform modules link only where the link is not the demo request. The closing call to action has one button and no drawing. The bracketed hosting placeholder (`compliance.security.note`) is not rendered; the field stays in the copy for the previews.
+- **Content.** The hero has the primary button under its first paragraph, above the second, so it shows on a phone without scrolling (bottom edge near 480 px), and the five-verb flow along its foot (five columns; a ruled list under 900 px). It has no standards list, because the strip below says it once, and no "Demoyu izleyin" link until the video exists. "TonyAI farkı" is a numbered, ruled list beside the heading, with no foot. Platform modules link only where the link is not the demo request. The closing call to action has one button and no drawing. The bracketed hosting placeholder (`compliance.security.note`) is not rendered; the field stays in the copy for the previews.
 - **Before and after.** Two equal columns sharing three subgrid rows: label, picture, list. "Önce" is the window pile in a framed panel; "Sonra" is one drawn TonyAI screen (`.h-scr`) with the total, the scope totals with their sources and the six subsidiaries. The screen's rows show no status, because one subsidiary is "İncelemede" in the demo data while the total is labelled approved.
-- **Audit trail.** The record is a plain definition list (`.h-rec`). Look D's draggable lens is not used here: it kept four of the six fields behind an interaction.
+- **Audit trail.** From 900 px up, with scripts and motion, the record is look D's draggable lens (`AuditLens.tsx`; drag or arrow keys), which the owner asked to keep. Under 900 px, without scripts or under reduced motion, the same component shows all six fields as a plain grid, because on a phone the lens kept four of them behind an interaction.
 - **Motion.** The hero's sum rises once on load, sections reveal once on scroll, glyphs draw on once. Nothing loops.
 - **Class names.** Do not name a class `h-screen`, `h-full`, `h-min`, `h-max`, `h-fit` or `h-auto`: Tailwind owns those and sets a height.
 
@@ -48,3 +48,7 @@ Still waiting for material: the demo video (the section keeps its "yakında" fra
 ## QA
 
 `qa/shoot.py` takes reduced-motion screenshots of every route, `qa/audit.py` flags any computed colour outside the palette (`qa/palette.py`), and `qa/contrast.py` checks the text pairs. Run them against a static build served on port 8095.
+
+## Anchors
+
+`#platform`, `#demo`, `#nasil-calisir` (the journey) and `#yontem` (method and assurance). The navigation's "Yöntem" link, the footer's and the first platform module's all go to `#yontem`.

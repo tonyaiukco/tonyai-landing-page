@@ -165,8 +165,8 @@
 .look-h .h-hero { background: linear-gradient(var(--h-white) 55%, var(--h-mist)); padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 6vw, 5rem); }
 .look-h .h-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; }
 .look-h .h-hero-text { display: grid; justify-items: start; }
-.look-h .h-hero-lead2 { margin-top: 1.25rem; max-width: 33rem; }
 .look-h .h-hero-text .h-btn { margin-top: 2rem; }
+.look-h .h-hero-lead2 { margin-top: 2rem; max-width: 33rem; }
 
 /* Six subsidiaries gathered into one total */
 .look-h .h-sum > .h-cap { margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--h-emerald); }
@@ -183,6 +183,13 @@
 .look-h .h-sum-figure small { margin-left: 0.4rem; font-size: 1rem; font-weight: 600; letter-spacing: 0; }
 .look-h .h-sum-note { font-size: 0.875rem; color: var(--h-grey); }
 @media (max-width: 899px) { .look-h .h-hero-grid { grid-template-columns: minmax(0, 1fr); } }
+/* Phones: tighter above the button so it shows without scrolling, on short screens too */
+@media (max-width: 599px) {
+  .look-h .h-hero { padding-top: 1.75rem; }
+  .look-h .h-hero .h-eyebrow { margin-bottom: 0.75rem; }
+  .look-h .h-hero .h-h1 + .h-lead { margin-top: 1.1rem; font-size: 1.0625rem; line-height: 1.55; }
+  .look-h .h-hero-text .h-btn { margin-top: 1.4rem; }
+}
 @media (max-width: 520px) {
   .look-h .h-sum-parts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .look-h .h-sum-join { margin-inline: 16.66%; }
@@ -298,15 +305,57 @@
   .look-h .h-steps > li:not(:last-child) .h-step-ex::before { content: ""; position: absolute; left: calc(-23px - 1rem); top: 0; bottom: -2.5rem; width: 2px; background: var(--h-mint-text); }
 }
 
-/* ---------- Compliance ---------- */
+/* ---------- Compliance and the audit lens ---------- */
 .look-h .h-comp .h-lead { color: var(--h-on-teal-2); }
-/* One record's audit trail, readable as it stands */
-.look-h .h-rec { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; margin-top: clamp(3rem, 6vw, 5rem); background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
-.look-h .h-rec > div { display: grid; align-content: start; gap: 0.5rem; padding: 1.25rem 1.1rem; background: var(--h-teal); }
-.look-h .h-rec dt { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--h-mint-text); }
-.look-h .h-rec dd { font-size: 1rem; font-weight: 500; line-height: 1.4; }
-@media (max-width: 1099px) { .look-h .h-rec { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 599px) { .look-h .h-rec { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.look-h .h-lens { margin-top: clamp(3rem, 6vw, 5rem); }
+.look-h .h-lens-base, .look-h .h-lens-handle, .look-h .h-lens-hint { display: none; }
+.look-h .h-lens-detail { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); }
+.look-h .h-lens-cell { display: grid; align-content: start; gap: 0.5rem; padding: 1.25rem 1.1rem; background: var(--h-teal); }
+.look-h .h-lens-k { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--h-mint-text); }
+.look-h .h-lens-v { font-size: 1.0625rem; font-weight: 500; line-height: 1.35; }
+@media (max-width: 1099px) { .look-h .h-lens-detail { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 599px) { .look-h .h-lens-detail { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* The lens itself: wide screens only, with scripts and motion. Phones keep the record laid out in full above. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (min-width: 900px) {
+  .look-h .h-lens-stage { position: relative; container-type: inline-size; overflow-x: clip; touch-action: pan-y; cursor: ew-resize; user-select: none; -webkit-user-select: none; margin-bottom: 3.5rem; }
+  /* The lens is one cell wide, so each arrow-key step centres it on the next cell. */
+  .look-h .h-lens-stage > * { --h-r: max(5.25rem, calc(100cqw / 12)); }
+  .look-h .h-lens-strip { position: relative; width: max(100cqw, 63rem); transform: translateX(calc(var(--t) * (100cqw - 100%))); transition: transform 0.25s var(--h-ease); }
+  .look-h .h-lens-base, .look-h .h-lens-detail { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; border: 0; min-height: calc(var(--h-r) * 2 + 2.5rem); }
+  .look-h .h-lens-stage .h-lens-cell { align-content: center; padding-inline: 1.5rem; text-align: center; justify-items: center; }
+  .look-h .h-lens-bars { width: 100%; justify-items: center; }
+  .look-h .h-lens-base { background: var(--h-mist); color: var(--h-ink); }
+  .look-h .h-lens-base .h-lens-cell { background: none; border-left: 1px solid var(--h-mist-rule); }
+  .look-h .h-lens-base .h-lens-cell:first-child { border-left: 0; }
+  .look-h .h-lens-base .h-lens-k { color: var(--h-emerald); }
+  .look-h .h-lens-bars { display: grid; gap: 7px; }
+  .look-h .h-lens-bars i { width: 100%; }
+  .look-h .h-lens-bars i { display: block; height: 7px; background: var(--h-mist-rule); }
+  .look-h .h-lens-bars i:nth-child(2) { width: 78%; }
+  .look-h .h-lens-bars i:nth-child(3) { width: 46%; }
+  .look-h .h-lens-detail {
+    position: absolute; inset: 0; background: var(--h-mint); color: var(--h-ink);
+    clip-path: circle(var(--h-r) at calc(var(--h-r) + var(--t) * (100% - 2 * var(--h-r))) 50%);
+    transition: clip-path 0.25s var(--h-ease);
+  }
+  .look-h .h-lens-detail .h-lens-cell { background: none; }
+  .look-h .h-lens-detail .h-lens-k { color: var(--h-ink); }
+  .look-h .h-lens-handle {
+    display: block; position: absolute; top: 50%; left: calc(var(--h-r) + var(--t) * (100cqw - 2 * var(--h-r)));
+    width: calc(var(--h-r) * 2); height: calc(var(--h-r) * 2); transform: translate(-50%, -50%);
+    border: 3px solid var(--h-teal); border-radius: 50%; box-shadow: 0 0 0 3px var(--h-white), 0 18px 44px rgba(20, 19, 24, 0.4);
+    cursor: grab; touch-action: pan-y; transition: left 0.25s var(--h-ease);
+  }
+  .look-h .h-lens-handle:active { cursor: grabbing; }
+  .look-h .h-lens-handle:focus-visible { outline: 3px solid var(--h-mint); outline-offset: 6px; border-radius: 50%; }
+  .look-h .h-lens-grip {
+    position: absolute; top: calc(100% + 3px); left: 50%; transform: translateX(-50%); white-space: nowrap;
+    background: var(--h-mint); color: var(--h-ink); padding: 0.45rem 0.9rem 0.85rem; clip-path: polygon(0 0, 100% 0, 100% 68%, 50% 100%, 0 68%);
+    font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .look-h .h-lens-hint { display: block; font-size: 0.9375rem; color: var(--h-on-teal-2); }
+}
 
 .look-h .h-standards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.5rem clamp(1.5rem, 3vw, 3rem); margin-top: clamp(3.5rem, 7vw, 6rem); }
 .look-h .h-standards li { display: grid; gap: 0.5rem; align-content: start; padding-top: 1.5rem; border-top: 1px solid var(--h-rule); }

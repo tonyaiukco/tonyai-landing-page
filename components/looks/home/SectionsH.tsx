@@ -2,6 +2,7 @@ import Link from "next/link";
 import { copy, demo } from "@/content/copy";
 import { formatInt } from "@/lib/format";
 import { Logo } from "@/components/Logo";
+import { AuditLens } from "./AuditLens";
 import { Arrow, Glyph, GroupTree, Play, Plus, Skyline, Windows, type GlyphName } from "./Illustrations";
 import { Sourced, Title, here } from "./parts";
 
@@ -122,7 +123,7 @@ export function DemoH() {
 export function JourneyH() {
   const j = copy.journey;
   return (
-    <section id="yontem" className="h-mist h-journey" aria-labelledby="h-nasil-baslik">
+    <section id="nasil-calisir" className="h-mist h-journey" aria-labelledby="h-nasil-baslik">
       <div className="h-split">
         <div className="h-main h-journey-head" data-reveal>
           <p className="h-eyebrow">{j.eyebrow}</p>
@@ -152,7 +153,7 @@ export function JourneyH() {
 export function ComplianceH() {
   const c = copy.compliance;
   return (
-    <section className="h-teal h-band h-comp" aria-labelledby="h-yontem-baslik">
+    <section id="yontem" className="h-teal h-band h-comp" aria-labelledby="h-yontem-baslik">
       <div className="h-wrap">
         <div className="h-two h-two-top">
           <div data-reveal>
@@ -161,9 +162,7 @@ export function ComplianceH() {
           </div>
           <p className="h-lead" data-reveal style={{ "--d": 1 } as React.CSSProperties}>{c.body}</p>
         </div>
-        <dl className="h-rec" data-reveal>
-          {demo.auditTrail.map((row) => (<div key={row.k}><dt>{row.k}</dt><dd>{row.v}</dd></div>))}
-        </dl>
+        <AuditLens />
         <ul className="h-standards">
           {c.standards.map((s, i) => (
             <li key={s.name} data-reveal style={{ "--d": i } as React.CSSProperties}>

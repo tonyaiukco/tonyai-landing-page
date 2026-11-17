@@ -23,8 +23,8 @@ export function HeroH() {
           <p className="h-eyebrow">{h.eyebrow}</p>
           <Title as="h1" id="h-hero-baslik" className="h-h1" text={h.title} at={3} accent={2} />
           <p className="h-lead">{h.lead}</p>
-          <p className="h-hero-lead2">{h.lead2}</p>
           <Link href={h.primary.href} className="h-btn">{h.primary.label}<Arrow /></Link>
+          <p className="h-hero-lead2">{h.lead2}</p>
         </div>
         <div className="h-sum">
           <p className="h-cap">{h.stage.before} · {h.stage.unit}</p>

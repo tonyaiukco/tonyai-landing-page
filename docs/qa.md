@@ -108,3 +108,13 @@ Routes checked: `/` at 390 / 820 / 1440 with reduced motion, section by section;
 
 **Open:** as in pass 9, plus the owners' decision on button colour (the review suggests brand green; `site-palette` fixes `#39c656`).
 
+## Pass 11 — 2026-11-18 (owner's look at the live homepage)
+
+**Fixed:** the primary button did not show on the owner's phone without scrolling. It now sits above the hero's second paragraph, with less space above it under 600 px: its bottom edge is at 481 px at 390 by 844, 375 by 667 and 430 by 932 px, and at 508 px at 360 by 640 px (784 px before). "Yöntem" in the navigation opened "Nasıl çalışır"; `#yontem` is now on the method and assurance section, whose heading lands 168 px from the top after the click.
+
+**Restored at the owner's request:** look D's audit lens, from 900 px up. At 1440 px a drag and the arrow keys move it and its announced value follows. At 390 px all six fields show and no handle is displayed.
+
+**Checked:** lint and build pass; the colour audit on `/` flags nothing at 1440 or 390 px; all 25 contrast pairs pass. Not re-run: Lighthouse and the previews comparison, since neither the previews' files nor the shared copy changed.
+
+**Open:** the owner's check of the hero on their own phone.
+
