@@ -63,3 +63,15 @@ Routes checked at 390 / 1440: `/tasarim/e/`, `/tasarim/e/sirket/`, `/tasarim/e/k
 **Look D unchanged:** no file under `components/looks/d` or `app/tasarim/d` differs from `main`, and reduced-motion screenshots of its five pages at both widths are pixel-identical to a build of `main` taken before the work. No shared code, copy or dependency was touched.
 
 **Open:** the owner's comparison of D and E (and C); a lawyer's view of the chosen look before it becomes `/`; a real product screen for the demo block; everything still open from pass 3.
+
+## Pass 7 — 2026-11-17 (the site in the product's palette, option C)
+
+Routes checked at 390 / 1440, with reduced motion: every route outside `/tasarim/` (`/`, `/sirket/`, `/kaynaklar/` and its three articles, `/bize-ulasin/`, `/demo/`, `/demo/tesekkurler/`, `/kayit/`, `/kayit/tesekkurler/`, the four legal pages, the 404 page). One `h1` each, no horizontal scroll, no page errors. The only target under 44 px is the 20 px consent checkbox on the three form pages, as before; its label is the tap target.
+
+**New:** every page outside `/tasarim/` moves from look C's warm palette to the product's, from `docs/Tool-Mevcut-Renk-Paleti.pdf` (change `adopt-tool-palette`). Grounds `#fafafa` / `#f3f1f6`, white cards with a `#d4d4d4` border, `#ecebf1` navigation, brand green `#1c5e3a` as the only accent, no terracotta. Option C: only the closing call to action and the footer are green. The platform panel shows the product's status pills and dots. Logo, favicon, iOS icon, share image, theme colour and the brand kit in `public/marka/` are redrawn with `docs/qa/assets.py` and `docs/qa/brand.py`.
+
+**Checked:** `components/looks/home/qa/audit.py` collects every computed text, background, border, outline, shadow, fill and stroke colour on each route at both widths. Nothing outside the palette was found (one adjusted value, `#187455`, recorded in `components/looks/home/NOTES.md`). Every text pair, field border and focus ring passes (`components/looks/home/qa/contrast.py`; the lowest is muted text on the info card, 4.56:1). The audit lens works by drag and arrow keys at both widths, and as a plain grid with reduced motion. Option A was applied temporarily (five classes and the skyline), screenshotted and audited clean, then reverted. Lighthouse mobile on `/` of the static build: 91 / 100 / 100 / 100 (performance / accessibility / best practices / SEO), colour contrast passes, CLS 0.
+
+**Previews unchanged:** `/tasarim/c/`, `/tasarim/d/`, `/tasarim/d/sirket/` and `/tasarim/d/bize-ulasin/` are pixel-identical at both widths to a build of `main` taken before the work, except for one anti-aliased pixel in look D's contact page whose green channel moved by 1. `/tasarim/c/sirket/` is not a preview page (look C has no inner pages), so it shows the site's 404 page, which is meant to change.
+
+**Open:** the owner's choice between C and A on localhost; the product's exact hex values (the PDF was measured from screenshots); whether the logo's leaf stays bright green `#39c656` or goes one-colour.

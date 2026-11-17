@@ -183,7 +183,7 @@ const ROWS = { back: row(11, 70, 130, 96, 176), mid: row(23, 56, 108, 60, 128), 
 /** One front block carries the logo's leaf above it. */
 const LEAF_ON = ROWS.front[Math.floor(ROWS.front.length * 0.62)];
 
-/** Sits at the top of a moss band. The band above shows through as the ground. */
+/** Sits at the top of a brand green band. The band above shows through as the ground. */
 export function Skyline() {
   return (
     <div className="h-sky" aria-hidden="true">

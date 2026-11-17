@@ -27,7 +27,7 @@ export function CompanyH() {
   return (
     <>
       <IntroH id="h-sirket-baslik" eyebrow={c.eyebrow} title={c.title} at={2} lead={c.lead} />
-      <section className="h-sand h-split h-story" aria-labelledby="h-hikaye">
+      <section className="h-alt h-split h-story" aria-labelledby="h-hikaye">
         <div className="h-main">
           <div data-reveal>
             <p className="h-eyebrow">{c.story.eyebrow}</p>
@@ -37,13 +37,13 @@ export function CompanyH() {
             {c.story.paragraphs.map((p, i) => (<p key={i} className={i === 0 ? "h-lead" : undefined} data-reveal>{p}</p>))}
           </div>
         </div>
-        <div className="h-panel h-paper h-facts">
+        <div className="h-panel h-light h-facts">
           <dl className="h-panel-in" data-reveal>
             {c.facts.map((f) => (<div key={f.k}><dt className="h-cap">{f.k}</dt><dd>{f.v}</dd></div>))}
           </dl>
         </div>
       </section>
-      <section className="h-moss h-band" aria-labelledby="h-ilkeler">
+      <section className="h-light h-band" aria-labelledby="h-ilkeler">
         <div className="h-wrap">
           <h2 id="h-ilkeler" className="h-eyebrow">{c.principles.eyebrow}</h2>
           <ol className="h-principles">
@@ -57,7 +57,7 @@ export function CompanyH() {
           </ol>
         </div>
       </section>
-      <section className="h-paper h-band" aria-labelledby="h-ekip">
+      <section className="h-alt h-band" aria-labelledby="h-ekip">
         <div className="h-wrap h-two h-two-top">
           <div data-reveal>
             <p className="h-eyebrow">{c.team.eyebrow}</p>
@@ -85,7 +85,7 @@ export function ResourcesH() {
   return (
     <>
       <IntroH id="h-kaynaklar-baslik" eyebrow={r.eyebrow} title={r.title} at={3} lead={r.lead} />
-      <section className="h-sand h-articles-band" aria-label="Yazılar">
+      <section className="h-alt h-articles-band" aria-label="Yazılar">
         <ul className="h-wrap h-articles">
           {r.articles.map((a, i) => (
             <li key={a.slug} data-reveal style={{ "--d": i } as React.CSSProperties}>
@@ -99,7 +99,7 @@ export function ResourcesH() {
           ))}
         </ul>
       </section>
-      <section id="sozluk" className="h-paper h-band" aria-labelledby="h-sozluk-baslik">
+      <section id="sozluk" className="h-light h-band" aria-labelledby="h-sozluk-baslik">
         <div className="h-wrap h-gloss">
           <h2 id="h-sozluk-baslik" className="h-h2" data-reveal>{r.glossaryTitle}</h2>
           <dl>
@@ -125,7 +125,7 @@ export function ArticleH({ slug }: { slug: string }) {
           <p className="h-lead">{a.summary}</p>
           <div className="h-prose">{a.body.map((p, i) => (<p key={i}>{p}</p>))}</div>
         </div>
-        <aside className="h-panel h-sand" aria-label={r.eyebrow}>
+        <aside className="h-panel h-alt" aria-label={r.eyebrow}>
           <div className="h-panel-in">
             <p className="h-eyebrow">{r.eyebrow}</p>
             <ul className="h-more">
@@ -147,9 +147,9 @@ export function ContactH() {
   return (
     <>
       <IntroH id="h-iletisim-baslik" eyebrow={c.eyebrow} title={c.title} at={2} lead={c.lead} />
-      <section className="h-sand h-split h-contact" aria-label={c.eyebrow}>
+      <section className="h-alt h-split h-contact" aria-label={c.eyebrow}>
         <div className="h-main h-form"><ContactForm /></div>
-        <aside className="h-panel h-moss" aria-labelledby="h-demo-panel">
+        <aside className="h-panel h-light" aria-labelledby="h-demo-panel">
           <div className="h-panel-in">
             <div>
               <p className="h-eyebrow">{c.panel.eyebrow}</p>
@@ -178,9 +178,9 @@ export function FormPageH({ id, page, form }: { id: string; page: Points; form: 
   return (
     <>
       <IntroH id={id} eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
-      <section className="h-sand h-split h-contact" aria-labelledby={id}>
+      <section className="h-alt h-split h-contact" aria-labelledby={id}>
         <div className="h-main h-form">{form === "register" ? <RegisterForm /> : <ContactForm variant="demo" successHref={page.successHref} />}</div>
-        <aside className="h-panel h-moss" aria-label={page.eyebrow}>
+        <aside className="h-panel h-light" aria-label={page.eyebrow}>
           <ol className="h-panel-in h-points">
             {page.points.map((p, i) => (
               <li key={p.title}>
@@ -203,7 +203,7 @@ export function ThanksH({ id, page }: { id: string; page: Thanks }) {
   return (
     <>
       <IntroH id={id} eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
-      <section className="h-paper h-band" aria-labelledby={id}>
+      <section className="h-light h-band" aria-labelledby={id}>
         <div className="h-wrap">
           <ol className="h-next">
             {page.next.map((n, i) => (

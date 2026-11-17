@@ -1,4 +1,4 @@
-TonyAI marka kiti — 2 Kasım 2026, yeni paletle güncellendi 16 Kasım 2026
+TonyAI marka kiti — 2 Kasım 2026, ürün paletiyle güncellendi 17 Kasım 2026
 
 tonyai-linkedin-logo-300.png        LinkedIn şirket sayfası logosu (300×300)
 tonyai-linkedin-kapak-1128x191.png  LinkedIn kapak görseli (yeni slogan)
@@ -8,8 +8,9 @@ tonyai-imza-logo-240.png            E-posta imzası logosu; Gmail'de 120×32 ola
 tonyai-logo-yatay.png               Yatay logo, açık zemin (1200 genişlik, şeffaf)
 tonyai-logo-yatay-koyu-zemin.png    Yatay logo, koyu zemin
 
-Renkler (tonyai.io ile aynı):
-  yosun #1F3D2B (logo blokları, koyu zemin, metin) · kâğıt #F6F1E8 (açık zemin, koyu zeminde logo blokları)
-  terakota #C96A3D (açık zeminde yaprak) · açık terakota #F0B48F (koyu zeminde yaprak) · koyu terakota #9A4622 (vurgu metni)
+Renkler (tonyai.io ve TonyAI aracıyla aynı; kaynak docs/Tool-Mevcut-Renk-Paleti.pdf):
+  marka yeşili #1C5E3A (logo blokları, koyu zemin, vurgu metni) · beyaz #FFFFFF (koyu zeminde logo blokları ve yazı)
+  parlak yeşil #39C656 (açık zeminde yaprak) · açık yeşil #B1D2BD (koyu zeminde yaprak) · soluk yeşil #E1F8EE (kart zemini)
+  zemin #FAFAFA · başlık ve logo yazısı #141318
 Yazı: Bricolage Grotesque (başlıklar) · DM Sans (metin ve logodaki "TonyAI" yazısı)
 Logo yönü D "Grup": üç şirket bloğu ve bir yaprak. Logoyu döndürmeyin, renklerini değiştirmeyin, en az 24 px yükseklikte kullanın.
