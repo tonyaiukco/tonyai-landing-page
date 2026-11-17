@@ -19,6 +19,19 @@ export function Title({ as: Tag = "h2", id, text, at, accent = 2, className = "h
   );
 }
 
+/**
+ * A figure with the line that says where it comes from, always visible beneath it.
+ * `className` styles the value, so large figures keep their own type.
+ */
+export function Sourced({ value, source, className = "" }: { value: ReactNode; source: string; className?: string }) {
+  return (
+    <span className="h-src">
+      <span className={`h-src-v ${className}`}>{value}</span>
+      <span className="h-src-s">{source}</span>
+    </span>
+  );
+}
+
 /** Small caption above a button, as on the reference. */
 export function Noted({ note, children }: { note: string; children: ReactNode }) {
   return (<div className="h-noted"><p>{note}</p>{children}</div>);

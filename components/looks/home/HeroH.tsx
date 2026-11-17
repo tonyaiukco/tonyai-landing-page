@@ -2,13 +2,13 @@ import Link from "next/link";
 import { copy, demo } from "@/content/copy";
 import { formatInt } from "@/lib/format";
 import { Arrow, HeroDrawing, Play } from "./Illustrations";
-import { Title, here } from "./parts";
+import { Sourced, Title, here } from "./parts";
 
 const h = copy.hero;
 
 /**
- * Hero: six facilities in three overlapping groups, the shared middle is the consolidated total.
- * The mint card states that total; its teal base holds the page's primary call to action. No pin.
+ * Hero: six sector blocks wired to one total. The bright green card states that total with its source;
+ * its green base holds the page's primary call to action. The five-verb flow runs along the foot.
  */
 export function HeroH() {
   return (
@@ -25,12 +25,11 @@ export function HeroH() {
           </ul>
         </div>
         <div className="h-hero-art">
-          <HeroDrawing labels={demo.subsidiaries.map((s) => s.sector)} />
+          <HeroDrawing items={demo.subsidiaries} label={h.drawingLabel} />
           <div className="h-cert">
             <div className="h-cert-top">
               <p className="h-cert-label">{h.stage.after} · {demo.period}</p>
-              <p className="h-cert-figure">{formatInt(demo.total)}<small>{h.stage.unit}</small></p>
-              <p className="h-cert-note">{h.stage.footer}</p>
+              <p><Sourced className="h-cert-figure" value={<>{formatInt(demo.total)}<small>{h.stage.unit}</small></>} source={`${h.stage.footer} · ${h.stage.approved}`} /></p>
             </div>
             <div className="h-cert-base">
               <p>{h.flow.caption}</p>
@@ -38,6 +37,17 @@ export function HeroH() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="h-wrap h-flow">
+        <p className="h-cap">{h.flow.label}</p>
+        <ol>
+          {h.flow.steps.map((s) => (
+            <li key={s.verb}>
+              <span className="h-flow-verb">{s.verb}</span>
+              <ul>{s.keywords.map((k) => (<li key={k}>{k}</li>))}</ul>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

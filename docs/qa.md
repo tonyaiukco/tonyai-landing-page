@@ -83,3 +83,16 @@ Routes checked at 390 / 1440, with reduced motion: every route outside `/tasarim
 **New:** the homepage look is now a copy of look D with three differences only: the product's palette (D's teal, mint and mist mapped to brand green, Kapsam 1 green and the "Canlı veri" mint), Schibsted Grotesk in place of Outfit, and the live block skyline in place of the treeline. Demo, Kayıt, thank-you, legal and 404 pages, which D links out to, are restyled in D's look. Details in `components/looks/home/NOTES.md`.
 
 **Checked:** the colour audit finds nothing outside the palette on any route at either width. All 18 contrast pairs pass (`qa/contrast.py`; bright green on brand only at large sizes). The lens works by drag and arrow keys at both widths. Lighthouse mobile on `/` of the static build: 97 / 100 / 100 / 100, colour contrast passes, CLS 0. `/tasarim/c/` and look D's four pages are pixel-identical at both widths to a build of `main` taken before the work.
+
+## Pass 9 — 2026-11-18 (homepage redesign from the 16 November comparison)
+
+Routes checked: `/` at 390 / 820 / 1440 with reduced motion; every route outside `/tasarim/` in the colour audit. One `h1`, no horizontal scroll, no page errors, no target under 44 px on the homepage.
+
+**New:** drawings built from the logo's block and leaf in place of look D's Venn diagram, head office, sun, trees, clouds, birds and map pins; source tags on the hero total, the scope totals, the journey's invoice and result, and the before/after total; the five-verb flow in the hero; "TonyAI farkı" as a numbered list; before/after as a pile of spreadsheet windows against one TonyAI screen; a plain closing call to action; the hosting placeholder no longer rendered; nine unused font packages removed. Details in `components/looks/home/NOTES.md`.
+
+**Checked:** the colour audit finds nothing outside the palette (the only flag is `/yok/`, where the local test server answers with its own 404 page). All 25 contrast pairs pass. No element in the hero, "TonyAI farkı" or before/after is wider than its box at 390, 820 or 1440 px. Two full-page captures taken ten seconds apart on an idle page are identical. With scripts off, all seven source lines are visible. Lighthouse mobile on `/` of the static build: performance 98, accessibility 100, colour contrast passes. `/tasarim/c/` and `/tasarim/d/` have byte-identical markup and stylesheets to a build of `main` taken before the work; look D is pixel-identical at both widths, and look C differs between two captures of the same build, so pixels cannot settle it.
+
+**Page height at 1440 px:** 11,459 px before, 11,752 px after; the report's target was under 9,000 px. "TonyAI farkı" lost 342 px and the closing band 60 px; the flow row added 257 px to the hero and the before/after pictures 480 px. The tallest sections are "TonyAI farkı" (1,769 px), Platform (1,741 px), the journey (1,526 px) and before/after (1,494 px).
+
+**Open:** the owners' approval of the seven new Turkish strings; the demo video; real product screens; a side-by-side look against sweep.net. `/kvkk/` still shows bracketed placeholders (`[Şirket unvanı], [adres]`) under its draft banner. Full-page captures at 390 px wrap around past 16,384 px, so the foot of the phone page was checked by section captures.
+

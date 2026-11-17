@@ -1,27 +1,14 @@
-import type { ReactNode } from "react";
+import type { CSSProperties } from "react";
 
 /**
- * Look D line art. Every stroke is 1.5 px in currentColor, so one drawing works on teal and on white.
- * Paths carry pathLength=1 so `.h-draw` can draw them on with stroke-dashoffset.
+ * The homepage's drawings. Glyphs are 1.5 px line icons in currentColor, with pathLength=1 so they draw on as their block is revealed.
+ * Everything else is built from the logo's two shapes, the rounded block and the leaf, as flat fills (`.h-blk-1/2/3`).
  */
 
 const circ = (cx: number, cy: number, r: number) => `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`;
 
 /** 48 × 48 glyphs, each a list of path data. */
 const GLYPHS = {
-  // Six facilities, one per subsidiary sector
-  factory: ["M4 40h40", "M8 40V25l9 5v-5l9 5v-5l8 4.4", "M34 40V10h6v30", "M13 35h4M22 35h4"],
-  energy: ["M15 40h18", "M24 40V21", circ(24, 18.5, 2.5), "M24 16V4", "M26.2 19.8l10.4 6", "M21.8 19.8l-10.4 6"],
-  truck: ["M3 40h42", "M5 14h23v20H5z", "M28 21h8l7 7v6H28", circ(13, 35, 3.5), circ(36, 35, 3.5)],
-  warehouse: ["M4 40h40", "M7 40V19l17-10 17 10v21", "M16 40V26h16v14", "M16 30.7h16M16 35.3h16"],
-  crates: ["M4 40h40", "M8 40V25h14v15", "M26 40V25h14v15", "M17 25V10h14v15", "M13 25v5h4v-5M31 25v5h4v-5M22 10v5h4v-5"],
-  shop: ["M4 40h40", "M9 40V22M39 40V22", "M5 22l4-11h30l4 11z", "M5 22a4.75 4.75 0 0 0 9.5 0a4.75 4.75 0 0 0 9.5 0a4.75 4.75 0 0 0 9.5 0a4.75 4.75 0 0 0 9.5 0", "M20 40V29h8v11"],
-  // "TonyAI farkı"
-  import: ["M9 6h20v36H9z", "M14 14h10M14 20h10M14 26h10M14 32h6", "M44 24H33", "M37 19l-5 5 5 5"],
-  group: ["M18 6h12v10H18z", "M24 16v7", "M12 30v-7h24v7", "M6 30h12v10H6z", "M30 30h12v10H30z"],
-  audit: [circ(21, 21, 12), "M30 30l11 11", "M15.5 21.5l4 4 7-8"],
-  layers: ["M24 7l18 9-18 9-18-9z", "M6 24l18 9 18-9", "M6 32l18 9 18-9"],
-  forecast: ["M8 7v33h33", "M13 32l8-8 6 4 6-10"],
   // Platform modules
   calc: ["M12 6h24v36H12z", "M17 11h14v8H17z", "M18 26h2M23 26h2M28 26h2M18 31h2M23 31h2M28 31h2M18 36h2M23 36h7"],
   merge: ["M6 10h10l9 14", "M6 38h10l9-14", "M6 24h35", "M35 18l6 6-6 6"],
@@ -36,15 +23,10 @@ const GLYPHS = {
 
 export type GlyphName = keyof typeof GLYPHS;
 
-function Paths({ name }: { name: GlyphName }) {
-  return <>{GLYPHS[name].map((d) => (<path key={d} pathLength={1} d={d} />))}</>;
-}
-
 export function Glyph({ name, size = 48, className = "" }: { name: GlyphName; size?: number; className?: string }) {
   return (
     <svg className={`h-ico ${className}`} width={size} height={size} viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <Paths name={name} />
-      {name === "forecast" && <path className="h-nodraw" d="M33 18l8-9" strokeDasharray="2.5 3.5" />}
+      {GLYPHS[name].map((d) => (<path key={d} pathLength={1} d={d} />))}
     </svg>
   );
 }
@@ -59,100 +41,85 @@ export const Play = ({ size = 14 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3" /></svg>
 );
 
-/** Filled map pin with a number, for the journey route. */
-export function Pin({ children }: { children: ReactNode }) {
-  return (
-    <span className="h-pin" aria-hidden="true">
-      <svg width="44" height="54" viewBox="0 0 44 54"><path d="M22 53C22 53 3 33.5 3 21a19 19 0 0 1 38 0c0 12.5-19 32-19 32z" fill="currentColor" /></svg>
-      <b>{children}</b>
-    </span>
-  );
+/* ---------- Block drawings ---------- */
+
+type Tone = 1 | 2 | 3;
+
+/** The logo's block: corner radius 24% of the shorter side unless `r` is given. */
+function Block({ x, y, w, h = w, r, tone }: { x: number; y: number; w: number; h?: number; r?: number; tone: Tone }) {
+  return <rect className={`h-blk-${tone}`} x={x} y={y} width={w} height={h} rx={r ?? Math.min(w, h) * 0.24} />;
 }
 
-const CLOUD = "M9 24h36a9 9 0 0 0 1.5-17.9A13 13 0 0 0 22 3.5 10.5 10.5 0 0 0 9 24z";
-const BIRD = "M0 5q4.5-6 9 0q4.5-6 9 0";
-
-function Sky({ clouds, birds }: { clouds: Array<[number, number, number]>; birds: Array<[number, number, number]> }) {
-  return (
-    <>
-      {clouds.map(([x, y, s]) => (<path key={`c${x}`} pathLength={1} d={CLOUD} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={1.5 / s} />))}
-      {birds.map(([x, y, s]) => (<path key={`b${x}`} pathLength={1} d={BIRD} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={1.5 / s} />))}
-    </>
-  );
-}
-
-/** Outlined conifer, base centre at (x, b), scaled by s. */
-const lineTree = (x: number, b: number, s: number) =>
-  `M${x} ${b}v${-9 * s}M${x - 15 * s} ${b - 9 * s}h${30 * s}l${-10 * s} ${-15 * s}h${5 * s}l${-9 * s} ${-14 * s}h${4 * s}l${-5 * s} ${-13 * s}l${-5 * s} ${13 * s}h${4 * s}l${-9 * s} ${14 * s}h${5 * s}z`;
+/** Where each subsidiary's block stands: left edge, baseline and tone, in subsidiary order. */
+const HERO_SPOTS: Array<[number, number, Tone]> = [[30, 150, 1], [225, 150, 3], [410, 150, 1], [120, 300, 3], [310, 300, 2], [515, 300, 1]];
+const HERO_BUS = 345;
+const HERO_MAX = 110;
 
 /**
- * Hero: three dashed groups overlap; six facilities sit in them and the shared middle is the consolidated total.
- * `labels` are the six sector names, in subsidiary order.
+ * Hero: one block per subsidiary, its side scaled to the square root of its emissions so areas compare,
+ * each wired down to a bus that drops into the total card overlapping the foot of the drawing.
  */
-export function HeroDrawing({ labels }: { labels: string[] }) {
-  const spots: Array<[GlyphName, number, number]> = [
-    ["factory", 95, 200], ["energy", 196, 128], ["truck", 440, 122], ["warehouse", 548, 200], ["crates", 128, 330], ["shop", 218, 382],
-  ];
-  const groups = [{ cx: 220, cy: 200, rx: 200, ry: 110 }, { cx: 420, cy: 190, rx: 200, ry: 110 }, { cx: 320, cy: 320, rx: 210, ry: 115 }];
+export function HeroDrawing({ items, label }: { items: Array<{ sector: string; value: number }>; label: string }) {
+  const top = Math.max(...items.map((it) => it.value));
+  const blocks = items.map((it, i) => {
+    const [x, base, tone] = HERO_SPOTS[i];
+    const side = Math.round(HERO_MAX * Math.sqrt(it.value / top));
+    return { ...it, x, base, tone, side, cx: x + side / 2 };
+  });
+  const first = blocks[0];
   return (
-    <svg className="h-hero-svg h-draw" viewBox="0 0 640 450" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <defs>
-        <clipPath id="h-hero-b"><ellipse {...groups[1]} /></clipPath>
-        <clipPath id="h-hero-c"><ellipse {...groups[2]} /></clipPath>
-      </defs>
-      {groups.map((g) => (<ellipse key={g.cx} className="h-hero-zone" {...g} />))}
-      <g clipPath="url(#h-hero-c)"><ellipse className="h-hero-core" {...groups[0]} clipPath="url(#h-hero-b)" /></g>
-      <g className="h-hero-total">
-        <path className="h-nodraw" d="M298 228v30a22 8.5 0 0 0 44 0v-30z" />
-        <ellipse cx="320" cy="228" rx="22" ry="8.5" />
-      </g>
-      <g className="h-hero-sky"><Sky clouds={[[548, 28, 1.25], [10, 50, 0.9]]} birds={[[330, 40, 1], [356, 54, 0.75]]} /></g>
-      {spots.map(([name, x, y], i) => (
-        <g key={name}>
-          <g transform={`translate(${x - 24} ${y - 24})`}><Paths name={name} /></g>
-          <text className="h-hero-tag" x={x} y={y + 37} textAnchor="middle">{labels[i]}</text>
+    <svg className="h-hero-svg" viewBox="0 0 640 450" role="img" aria-label={label}>
+      <path className="h-blk-line" d={`${blocks.map((b) => `M${b.cx} ${b.base + 34}V${HERO_BUS}`).join("")}M${Math.min(...blocks.map((b) => b.cx))} ${HERO_BUS}H${Math.max(...blocks.map((b) => b.cx))}M400 ${HERO_BUS}V450`} />
+      {blocks.map((b) => (
+        <g key={b.sector}>
+          <Block x={b.x} y={b.base - b.side} w={b.side} tone={b.tone} />
+          <text className="h-hero-tag" x={b.cx} y={b.base + 22} textAnchor="middle">{b.sector}</text>
         </g>
       ))}
+      <path className="h-blk-2" d={leaf(first.x + first.side + 12, first.base, 58)} />
     </svg>
   );
 }
 
-/** "TonyAI farkı": a head office wired to three subsidiaries, with trees, clouds and birds. */
-export function GroupDrawing() {
+const GROUP_COMPANIES = [{ x: 25, rows: 3 }, { x: 185, rows: 2 }, { x: 345, rows: 2 }];
+const GROUP_FOOT = 255;
+
+/** "TonyAI farkı": a holding block holding three company blocks, which hold fourteen location blocks. */
+export function GroupDrawing({ label }: { label: string }) {
   return (
-    <svg className="h-group-svg h-draw" viewBox="0 0 520 350" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <Sky clouds={[[392, 14, 1.5], [330, 0, 0.9]]} birds={[[40, 58, 1.1], [72, 78, 0.8], [118, 50, 0.9]]} />
-      <path pathLength={1} d="M10 320h500" /><path pathLength={1} d="M48 334h120" /><path pathLength={1} d="M330 334h70" />
-      {/* Head office */}
-      <path pathLength={1} d="M218 62h84v104h-84z" /><path pathLength={1} d="M260 62V40h16v9h-16" />
-      <path pathLength={1} d="M234 84h52M234 104h52M234 124h52M234 144h52" />
-      {/* Bus */}
-      <path pathLength={1} d="M260 166v38" /><path pathLength={1} d="M112 246v-42h296v42" /><path pathLength={1} d="M260 204v42" />
-      {/* Factory, warehouse, office */}
-      <path pathLength={1} d="M62 320v-50l26 15v-15l26 15v-15l22 12.7" /><path pathLength={1} d="M136 320v-74h12v74" />
-      <path pathLength={1} d="M214 320v-52l46-22 46 22v52" /><path pathLength={1} d="M242 320v-32h36v32" /><path pathLength={1} d="M242 299h36M242 309h36" />
-      <path pathLength={1} d="M372 320v-74h76v74" /><path pathLength={1} d="M372 264h76" />
-      <path pathLength={1} d="M388 282h14v12h-14zM418 282h14v12h-14z" /><path pathLength={1} d="M402 320v-14h16v14" />
-      <path pathLength={1} d={lineTree(24, 320, 1.7)} /><path pathLength={1} d={lineTree(486, 320, 2.4)} /><path pathLength={1} d={lineTree(182, 320, 1.1)} />
+    <svg className="h-group-svg" viewBox="0 0 520 280" role="img" aria-label={label}>
+      <Block x={0} y={0} w={520} h={280} r={40} tone={3} />
+      {GROUP_COMPANIES.map((c) => {
+        const h = c.rows * 60 + 30;
+        return (
+          <g key={c.x}>
+            <Block x={c.x} y={GROUP_FOOT - h} w={150} h={h} r={20} tone={1} />
+            {Array.from({ length: c.rows * 2 }, (_, k) => (
+              <Block key={k} x={c.x + 22 + (k % 2) * 60} y={GROUP_FOOT - h + 22 + Math.floor(k / 2) * 60} w={46} tone={2} />
+            ))}
+          </g>
+        );
+      })}
     </svg>
   );
 }
 
-/** Final CTA: sun, clouds and a few trees on the horizon. */
-export function HorizonDrawing() {
-  const rays = Array.from({ length: 9 }, (_, i) => {
-    const a = (Math.PI * (200 + i * 20)) / 180;
-    const p = (r: number) => `${(160 + Math.cos(a) * r).toFixed(1)} ${(150 + Math.sin(a) * r).toFixed(1)}`;
-    return `M${p(58)}L${p(i % 2 ? 78 : 92)}`;
-  });
+/** Where the "before" windows lie: left as a share of the free width (0 to 100), top %, tilt in degrees, and the row that holds a missing cell (0 for none). */
+const WINDOWS: Array<[number, number, number, number]> = [
+  [0, 8, -4, 2], [23, 34, 3, 0], [12, 58, -2, 3], [45, 4, 2, 0], [55, 44, -3, 1], [76, 18, 4, 3], [85, 56, -1, 0], [100, 2, -3, 2], [95, 36, 2, 0],
+];
+
+/** "Önce": spreadsheet windows piled on one another. Decorative; the list beside it says the same in words. */
+export function Windows() {
   return (
-    <svg className="h-horizon-svg h-draw" viewBox="0 0 420 260" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path pathLength={1} d="M116 150a44 44 0 0 1 88 0" />
-      {rays.map((d) => (<path key={d} pathLength={1} d={d} />))}
-      <Sky clouds={[[238, 118, 1.9], [18, 30, 1.2]]} birds={[[300, 40, 1.2], [334, 60, 0.85]]} />
-      <path pathLength={1} d="M0 236h420" /><path pathLength={1} d="M40 250h110" /><path pathLength={1} d="M250 250h60" />
-      <path pathLength={1} d={lineTree(352, 236, 2.2)} /><path pathLength={1} d={lineTree(60, 236, 1.2)} /><path pathLength={1} d={lineTree(396, 236, 1.2)} />
-    </svg>
+    <div className="h-wins" aria-hidden="true">
+      {WINDOWS.map(([left, top, tilt, miss], i) => (
+        <span key={i} className="h-win" style={{ "--x": left / 100, top: `${top}%`, "--tilt": `${tilt}deg` } as CSSProperties}>
+          <span className="h-win-bar"><i /><i /><i /></span>
+          <span className="h-win-grid">{miss > 0 && <i style={{ gridRow: miss + 1 }} />}</span>
+        </span>
+      ))}
+    </div>
   );
 }
 

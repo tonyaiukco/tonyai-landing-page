@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
+
 /**
  * A column of ten square segments filled from the bottom. `filled` is 0–10.
  * Decorative: the figure itself is always given as text next to it.
  */
-export function Meter({ filled, label, sub, className = "" }: { filled: number; label: string; sub?: string; className?: string }) {
+export function Meter({ filled, label, sub, className = "" }: { filled: number; label: string; sub?: ReactNode; className?: string }) {
   return (
     <div className={`h-meter ${className}`}>
       <span className="h-meter-col" aria-hidden="true">

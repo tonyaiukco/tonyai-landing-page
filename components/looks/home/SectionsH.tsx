@@ -3,9 +3,9 @@ import { copy, demo } from "@/content/copy";
 import { formatInt } from "@/lib/format";
 import { Logo } from "@/components/Logo";
 import { AuditLens } from "./AuditLens";
-import { Arrow, Glyph, GroupDrawing, HorizonDrawing, Pin, Play, Plus, Skyline, type GlyphName } from "./Illustrations";
+import { Arrow, Glyph, GroupDrawing, Play, Plus, Skyline, Windows, type GlyphName } from "./Illustrations";
 import { Meter, segments } from "./Meter";
-import { Noted, Title, here } from "./parts";
+import { Noted, Sourced, Title, here } from "./parts";
 
 export function StripH() {
   const s = copy.strip;
@@ -14,13 +14,10 @@ export function StripH() {
       <div className="h-wrap h-strip-inner">
         <p className="h-cap">{s.label}</p>
         <ul>{s.standards.map((st) => (<li key={st}>{st}</li>))}</ul>
-        {s.facts.map((f) => (<p key={f.label} className="h-strip-fact"><b>{f.value}</b>{f.label}</p>))}
       </div>
     </section>
   );
 }
-
-const diffGlyphs: GlyphName[] = ["import", "group", "audit", "layers", "forecast"];
 
 export function DifferenceH() {
   const d = copy.difference;
@@ -29,29 +26,31 @@ export function DifferenceH() {
     <section className="h-teal h-diff" aria-labelledby="h-fark-baslik">
       <Skyline />
       <div className="h-wrap">
-        <div className="h-two">
+        <div className="h-two h-two-top h-diff-cols">
           <div data-reveal>
             <p className="h-eyebrow">{d.eyebrow}</p>
             <Title id="h-fark-baslik" text={d.title} at={4} />
             <p className="h-lead">{d.lead}</p>
+            <div className="h-diff-art"><GroupDrawing label={d.drawingLabel} /></div>
           </div>
-          <div className="h-diff-art" data-reveal><GroupDrawing /></div>
+          <ol className="h-diff-list">
+            {d.cards.map((c, i) => (
+              <li key={c.title} data-reveal>
+                <span className="h-diff-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="h-h3">{c.title}</h3>
+                  <p>{c.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
-        <ol className="h-diff-grid">
-          {d.cards.map((c, i) => (
-            <li key={c.title} className="h-draw" data-reveal style={{ "--d": i % 3 } as React.CSSProperties}>
-              <Glyph name={diffGlyphs[i]} />
-              <h3 className="h-h3">{c.title}</h3>
-              <p>{c.body}</p>
-            </li>
-          ))}
-        </ol>
       </div>
       <div className="h-split h-diff-foot">
         <div className="h-main" data-reveal>
           <h3 className="h-h3 h-h3-lg">{stage.after}<span>{demo.period}</span></h3>
           <div className="h-meters">
-            {demo.scopes.map((sc) => (<Meter key={sc.label} filled={segments(sc.value, demo.total)} label={sc.label} sub={`${formatInt(sc.value)} ${stage.unit}`} />))}
+            {demo.scopes.map((sc) => (<Meter key={sc.label} filled={segments(sc.value, demo.total)} label={sc.label} sub={<Sourced value={`${formatInt(sc.value)} ${stage.unit}`} source={sc.source} />} />))}
           </div>
         </div>
         <div className="h-panel h-mist">
@@ -81,7 +80,7 @@ export function PlatformH() {
         </div>
         <ol className="h-modules">
           {p.modules.map((m, i) => (
-            <li key={m.name} className="h-draw" data-reveal style={{ "--d": i % 2 } as React.CSSProperties}>
+            <li key={m.name} data-reveal style={{ "--d": i % 2 } as React.CSSProperties}>
               <Glyph name={moduleGlyphs[i]} size={44} />
               <h3 className="h-h3">{m.name}</h3>
               <p>{m.body}</p>
@@ -137,9 +136,6 @@ export function DemoH() {
   );
 }
 
-/** Pin centres alternate across the rail so the route zigzags like a path on a map. */
-const railX = (i: number) => (i % 2 ? 62 : 22);
-
 export function JourneyH() {
   const j = copy.journey;
   return (
@@ -151,21 +147,16 @@ export function JourneyH() {
           <p className="h-lead">{j.lead}</p>
         </div>
         <ol className="h-steps">
-          {j.steps.map((s, i) => (
+          {j.steps.map((s) => (
             <li key={s.n}>
               <div className="h-step" data-reveal>
-                <div className="h-rail" aria-hidden="true">
-                  {i < j.steps.length - 1 && (
-                    <svg viewBox="0 0 84 100" preserveAspectRatio="none"><path d={`M${railX(i)} 0L${railX(i + 1)} 100`} vectorEffect="non-scaling-stroke" /></svg>
-                  )}
-                  <span style={{ left: `${railX(i) - 22}px` }}><Pin>{s.n}</Pin></span>
-                </div>
+                <div className="h-rail" aria-hidden="true"><b>{s.n}</b></div>
                 <div>
                   <h3 className="h-h3">{s.name}</h3>
                   <p>{s.body}</p>
                 </div>
               </div>
-              <p className="h-step-ex"><span data-reveal style={{ "--d": 1 } as React.CSSProperties}><span className="h-cap">{j.exampleLabel}</span>{s.example}</span></p>
+              <p className="h-step-ex"><span data-reveal style={{ "--d": 1 } as React.CSSProperties}><span className="h-cap">{j.exampleLabel}</span>{s.figure ? (<>{s.figure.lead}<Sourced value={s.figure.value} source={s.figure.source} /></>) : s.example}</span></p>
             </li>
           ))}
         </ol>
@@ -205,7 +196,6 @@ export function ComplianceH() {
           <div data-reveal style={{ "--d": 1 } as React.CSSProperties}>
             <h3 className="h-h3">{c.security.title}</h3>
             <p>{c.security.body}</p>
-            <p className="h-note">{c.security.note}</p>
           </div>
         </div>
       </div>
@@ -215,6 +205,7 @@ export function ComplianceH() {
 
 export function ProofH() {
   const p = copy.proof;
+  const stage = copy.hero.stage;
   return (
     <section className="h-white h-proof" aria-labelledby="h-ornek-baslik">
       <div className="h-wrap h-proof-top">
@@ -225,27 +216,36 @@ export function ProofH() {
           </div>
           <p className="h-lead" data-reveal style={{ "--d": 1 } as React.CSSProperties}>{p.lead}</p>
         </div>
-        <div className="h-ba">
-          <div data-reveal>
+        <div className="h-ba" data-reveal>
+          <Windows />
+          <div>
             <h3 className="h-cap">{p.before.label}</h3>
             <ul className="h-ticks h-ticks-x">{p.before.items.map((it) => (<li key={it}><Glyph name="cross" size={20} />{it}</li>))}</ul>
-          </div>
-          <div data-reveal style={{ "--d": 1 } as React.CSSProperties}>
-            <h3 className="h-cap">{p.after.label}</h3>
-            <ul className="h-ticks">{p.after.items.map((it) => (<li key={it}><Glyph name="check" size={20} />{it}</li>))}</ul>
           </div>
         </div>
       </div>
       <div className="h-split h-proof-foot">
-        <div className="h-teal h-proof-said">
+        <div className="h-teal h-proof-said" data-reveal>
           <p className="h-lead">{p.after.title}</p>
+          <h3 className="h-cap">{p.after.label}</h3>
+          <ul className="h-ticks">{p.after.items.map((it) => (<li key={it}><Glyph name="check" size={20} />{it}</li>))}</ul>
           <p className="h-disclaimer">{p.disclaimer}</p>
         </div>
-        <p className="h-proof-figure">
-          <span className="h-proof-num">{p.after.metric.value}</span>
-          <span className="h-proof-unit">{p.after.metric.unit}</span>
-          <span className="h-proof-label">{p.after.metric.label}</span>
-        </p>
+        <div className="h-proof-shot">
+          <div className="h-scr" data-reveal>
+            <div className="h-scr-bar"><Logo /><span>{demo.period}</span></div>
+            <div className="h-scr-in">
+              <p className="h-cap">{p.after.metric.label}</p>
+              <p><Sourced className="h-scr-total" value={<>{p.after.metric.value}<small>{p.after.metric.unit}</small></>} source={`${stage.footer} · ${stage.approved}`} /></p>
+              <ul className="h-scr-scopes">
+                {demo.scopes.map((sc) => (<li key={sc.label}><span>{sc.label}</span><b>{formatInt(sc.value)}</b></li>))}
+              </ul>
+              <ul className="h-scr-rows">
+                {demo.subsidiaries.map((sub) => (<li key={sub.name}><span>{sub.name}<small>{sub.sector}</small></span><b>{formatInt(sub.value)}</b></li>))}
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -278,16 +278,12 @@ export function FinalCtaH() {
   return (
     <section className="h-teal h-final" aria-labelledby="h-son-baslik">
       <Skyline />
-      <div className="h-wrap h-two">
-        <div data-reveal>
-          <Title id="h-son-baslik" text={f.title} at={2} />
-          <p className="h-lead">{f.body}</p>
-          <div className="h-final-actions">
-            <Link href={f.primary.href} className="h-btn">{f.primary.label}<Arrow /></Link>
-            <Link href={here(f.secondary.href)} className="h-btn h-btn-line">{f.secondary.label}</Link>
-          </div>
+      <div className="h-wrap" data-reveal>
+        <Title id="h-son-baslik" text={f.title} at={2} />
+        <p className="h-lead">{f.body}</p>
+        <div className="h-final-actions">
+          <Link href={f.primary.href} className="h-btn">{f.primary.label}<Arrow /></Link>
         </div>
-        <div className="h-final-art" data-reveal><HorizonDrawing /></div>
       </div>
     </section>
   );

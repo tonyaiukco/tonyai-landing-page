@@ -25,9 +25,9 @@ export const demo = {
   ],
   total: 164700,
   scopes: [
-    { label: "Kapsam 1", value: 77400 },
-    { label: "Kapsam 2", value: 63500 },
-    { label: "Kapsam 3", value: 23800 },
+    { label: "Kapsam 1", value: 77400, source: "Yakıt ve soğutucu gaz kayıtları" },
+    { label: "Kapsam 2", value: 63500, source: "Elektrik faturaları · şebeke emisyon faktörü" },
+    { label: "Kapsam 3", value: 23800, source: "İş seyahati, atık ve lojistik kayıtları" },
   ],
   locations: 14,
   categories: 11,
@@ -80,6 +80,7 @@ export const copy = {
     primary: { label: "Bugün demo talep edin", href: "/demo/" },
     secondary: { label: "Demoyu izleyin", href: "/#demo" },
     trust: ["ISO 14064-1", "GHG Protokolü", "TSRS", "IFRS S2"],
+    drawingLabel: "Altı sektörden altı şirket: İmalat, Enerji, Taşımacılık, Dağıtım, Toptan ve Perakende. Hepsi tek bir konsolide toplamda birleşir.",
     flow: {
       label: "TonyAI ile akış",
       steps: [
@@ -114,6 +115,7 @@ export const copy = {
 
   difference: {
     eyebrow: "TonyAI farkı",
+    drawingLabel: "Grup yapısı: bir holding, içinde şirketler, şirketlerin içinde lokasyonlar.",
     title: "Tek şirket için sade. Grup için bir o kadar kolay.",
     lead: "Tek lokasyonlu bir işletmeye de, yirmi şirketli bir holdinge de en sade ve verimli akışı öneriyoruz. TonyAI yapınızı olduğu gibi modeller ve her rakamı kaynağına bağlar; şirket sayısı arttıkça iş zorlaşmaz, yalnızca toplam büyür. Yapay zekâ destekli öngörü teknikleriyle strateji geliştirmenize yardımcı olur.",
     cards: [
@@ -220,8 +222,8 @@ export const copy = {
     exampleLabel: "Örnek",
     steps: [
       { n: "01", name: "Planla", body: "Yapınızı, raporlama sınırını ve dönemi tanımlayın. Hangi şirket hangi kategoriyi girecek, baştan belli olsun.", example: "Kocaeli tesisi · 2026 Ç1 · Elektrik kategorisi açıldı." },
-      { n: "02", name: "Topla", body: "Mevcut tablolarınız ve faturalarınız aktarılır; zorunlu alanlar, birimler ve eksikler anında görünür.", example: "Mart faturası okundu: 45.000 kWh." },
-      { n: "03", name: "Hesapla", body: "Emisyonlar ISO 14064-1 ve GHG Protokolü'ne göre, tek emisyon faktörü kütüphanesiyle hesaplanır.", example: "45.000 kWh × 0,442 = 19,89 tCO₂e · Kapsam 2." },
+      { n: "02", name: "Topla", body: "Mevcut tablolarınız ve faturalarınız aktarılır; zorunlu alanlar, birimler ve eksikler anında görünür.", example: "Mart faturası okundu: 45.000 kWh.", figure: { lead: "Mart faturası okundu", value: "45.000 kWh", source: "Fatura 2026-03-ELK-0417.pdf" } },
+      { n: "03", name: "Hesapla", body: "Emisyonlar ISO 14064-1 ve GHG Protokolü'ne göre, tek emisyon faktörü kütüphanesiyle hesaplanır.", example: "45.000 kWh × 0,442 = 19,89 tCO₂e · Kapsam 2.", figure: { lead: "Kapsam 2", value: "19,89 tCO₂e", source: "45.000 kWh × 0,442 tCO₂e/MWh · Türkiye şebeke, 2024" } },
       { n: "04", name: "Doğrula", body: "Kayıtlar incelemeden ve onaydan geçer; her değerin kaynağı ve geçmişi yanında durur.", example: "Veri sorumlusu girdi, grup sürdürülebilirlik onayladı." },
       { n: "05", name: "Raporla", body: "TSRS ile uyumlu raporu yöntem notları ve kanıt bağlantılarıyla üretin; PDF ve Excel olarak paylaşın.", example: "Satır, faturasına bağlı olarak TSRS raporunda." },
       { n: "06", name: "Harekete geç", body: "Emisyonun nereden geldiğini görün, senaryoları karşılaştırın, azaltım önceliklerinizi belirleyin.", example: "LED dönüşümü −%6, güneş çatısı −%14: 2030 hedefine uzaklık güncellendi." },
