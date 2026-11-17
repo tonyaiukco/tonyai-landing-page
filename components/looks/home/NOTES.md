@@ -24,22 +24,20 @@ Since 17 November 2026 the homepage look is built on look D ("Orman", `/tasarim/
 
 ## What the homepage no longer takes from look D (18 November 2026)
 
-- **Drawings come from the logo.** D's Venn diagram, head office, sun, trees, clouds, birds and map pins are gone. `Illustrations.tsx` builds everything from the logo's rounded block (`Block`, corner radius 24% of the side) and its leaf (`leaf()`), as flat fills. Three classes set the fill, so a drawing follows its ground:
-
-  | Class | On white or mist | On brand green |
-  |---|---|---|
-  | `.h-blk-1` | brand green `#1c5e3a` | white (through `--h-blk-1`) |
-  | `.h-blk-2` | Kapsam 1 green `#39c656` | the same |
-  | `.h-blk-3` | donut green `#b1d2bd` | the same |
-
-  The drawings: `HeroDrawing` (one block per subsidiary, its area in proportion to its emissions, wired to the total card), `GroupDrawing` (a holding in `.h-blk-3` holding three companies in `.h-blk-1`, which hold 14 locations in `.h-blk-2`, the number in `demo.locations`), the journey's numbered block markers on a straight line, and `Windows` (the "Önce" pile of spreadsheet windows, decorative). The two that carry meaning are `role="img"` with a label from the copy. Kapsam 2 blue and Kapsam 3 purple are not used in drawings.
-- **Source tags.** `Sourced` in `parts.tsx` shows a figure and, beneath it, the line that says where it comes from: the hero total, the three scope totals, journey steps 02 and 03 (through the copy's `figure` field), and the total in the "Sonra" screen. A new emissions total or activity quantity on the homepage goes through it. The last journey step's scenario percentages carry none.
-- **Content.** The hero shows the five-verb flow along its foot (five columns; a ruled list under 900 px). The strip lists standards only. "TonyAI farkı" is a numbered, ruled list beside the heading, without glyphs. The closing call to action has one button and no drawing. The bracketed hosting placeholder (`compliance.security.note`) is not rendered; the field stays in the copy for the previews.
-- **Before and after.** "Önce" is the window pile beside its list. "Sonra" is the list in the green quote panel beside one drawn TonyAI screen (`.h-scr`) with the total, the scope totals and the six subsidiaries. The screen's rows show no status, because one subsidiary is "İncelemede" in the demo data while the total is labelled approved.
-- **Motion.** The hero drawing and card rise once on load, blocks reveal once on scroll, glyphs draw on once. Nothing loops.
+- **Drawings come from the logo.** D's Venn diagram, head office, sun, trees, clouds, birds and map pins are gone. Drawings are built from the logo's rounded block: `.h-b` (corner radius 24%), toned by `.h-b-1` (brand green; white on a green band, through `--h-blk-1`), `.h-b-2` (Kapsam 1 green) and `.h-b-3` (donut green). They are HTML, not SVG, so their labels stay real text at a readable size on phones. Kapsam 2 blue and Kapsam 3 purple are not used.
+  - Hero (`.h-sum`): one block per subsidiary, its area in proportion to its emissions, with sector and figure beneath; a bracket gathers them into a white total panel. The total is set in the palette's "Total figure green" `#1b5b38`.
+  - "TonyAI farkı" (`GroupTree`): three labelled tiers, holding, companies and locations, with the counts from the demo data. It is `role="img"` with a label from the copy.
+  - Journey: numbered block markers on a straight line.
+  - "Önce" (`Windows`): a pile of spreadsheet windows, decorative.
+- **Bright green is kept small.** `#39c656` is the ground of buttons, the FAQ toggle and the video label, and the colour of small blocks and large accent type. It is not the ground of a card or panel; the hero's first total card was, and outweighed the heading.
+- **Source tags.** `Sourced` in `parts.tsx` shows a figure and, beneath it, the records or calculation it comes from: the hero total, the total and the three scope totals in the "Sonra" screen, and journey steps 02 and 03 (through the copy's `figure` field). A source line names records or a calculation; how much a total covers and whether it is approved go in a separate note. The parts shown beside a total are covered by its line. The last journey step's scenario percentages carry none.
+- **Content.** The hero has the primary button under the text and the five-verb flow along its foot (five columns; a ruled list under 900 px). It has no standards list, because the strip below says it once, and no "Demoyu izleyin" link until the video exists. "TonyAI farkı" is a numbered, ruled list beside the heading, with no foot. Platform modules link only where the link is not the demo request. The closing call to action has one button and no drawing. The bracketed hosting placeholder (`compliance.security.note`) is not rendered; the field stays in the copy for the previews.
+- **Before and after.** Two equal columns sharing three subgrid rows: label, picture, list. "Önce" is the window pile in a framed panel; "Sonra" is one drawn TonyAI screen (`.h-scr`) with the total, the scope totals with their sources and the six subsidiaries. The screen's rows show no status, because one subsidiary is "İncelemede" in the demo data while the total is labelled approved.
+- **Audit trail.** The record is a plain definition list (`.h-rec`). Look D's draggable lens is not used here: it kept four of the six fields behind an interaction.
+- **Motion.** The hero's sum rises once on load, sections reveal once on scroll, glyphs draw on once. Nothing loops.
 - **Class names.** Do not name a class `h-screen`, `h-full`, `h-min`, `h-max`, `h-fit` or `h-auto`: Tailwind owns those and sets a height.
 
-Still waiting for material: the demo video (the section keeps its "yakında" frame) and real product screens (the platform panel and the audit lens are still drawn).
+Still waiting for material: the demo video (the section keeps its "yakında" frame) and a real product screen (the platform panel is still drawn).
 
 ## What else had to change for the live site
 

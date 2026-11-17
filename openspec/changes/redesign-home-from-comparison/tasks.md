@@ -39,9 +39,21 @@
 - [x] 5.5 Run a mobile Lighthouse audit of the homepage on the production build. Verify performance is at least 85 and accessibility at least 95. Record the pass, the heights and the open items in `docs/qa.md`.
 - [x] 5.6 Run `openspec validate redesign-home-from-comparison --strict` and verify it passes.
 
+## 6. Review round
+
+- [x] 6.1 Hero: replace the SVG drawing and the bright green card with the HTML sum (six blocks with sector and figure, bracket, white total panel), move the primary button under the heading, remove the standards list and the video link. Verify at 390 by 844 px that the button's bottom edge is above 844 px and the sector labels are 13 px text.
+- [x] 6.2 Replace `GroupDrawing` with `GroupTree` (three labelled tiers, counts from the demo data). Verify 6 company blocks and 14 location blocks, and visible tier labels at 1440 and 390 px.
+- [x] 6.3 Remove the foot of "TonyAI farkı" and the module links that repeat the demo request; delete `Meter` and `Noted`. Verify `npm run lint` passes and the section is shorter than before the round.
+- [x] 6.4 Before and after: two equal columns sharing subgrid rows, scope totals with sources inside the screen, quote panel removed. Verify at 1440 px that both pictures and both lists are level, and at 390 px that each group stays whole.
+- [x] 6.5 Replace the audit lens with the record as a definition list and delete `AuditLens.tsx`. Verify at 390 px, with no interaction, that all six fields are visible.
+- [x] 6.6 Copy: add `hero.stage.source` and `difference.tiers`, correct the journey result's source to matching units. Verify the built page shows "45 MWh × 0,442 tCO₂e/MWh" and that the previews' markup is unchanged.
+- [x] 6.7 Update the spec deltas (`homepage-look`, `site-palette`), design decision 8, `NOTES.md` and `docs/qa.md`. Verify `openspec validate redesign-home-from-comparison --strict` passes.
+- [x] 6.8 Re-run the colour audit, the contrast pairs, the clipping, idle-motion and no-script checks and Lighthouse on the rebuilt page, and record the results and the new page height in `docs/qa.md`.
+
 ## Workflow follow-up
 
 - The owners approve the new Turkish strings in design decision 7 and compare the homepage side by side with sweep.net.
 - The owner merges the branch to `main`, which deploys. The merge is not done in this change.
-- Later changes: the demo video when it is delivered, and real product screens in place of the platform panel and the audit lens.
+- The owners decide whether primary buttons move from `#39C656` to brand green, which would be a `site-palette` change.
+- Later changes: the demo video when it is delivered (the hero's "Demoyu izleyin" link returns with it), and a real product screen in place of the platform panel.
 - Archive the change after the owners approve the homepage on the live site.

@@ -96,3 +96,15 @@ Routes checked: `/` at 390 / 820 / 1440 with reduced motion; every route outside
 
 **Open:** the owners' approval of the seven new Turkish strings; the demo video; real product screens; a side-by-side look against sweep.net. `/kvkk/` still shows bracketed placeholders (`[Şirket unvanı], [adres]`) under its draft banner. Full-page captures at 390 px wrap around past 16,384 px, so the foot of the phone page was checked by section captures.
 
+## Pass 10 — 2026-11-18 (review round on the homepage redesign)
+
+Routes checked: `/` at 390 / 820 / 1440 with reduced motion, section by section; every route outside `/tasarim/` in the colour audit. One `h1`, no horizontal scroll, no page errors.
+
+**Changed after an outside review:** the hero's bright green total card is a white panel and its drawing is HTML with sector and figure as 13 px text at every width; the primary button sits under the hero text (bottom edge at 784 px on a 390 by 844 phone); the group drawing is three labelled tiers; the foot of "TonyAI farkı", the hero's standards list and video link, and five repeated module links are gone; before and after are two equal columns; the audit lens is a plain record; the total's source line names what it sums and the journey's calculation reads 45 MWh × 0,442 tCO₂e/MWh.
+
+**Checked:** the colour audit finds nothing outside the palette (again only the test server's own `/yok/` page). All 25 contrast pairs pass. No element in the hero, "TonyAI farkı" or before/after is wider than its box at 390, 820 or 1440 px. Idle captures ten seconds apart are identical. With scripts off, all seven source lines are visible. Lighthouse mobile on `/`: performance 98, accessibility 100, colour contrast passes. `/tasarim/c/` and `/tasarim/d/` have the same markup as the build of `main` taken before the work.
+
+**Page height at 1440 px:** 10,819 px (11,752 px before this round, 11,459 px on `main`); the target of 9,000 px is still not met. Sections now: Platform 1,632, journey 1,527, before/after 1,377, "TonyAI farkı" 1,265, method and assurance 1,168, hero 1,033. Getting further needs the sections' own copy shortened, which is the owners' text.
+
+**Open:** as in pass 9, plus the owners' decision on button colour (the review suggests brand green; `site-palette` fixes `#39c656`).
+

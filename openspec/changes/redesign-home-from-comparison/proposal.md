@@ -17,10 +17,21 @@ The homepage keeps look D's skeleton, the product palette (`docs/Tool-Mevcut-Ren
 - **Placeholder removed.** `[Barındırma konumu ve sertifikalar: teyit bekliyor]` is no longer shown on the homepage.
 - **Unused font packages removed** from `package.json` (nine packages no page imports).
 
+**Review round (18 November).** An outside review of the first build led to these further changes; the reasons are in design.md, decision 8:
+
+- The hero's bright green, roof-shaped total card becomes a plain white panel, and the six sector blocks carry their figures as real text. The primary button moves beneath the heading; the standards list and the link to the missing video leave the hero.
+- The group drawing becomes three labelled tiers (holding, companies, locations).
+- The scope meters and the second call to action at the foot of "TonyAI farkı" are removed; the scope totals move into the "Sonra" screen with their sources.
+- Before and after stand side by side as two equal groups; the green quote panel goes.
+- The audit lens is replaced by the same record laid out as text.
+- The consolidated total's source line names what it sums, and the journey's calculation is stated in matching units.
+- Five of the six platform modules lose their identical "Demo talep edin" link.
+
 Not in this change:
 
 - **The demo video.** It is not ready. The demo section keeps its "Ürün demosu · yakında" frame until the video is delivered.
-- **Real product screens.** No exports exist yet. The platform panel and the audit lens stay as they are, and a later change replaces them with real screens.
+- **Real product screens.** No exports exist yet. The platform panel stays as it is, and a later change replaces it with a real screen.
+- **Button colour.** The review suggests brand green buttons with bright green kept for small accents. `site-palette` fixes primary buttons at `#39C656`, a choice the owners made on 17 November, so it is left to them.
 - **The `/tasarim/` previews.** They stay, unchanged and hidden from search.
 - **Inner pages.** They keep their current layout; they do not use the drawings that are removed.
 
@@ -32,7 +43,9 @@ Not in this change:
 
 ### Modified Capabilities
 
-None. `site-palette` is unchanged: the ground plan, accents and contrast floors stay, and the new drawings use palette colours only. `design-previews` is unchanged.
+- `site-palette`: "Grounds follow look D" no longer names the illustrative case's quote panel among the green grounds, because the before/after section no longer has one (review round, 18 November). Accents, buttons and contrast floors are unchanged.
+
+`design-previews` is unchanged.
 
 ## Impact
 

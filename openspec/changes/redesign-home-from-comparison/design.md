@@ -110,6 +110,25 @@ All additions to `content/copy.ts`:
 
 The invoice name, factor and quantities repeat `demo.auditTrail`, so the journey, the lens and the tags tell one story. When a step has `figure`, the homepage renders the lead and the tag in place of `example`; the previews keep reading `example`.
 
+### 8. Review round (18 November)
+
+An outside review of the first build found the page not yet one piece. What was changed, and what was not:
+
+| Finding | Decision |
+|---|---|
+| Bright green carries too much weight | The hero's total card becomes white with a brand green top rule; the total is set in the palette's "Total figure green" `#1B5B38`. Blocks are brand green and soft green only. Buttons stay `#39C656`: `site-palette` fixes them and that is the owners' call. |
+| Hero mixes shape languages | The SVG drawing, the leaf between blocks, the roof-shaped card and its shadow are replaced by one HTML figure: six blocks with sector and figure as text, one bracket line, one flat panel. The primary button moves under the heading. |
+| Sector labels shrink to 11 px on phones | Follows from the above: the labels are HTML text at 13 px at every width, three columns on phones. |
+| Group drawing does not explain itself | `GroupTree`: three rows labelled Holding, Şirketler · 6, Lokasyonlar · 14, with a line from each company up to the holding and down to its locations. The counts come from the demo data. |
+| The page repeats itself and got longer | Removed: the standards list in the hero (the strip directly below says it once), the foot of "TonyAI farkı" (scope meters, a second count line and a second demo button), five identical module links. The copy of the sections themselves is the owners' approved text and is not cut here. |
+| Before/after is split across two rows | `.h-ba` is two equal columns sharing three subgrid rows (label, picture, list), so pictures and lists line up. The window pile sits in a `#FAFAFA` framed panel to match the screen's weight. The green quote panel is removed, which changes one `site-palette` scenario. |
+| Source lines that are not sources | The total's line is `hero.stage.source`; the coverage and approval text is a separate note. Scope totals in the "Sonra" screen each carry their source. |
+| kWh × tCO₂e/MWh | The journey result's source reads `45 MWh × 0,442 tCO₂e/MWh`. The older `example` string with the same flaw is still in the copy for the previews. |
+| The lens hides the audit trail | `AuditLens` is deleted; the record is a six-cell definition list, three columns on tablets and two on phones. |
+| No real product on the page | Not solvable here; waits for the video and screen exports. |
+
+`Meter`, `Noted`, `HeroDrawing`, the SVG `Block` and the lens styles are deleted with their CSS. New copy: `hero.stage.source` ("Altı şirketin onaylanmış 2026 Ç1 kayıtlarının toplamı"), `difference.tiers` (Holding, Şirketler, Lokasyonlar), a reworded `difference.drawingLabel`; `hero.drawingLabel` is dropped.
+
 ## Risks / Trade-offs
 
 - [The homepage still shows "Ürün demosu · yakında" and a drawn panel where the report wants a video and real screens] → Accepted and stated in the proposal; both wait for material. The report's "at least three real product screens" item stays open.

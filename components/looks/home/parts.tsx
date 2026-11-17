@@ -31,8 +31,3 @@ export function Sourced({ value, source, className = "" }: { value: ReactNode; s
     </span>
   );
 }
-
-/** Small caption above a button, as on the reference. */
-export function Noted({ note, children }: { note: string; children: ReactNode }) {
-  return (<div className="h-noted"><p>{note}</p>{children}</div>);
-}

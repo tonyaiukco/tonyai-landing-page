@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 
 /**
  * The homepage's drawings. Glyphs are 1.5 px line icons in currentColor, with pathLength=1 so they draw on as their block is revealed.
- * Everything else is built from the logo's two shapes, the rounded block and the leaf, as flat fills (`.h-blk-1/2/3`).
+ * Everything else is built from the logo's two shapes, the rounded block (`.h-b`, toned by `.h-b-1/2/3`) and the leaf, as flat fills.
  */
 
 const circ = (cx: number, cy: number, r: number) => `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`;
@@ -43,64 +43,24 @@ export const Play = ({ size = 14 }: { size?: number }) => (
 
 /* ---------- Block drawings ---------- */
 
-type Tone = 1 | 2 | 3;
-
-/** The logo's block: corner radius 24% of the shorter side unless `r` is given. */
-function Block({ x, y, w, h = w, r, tone }: { x: number; y: number; w: number; h?: number; r?: number; tone: Tone }) {
-  return <rect className={`h-blk-${tone}`} x={x} y={y} width={w} height={h} rx={r ?? Math.min(w, h) * 0.24} />;
-}
-
-/** Where each subsidiary's block stands: left edge, baseline and tone, in subsidiary order. */
-const HERO_SPOTS: Array<[number, number, Tone]> = [[30, 150, 1], [225, 150, 3], [410, 150, 1], [120, 300, 3], [310, 300, 2], [515, 300, 1]];
-const HERO_BUS = 345;
-const HERO_MAX = 110;
+/** Share the group's locations out among its companies, the first ones taking the remainder. */
+const spread = (total: number, over: number) => Array.from({ length: over }, (_, i) => Math.floor(total / over) + (i < total % over ? 1 : 0));
 
 /**
- * Hero: one block per subsidiary, its side scaled to the square root of its emissions so areas compare,
- * each wired down to a bus that drops into the total card overlapping the foot of the drawing.
+ * "TonyAI farkı": the group as three labelled tiers, one holding, its companies, their locations,
+ * each company wired up to the holding and down to its own locations.
  */
-export function HeroDrawing({ items, label }: { items: Array<{ sector: string; value: number }>; label: string }) {
-  const top = Math.max(...items.map((it) => it.value));
-  const blocks = items.map((it, i) => {
-    const [x, base, tone] = HERO_SPOTS[i];
-    const side = Math.round(HERO_MAX * Math.sqrt(it.value / top));
-    return { ...it, x, base, tone, side, cx: x + side / 2 };
-  });
-  const first = blocks[0];
+export function GroupTree({ label, tiers, companies, locations }: { label: string; tiers: { holding: string; companies: string; locations: string }; companies: number; locations: number }) {
+  const per = spread(locations, companies);
   return (
-    <svg className="h-hero-svg" viewBox="0 0 640 450" role="img" aria-label={label}>
-      <path className="h-blk-line" d={`${blocks.map((b) => `M${b.cx} ${b.base + 34}V${HERO_BUS}`).join("")}M${Math.min(...blocks.map((b) => b.cx))} ${HERO_BUS}H${Math.max(...blocks.map((b) => b.cx))}M400 ${HERO_BUS}V450`} />
-      {blocks.map((b) => (
-        <g key={b.sector}>
-          <Block x={b.x} y={b.base - b.side} w={b.side} tone={b.tone} />
-          <text className="h-hero-tag" x={b.cx} y={b.base + 22} textAnchor="middle">{b.sector}</text>
-        </g>
-      ))}
-      <path className="h-blk-2" d={leaf(first.x + first.side + 12, first.base, 58)} />
-    </svg>
-  );
-}
-
-const GROUP_COMPANIES = [{ x: 25, rows: 3 }, { x: 185, rows: 2 }, { x: 345, rows: 2 }];
-const GROUP_FOOT = 255;
-
-/** "TonyAI farkı": a holding block holding three company blocks, which hold fourteen location blocks. */
-export function GroupDrawing({ label }: { label: string }) {
-  return (
-    <svg className="h-group-svg" viewBox="0 0 520 280" role="img" aria-label={label}>
-      <Block x={0} y={0} w={520} h={280} r={40} tone={3} />
-      {GROUP_COMPANIES.map((c) => {
-        const h = c.rows * 60 + 30;
-        return (
-          <g key={c.x}>
-            <Block x={c.x} y={GROUP_FOOT - h} w={150} h={h} r={20} tone={1} />
-            {Array.from({ length: c.rows * 2 }, (_, k) => (
-              <Block key={k} x={c.x + 22 + (k % 2) * 60} y={GROUP_FOOT - h + 22 + Math.floor(k / 2) * 60} w={46} tone={2} />
-            ))}
-          </g>
-        );
-      })}
-    </svg>
+    <div className="h-tree" role="img" aria-label={label}>
+      <span className="h-tree-k">{tiers.holding}</span>
+      <span className="h-tree-hold" />
+      <span className="h-tree-k">{tiers.companies} · {companies}</span>
+      <span className="h-tree-row">{per.map((_, i) => (<span key={i}><i className="h-b h-b-3" /></span>))}</span>
+      <span className="h-tree-k">{tiers.locations} · {locations}</span>
+      <span className="h-tree-row h-tree-locs">{per.map((n, i) => (<span key={i}>{Array.from({ length: n }, (_, k) => (<i key={k} className="h-b h-b-2" />))}</span>))}</span>
+    </div>
   );
 }
 
