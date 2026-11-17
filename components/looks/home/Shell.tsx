@@ -1,5 +1,3 @@
-import "@fontsource-variable/bricolage-grotesque/opsz.css";
-import "@fontsource-variable/dm-sans/wght.css";
 import "./look.css";
 import { NavH } from "./NavH";
 import { FooterH } from "./SectionsH";

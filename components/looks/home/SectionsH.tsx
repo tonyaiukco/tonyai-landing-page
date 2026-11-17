@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { copy } from "@/content/copy";
+import { copy, demo } from "@/content/copy";
+import { formatInt } from "@/lib/format";
 import { Logo } from "@/components/Logo";
 import { AuditLens } from "./AuditLens";
 import { Arrow, Glyph, GroupDrawing, HorizonDrawing, Pin, Play, Plus, Skyline, type GlyphName } from "./Illustrations";
-import { Title, here } from "./parts";
+import { Meter, segments } from "./Meter";
+import { Noted, Title, here } from "./parts";
 
 export function StripH() {
   const s = copy.strip;
@@ -12,6 +14,7 @@ export function StripH() {
       <div className="h-wrap h-strip-inner">
         <p className="h-cap">{s.label}</p>
         <ul>{s.standards.map((st) => (<li key={st}>{st}</li>))}</ul>
+        {s.facts.map((f) => (<p key={f.label} className="h-strip-fact"><b>{f.value}</b>{f.label}</p>))}
       </div>
     </section>
   );
@@ -21,8 +24,10 @@ const diffGlyphs: GlyphName[] = ["import", "group", "audit", "layers", "forecast
 
 export function DifferenceH() {
   const d = copy.difference;
+  const stage = copy.hero.stage;
   return (
-    <section className="h-light h-diff" aria-labelledby="h-fark-baslik">
+    <section className="h-teal h-diff" aria-labelledby="h-fark-baslik">
+      <Skyline />
       <div className="h-wrap">
         <div className="h-two">
           <div data-reveal>
@@ -42,6 +47,20 @@ export function DifferenceH() {
           ))}
         </ol>
       </div>
+      <div className="h-split h-diff-foot">
+        <div className="h-main" data-reveal>
+          <h3 className="h-h3 h-h3-lg">{stage.after}<span>{demo.period}</span></h3>
+          <div className="h-meters">
+            {demo.scopes.map((sc) => (<Meter key={sc.label} filled={segments(sc.value, demo.total)} label={sc.label} sub={`${formatInt(sc.value)} ${stage.unit}`} />))}
+          </div>
+        </div>
+        <div className="h-panel h-mist">
+          <div className="h-panel-in" data-reveal>
+            <p className="h-lead">{stage.footer}</p>
+            <Noted note={stage.approved}><Link href={copy.hero.primary.href} className="h-btn">{copy.hero.primary.label}<Arrow /></Link></Noted>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
@@ -53,7 +72,7 @@ export function PlatformH() {
   const p = copy.platform;
   const ui = p.ui;
   return (
-    <section id="platform" className="h-alt h-split h-platform" aria-labelledby="h-platform-baslik">
+    <section id="platform" className="h-mist h-split h-platform" aria-labelledby="h-platform-baslik">
       <div className="h-main">
         <div data-reveal>
           <p className="h-eyebrow">{p.eyebrow}</p>
@@ -71,14 +90,14 @@ export function PlatformH() {
           ))}
         </ol>
       </div>
-      <div className="h-panel h-light h-ui">
+      <div className="h-panel h-white h-ui">
         <div className="h-panel-in" data-reveal>
           <h3 className="h-h3">{ui.entryTitle}</h3>
           <ul className="h-ui-list">
             {ui.categories.map(([name, st]) => (
               <li key={name}>
                 <span>{name}</span>
-                <span className="h-ui-status" data-status={st}><span className="h-pill">{copy.hero.stage.status[st]}</span><span className="h-ui-bar" aria-hidden="true">{[0, 1, 2].map((k) => (<i key={k} data-on={k < statusFill[st] ? "" : undefined} />))}</span></span>
+                <span className="h-ui-status">{copy.hero.stage.status[st]}<span className="h-ui-bar" aria-hidden="true">{[0, 1, 2].map((k) => (<i key={k} data-on={k < statusFill[st] ? "" : undefined} />))}</span></span>
               </li>
             ))}
           </ul>
@@ -99,7 +118,7 @@ export function PlatformH() {
 export function DemoH() {
   const d = copy.demoSection;
   return (
-    <section id="demo" className="h-light h-split h-demo" aria-labelledby="h-demo-baslik">
+    <section id="demo" className="h-white h-split h-demo" aria-labelledby="h-demo-baslik">
       <div className="h-main" data-reveal>
         <div className="h-video" role="img" aria-label={d.videoLabel}>
           <span className="h-video-play" aria-hidden="true"><Play size={22} /></span>
@@ -124,7 +143,7 @@ const railX = (i: number) => (i % 2 ? 62 : 22);
 export function JourneyH() {
   const j = copy.journey;
   return (
-    <section id="yontem" className="h-alt h-journey" aria-labelledby="h-nasil-baslik">
+    <section id="yontem" className="h-mist h-journey" aria-labelledby="h-nasil-baslik">
       <div className="h-split">
         <div className="h-main h-journey-head" data-reveal>
           <p className="h-eyebrow">{j.eyebrow}</p>
@@ -159,7 +178,7 @@ export function JourneyH() {
 export function ComplianceH() {
   const c = copy.compliance;
   return (
-    <section className="h-light h-band h-comp" aria-labelledby="h-yontem-baslik">
+    <section className="h-teal h-band h-comp" aria-labelledby="h-yontem-baslik">
       <div className="h-wrap">
         <div className="h-two h-two-top">
           <div data-reveal>
@@ -186,6 +205,7 @@ export function ComplianceH() {
           <div data-reveal style={{ "--d": 1 } as React.CSSProperties}>
             <h3 className="h-h3">{c.security.title}</h3>
             <p>{c.security.body}</p>
+            <p className="h-note">{c.security.note}</p>
           </div>
         </div>
       </div>
@@ -196,7 +216,7 @@ export function ComplianceH() {
 export function ProofH() {
   const p = copy.proof;
   return (
-    <section className="h-alt h-proof" aria-labelledby="h-ornek-baslik">
+    <section className="h-white h-proof" aria-labelledby="h-ornek-baslik">
       <div className="h-wrap h-proof-top">
         <div className="h-two h-two-top">
           <div data-reveal>
@@ -217,7 +237,7 @@ export function ProofH() {
         </div>
       </div>
       <div className="h-split h-proof-foot">
-        <div className="h-light h-proof-said">
+        <div className="h-teal h-proof-said">
           <p className="h-lead">{p.after.title}</p>
           <p className="h-disclaimer">{p.disclaimer}</p>
         </div>
@@ -234,12 +254,12 @@ export function ProofH() {
 export function FaqH() {
   const f = copy.faq;
   return (
-    <section className="h-light h-split h-faq" aria-labelledby="h-sss-baslik">
+    <section className="h-mist h-split h-faq" aria-labelledby="h-sss-baslik">
       <div className="h-main" data-reveal>
         <p className="h-eyebrow">{f.eyebrow}</p>
         <Title id="h-sss-baslik" text={f.title} at={1} />
       </div>
-      <div className="h-panel h-light">
+      <div className="h-panel h-white">
         <div className="h-faq-list">
           {f.items.map((it, i) => (
             <details key={it.q} open={i === 0}>
@@ -256,7 +276,7 @@ export function FaqH() {
 export function FinalCtaH() {
   const f = copy.finalCta;
   return (
-    <section className="h-brand h-final" aria-labelledby="h-son-baslik">
+    <section className="h-teal h-final" aria-labelledby="h-son-baslik">
       <Skyline />
       <div className="h-wrap h-two">
         <div data-reveal>
@@ -276,7 +296,7 @@ export function FinalCtaH() {
 export function FooterH() {
   const f = copy.footer;
   return (
-    <footer className="h-brand h-footer">
+    <footer className="h-teal h-footer">
       <div className="h-wrap">
         <div className="h-footer-top">
           <div className="h-footer-brand">

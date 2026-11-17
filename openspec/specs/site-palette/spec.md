@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the colours the public tonyai.io site may use. The site uses the TonyAI product's palette, so the site and the product read as one brand. This spec also sets where dark grounds may appear, the contrast floors and the brand assets that must follow the palette.
+Defines the colours the public tonyai.io site may use. The site uses the TonyAI product's palette, so the site and the product read as one brand. This spec also sets where green grounds appear, how the accents are used, the contrast floors and the brand assets that must follow the palette.
 
 ## Requirements
 
@@ -17,33 +17,37 @@ Every colour on a page outside `/tasarim/` SHALL be a colour from the product pa
 - **WHEN** the same colours are collected
 - **THEN** none of sand `#ede4d4`, paper `#f6f1e8`, moss `#1f3d2b` or the terracottas `#c96a3d`, `#f0b48f` and `#9a4622` appears
 
-### Requirement: Brand green is the only accent
-Actions and accent text SHALL use brand green `#1C5E3A` on light grounds. On a brand green ground, accent text SHALL use `#B1D2BD` and buttons SHALL be white with brand green text. No other hue SHALL be used as an accent.
+### Requirement: Accents come from the product's greens
+Primary buttons SHALL be Kapsam 1 green `#39C656` with `#141318` labels on every ground. On light grounds, accent text SHALL be brand green `#1C5E3A`. On brand green grounds, accent text at large sizes SHALL be `#39C656` and smaller accent text SHALL be `#B1D2BD`. Text on a `#39C656` ground SHALL be `#141318`. No hue other than these greens SHALL be used as an accent.
 
-#### Scenario: Primary button on a light ground
-- **WHEN** a primary call-to-action button is shown on a light ground
-- **THEN** its ground is `#1C5E3A` and its label is `#FFFFFF`
+#### Scenario: Primary button
+- **WHEN** a primary call-to-action button is shown on a light or a brand green ground
+- **THEN** its ground is `#39C656` and its label is `#141318`
 
-#### Scenario: Primary button on the closing band
-- **WHEN** a primary call-to-action button is shown on the brand green closing band
-- **THEN** its ground is `#FFFFFF` and its label is `#1C5E3A`
+#### Scenario: Accent text on a green band
+- **WHEN** a heading on a brand green band marks one line in the accent colour, and an eyebrow or footer heading is shown on the same band
+- **THEN** the marked heading line is `#39C656` at a large text size (at least 24 px, or 18.66 px bold), and the eyebrow or footer heading is `#B1D2BD`
 
-### Requirement: Dark grounds are limited to the closing band and the footer
-Among full-width sections and side panels, only the closing call to action and the footer SHALL have a dark ground, which SHALL be brand green `#1C5E3A`. Other sections and panels SHALL use the light grounds `#FAFAFA`, `#FFFFFF` or `#F3F1F6`. Small components (buttons, step numbers, the hero certificate card, the video placeholder, the logo tile) MAY use brand green.
+### Requirement: Grounds follow look D
+Pages outside `/tasarim/` SHALL use look D's ground plan in the product palette: brand green `#1C5E3A` where look D uses teal, and white `#FFFFFF` or the mist `#E9FAF2` where it uses white or mist. The footer SHALL be the same brand green as the closing call to action, divided from it by a rule.
 
 #### Scenario: Homepage sections
 - **WHEN** the homepage is scrolled from top to bottom
-- **THEN** "TonyAI farkı", the method and assurance section, the illustrative case and the FAQ have light grounds, and only the closing call to action and the footer have a brand green ground
+- **THEN** "TonyAI farkı", the method and assurance section, the illustrative case's quote panel, the closing call to action and the footer have a `#1C5E3A` ground, and every other section has a `#FFFFFF` or `#E9FAF2` ground
 
-#### Scenario: Inner page panels
+#### Scenario: Inner pages
 - **WHEN** Şirket, Demo, Kayıt or Bize Ulaşın is opened
-- **THEN** the principles section and the side panels have light grounds, and no two neighbouring full-width bands share a ground
+- **THEN** Şirket's principles section and the side panels beside the forms have a `#1C5E3A` ground
+
+#### Scenario: Footer
+- **WHEN** the closing call to action is followed by the footer
+- **THEN** both have a `#1C5E3A` ground with a rule between them
 
 ### Requirement: Text and controls meet WCAG AA contrast
 Text SHALL meet 4.5:1 against its ground, or 3:1 at large text sizes. Form field borders, focus indicators and other graphics that carry meaning SHALL meet 3:1 against their ground.
 
-#### Scenario: Muted text on the alternate band
-- **WHEN** muted text is shown on the `#F3F1F6` band
+#### Scenario: Small text on the mist band and on green
+- **WHEN** body or accent text is shown on the `#E9FAF2` band, or small accent text on a `#1C5E3A` band
 - **THEN** its contrast is at least 4.5:1
 
 #### Scenario: Form fields
@@ -54,12 +58,12 @@ Text SHALL meet 4.5:1 against its ground, or 3:1 at large text sizes. Form field
 - **WHEN** a mobile Lighthouse audit is run on the homepage of the production build
 - **THEN** the accessibility score is at least 95 and no colour-contrast item fails
 
-### Requirement: Status colours carry the product's meanings
-Wherever the site shows a data status, its label SHALL use the product's pill colours for the same word (for example, İncelemede purple, Eksik red), and any completeness mark SHALL use the product's data-status dots: green for complete, amber for partial, red for missing. The status SHALL also be given in text, so that colour is never its only signal.
+### Requirement: Status is never shown by colour alone
+Wherever the site shows a data status, the status SHALL be written out in text, and any mark that shows how complete an item is SHALL use palette colours only.
 
 #### Scenario: Platform panel status list
 - **WHEN** the platform section's category list is shown
-- **THEN** each category's status is written out in a pill coloured as the product colours that word, and its bar uses the green or amber dot that matches how complete it is
+- **THEN** each category's status is written out, and its completeness bar uses `#39C656` for filled cells and a palette colour for empty ones
 
 ### Requirement: Brand assets follow the palette
 The logo in the navigation and footer, the favicon, the iOS home-screen icon, the share image, the browser theme colour and every image in `public/marka/` SHALL use only palette colours. `public/marka/OKU-BENI.txt` SHALL list the colours the brand kit uses.

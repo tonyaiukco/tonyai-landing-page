@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 /**
- * Look D line art. Every stroke is 1.5 px in currentColor, so one drawing works on moss and on sand.
+ * Look D line art. Every stroke is 1.5 px in currentColor, so one drawing works on teal and on white.
  * Paths carry pathLength=1 so `.h-draw` can draw them on with stroke-dashoffset.
  */
 
@@ -69,17 +69,21 @@ export function Pin({ children }: { children: ReactNode }) {
   );
 }
 
-/** The logo's leaf: two quarter-circle arcs between its lower-left point (x, y) and a point `s` up and to the right. */
-const leaf = (x: number, y: number, s: number) => `M${x} ${y}a${s} ${s} 0 0 1 ${s} ${-s}a${s} ${s} 0 0 1 ${-s} ${s}z`;
+const CLOUD = "M9 24h36a9 9 0 0 0 1.5-17.9A13 13 0 0 0 22 3.5 10.5 10.5 0 0 0 9 24z";
+const BIRD = "M0 5q4.5-6 9 0q4.5-6 9 0";
 
-/** A sprout: a short stem carrying the logo's leaf, base at (x, b), scaled by s. */
-const sprout = (x: number, b: number, s: number) => `M${x} ${b}v${-14 * s}${leaf(x, b - 14 * s, 15 * s)}`;
+function Sky({ clouds, birds }: { clouds: Array<[number, number, number]>; birds: Array<[number, number, number]> }) {
+  return (
+    <>
+      {clouds.map(([x, y, s]) => (<path key={`c${x}`} pathLength={1} d={CLOUD} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={1.5 / s} />))}
+      {birds.map(([x, y, s]) => (<path key={`b${x}`} pathLength={1} d={BIRD} transform={`translate(${x} ${y}) scale(${s})`} strokeWidth={1.5 / s} />))}
+    </>
+  );
+}
 
-/** A block standing on the line y = b: rounded top corners (a quarter of the width, as in the logo), open at the foot. */
-const block = (x: number, b: number, w: number, h: number) => {
-  const r = w / 4;
-  return `M${x} ${b}V${b - h + r}a${r} ${r} 0 0 1 ${r} ${-r}h${w - 2 * r}a${r} ${r} 0 0 1 ${r} ${r}V${b}`;
-};
+/** Outlined conifer, base centre at (x, b), scaled by s. */
+const lineTree = (x: number, b: number, s: number) =>
+  `M${x} ${b}v${-9 * s}M${x - 15 * s} ${b - 9 * s}h${30 * s}l${-10 * s} ${-15 * s}h${5 * s}l${-9 * s} ${-14 * s}h${4 * s}l${-5 * s} ${-13 * s}l${-5 * s} ${13 * s}h${4 * s}l${-9 * s} ${14 * s}h${5 * s}z`;
 
 /**
  * Hero: three dashed groups overlap; six facilities sit in them and the shared middle is the consolidated total.
@@ -102,6 +106,7 @@ export function HeroDrawing({ labels }: { labels: string[] }) {
         <path className="h-nodraw" d="M298 228v30a22 8.5 0 0 0 44 0v-30z" />
         <ellipse cx="320" cy="228" rx="22" ry="8.5" />
       </g>
+      <g className="h-hero-sky"><Sky clouds={[[548, 28, 1.25], [10, 50, 0.9]]} birds={[[330, 40, 1], [356, 54, 0.75]]} /></g>
       {spots.map(([name, x, y], i) => (
         <g key={name}>
           <g transform={`translate(${x - 24} ${y - 24})`}><Paths name={name} /></g>
@@ -112,10 +117,11 @@ export function HeroDrawing({ labels }: { labels: string[] }) {
   );
 }
 
-/** "TonyAI farkı": a head office wired to three subsidiaries, with sprouts growing beside them. */
+/** "TonyAI farkı": a head office wired to three subsidiaries, with trees, clouds and birds. */
 export function GroupDrawing() {
   return (
-    <svg className="h-group-svg h-draw" viewBox="0 28 520 318" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className="h-group-svg h-draw" viewBox="0 0 520 350" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <Sky clouds={[[392, 14, 1.5], [330, 0, 0.9]]} birds={[[40, 58, 1.1], [72, 78, 0.8], [118, 50, 0.9]]} />
       <path pathLength={1} d="M10 320h500" /><path pathLength={1} d="M48 334h120" /><path pathLength={1} d="M330 334h70" />
       {/* Head office */}
       <path pathLength={1} d="M218 62h84v104h-84z" /><path pathLength={1} d="M260 62V40h16v9h-16" />
@@ -127,31 +133,33 @@ export function GroupDrawing() {
       <path pathLength={1} d="M214 320v-52l46-22 46 22v52" /><path pathLength={1} d="M242 320v-32h36v32" /><path pathLength={1} d="M242 299h36M242 309h36" />
       <path pathLength={1} d="M372 320v-74h76v74" /><path pathLength={1} d="M372 264h76" />
       <path pathLength={1} d="M388 282h14v12h-14zM418 282h14v12h-14z" /><path pathLength={1} d="M402 320v-14h16v14" />
-      <path pathLength={1} d={sprout(22, 320, 1.6)} /><path pathLength={1} d={sprout(472, 320, 2.1)} /><path pathLength={1} d={sprout(180, 320, 1)} />
+      <path pathLength={1} d={lineTree(24, 320, 1.7)} /><path pathLength={1} d={lineTree(486, 320, 2.4)} /><path pathLength={1} d={lineTree(182, 320, 1.1)} />
     </svg>
   );
 }
 
-/** Final CTA: the sun coming up on the horizon between two groups of blocks, with one sprout. */
+/** Final CTA: sun, clouds and a few trees on the horizon. */
 export function HorizonDrawing() {
   const rays = Array.from({ length: 9 }, (_, i) => {
-    const a = (Math.PI * (200 + i * 17.5)) / 180;
-    const p = (r: number) => `${(210 + Math.cos(a) * r).toFixed(1)} ${(236 + Math.sin(a) * r).toFixed(1)}`;
-    return `M${p(62)}L${p(i % 2 ? 82 : 98)}`;
+    const a = (Math.PI * (200 + i * 20)) / 180;
+    const p = (r: number) => `${(160 + Math.cos(a) * r).toFixed(1)} ${(150 + Math.sin(a) * r).toFixed(1)}`;
+    return `M${p(58)}L${p(i % 2 ? 78 : 92)}`;
   });
   return (
-    <svg className="h-horizon-svg h-draw" viewBox="0 96 420 164" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path pathLength={1} d="M162 236a48 48 0 0 1 96 0" />
+    <svg className="h-horizon-svg h-draw" viewBox="0 0 420 260" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path pathLength={1} d="M116 150a44 44 0 0 1 88 0" />
       {rays.map((d) => (<path key={d} pathLength={1} d={d} />))}
+      <Sky clouds={[[238, 118, 1.9], [18, 30, 1.2]]} birds={[[300, 40, 1.2], [334, 60, 0.85]]} />
       <path pathLength={1} d="M0 236h420" /><path pathLength={1} d="M40 250h110" /><path pathLength={1} d="M250 250h60" />
-      <path pathLength={1} d={block(22, 236, 44, 96)} /><path pathLength={1} d={block(74, 236, 30, 54)} />
-      <path pathLength={1} d={block(318, 236, 34, 66)} /><path pathLength={1} d={block(360, 236, 50, 122)} />
-      <path pathLength={1} d={sprout(126, 236, 1.5)} />
+      <path pathLength={1} d={lineTree(352, 236, 2.2)} /><path pathLength={1} d={lineTree(60, 236, 1.2)} /><path pathLength={1} d={lineTree(396, 236, 1.2)} />
     </svg>
   );
 }
 
-/* ---------- Skyline: rows of rounded blocks of uneven height, standing in for look D's treeline (from look E) ---------- */
+/** The logo's leaf: two quarter-circle arcs between its lower-left point (x, y) and a point `s` up and to the right. */
+const leaf = (x: number, y: number, s: number) => `M${x} ${y}a${s} ${s} 0 0 1 ${s} ${-s}a${s} ${s} 0 0 1 ${-s} ${s}z`;
+
+/* ---------- Skyline: rows of rounded blocks of uneven height, the live site's skyline, in place of look D's treeline ---------- */
 
 /** Small deterministic generator so the skyline is the same on every build. */
 function seeded(seed: number) {

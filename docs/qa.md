@@ -75,3 +75,11 @@ Routes checked at 390 / 1440, with reduced motion: every route outside `/tasarim
 **Previews unchanged:** `/tasarim/c/`, `/tasarim/d/`, `/tasarim/d/sirket/` and `/tasarim/d/bize-ulasin/` are pixel-identical at both widths to a build of `main` taken before the work, except for one anti-aliased pixel in look D's contact page whose green channel moved by 1. `/tasarim/c/sirket/` is not a preview page (look C has no inner pages), so it shows the site's 404 page, which is meant to change.
 
 **Open:** the owner's choice between C and A on localhost; the product's exact hex values (the PDF was measured from screenshots); whether the logo's leaf stays bright green `#39c656` or goes one-colour.
+
+## Pass 8 — 2026-11-17 (the homepage becomes a copy of look D)
+
+Routes checked at 390 / 1440, with reduced motion: every route outside `/tasarim/`. One `h1` each, no horizontal scroll, no page errors; the only target under 44 px is the 20 px consent checkbox on the three form pages, as before.
+
+**New:** the homepage look is now a copy of look D with three differences only: the product's palette (D's teal, mint and mist mapped to brand green, Kapsam 1 green and the "Canlı veri" mint), Schibsted Grotesk in place of Outfit, and the live block skyline in place of the treeline. Demo, Kayıt, thank-you, legal and 404 pages, which D links out to, are restyled in D's look. Details in `components/looks/home/NOTES.md`.
+
+**Checked:** the colour audit finds nothing outside the palette on any route at either width. All 18 contrast pairs pass (`qa/contrast.py`; bright green on brand only at large sizes). The lens works by drag and arrow keys at both widths. Lighthouse mobile on `/` of the static build: 97 / 100 / 100 / 100, colour contrast passes, CLS 0. `/tasarim/c/` and look D's four pages are pixel-identical at both widths to a build of `main` taken before the work.

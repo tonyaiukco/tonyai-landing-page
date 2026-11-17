@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 export const HOME = "/";
 
-/** The homepage links to the live inner pages, so every link stays as the copy gives it. */
+/** Look D keeps links inside its preview; on the live site every link already points where it should. */
 export const here = (href: string) => href;
 
 /**
@@ -15,4 +17,9 @@ export function Title({ as: Tag = "h2", id, text, at, accent = 2, className = "h
       {lines.map((l, i) => (<span key={l} className={i + 1 === accent ? "h-acc" : undefined}>{l}{i === 0 ? " " : ""}</span>))}
     </Tag>
   );
+}
+
+/** Small caption above a button, as on the reference. */
+export function Noted({ note, children }: { note: string; children: ReactNode }) {
+  return (<div className="h-noted"><p>{note}</p>{children}</div>);
 }

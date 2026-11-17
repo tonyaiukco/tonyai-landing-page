@@ -8,7 +8,7 @@ import { Logo } from "@/components/Logo";
 import { Arrow } from "./Illustrations";
 import { HOME, here } from "./parts";
 
-/** Flat paper bar: uppercase links, square terracotta button. Mobile menu is a full-width sheet below the bar. */
+/** Flat white bar: uppercase links, square mint button. Mobile menu is a full-width sheet below the bar. */
 export function NavH() {
   const [open, setOpen] = useState(false);
   const path = usePathname().replace(/\/$/, "");

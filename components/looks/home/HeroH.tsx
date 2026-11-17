@@ -8,8 +8,7 @@ const h = copy.hero;
 
 /**
  * Hero: six facilities in three overlapping groups, the shared middle is the consolidated total.
- * The light terracotta card states that total; its moss base holds the page's primary call to action. No pin.
- * Beneath both columns, the five verbs of the headline copy as one ruled row, each with its keywords.
+ * The mint card states that total; its teal base holds the page's primary call to action. No pin.
  */
 export function HeroH() {
   return (
@@ -38,20 +37,6 @@ export function HeroH() {
               <Link href={h.primary.href} className="h-btn">{h.primary.label}<Arrow /></Link>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="h-wrap">
-        <div className="h-flow" data-reveal>
-          <p className="h-cap">{h.flow.label}</p>
-          <ol>
-            {h.flow.steps.map((st, i) => (
-              <li key={st.verb}>
-                <span className="h-flow-n" aria-hidden="true">{i + 1}</span>
-                <b>{st.verb}</b>
-                <span className="h-flow-keys">{st.keywords.join(" · ")}</span>
-              </li>
-            ))}
-          </ol>
         </div>
       </div>
     </section>
