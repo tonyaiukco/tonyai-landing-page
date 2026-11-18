@@ -118,19 +118,23 @@ The closing call to action SHALL show its heading, its sentence and one button, 
 - **THEN** it contains one button, the primary demo request, and no drawing other than the band opener above it
 
 ### Requirement: The primary action leads the hero
-The hero SHALL show the primary demo request button directly beneath its heading and first paragraph, and SHALL NOT link to the demo video while the video does not exist.
+The primary demo request SHALL follow the hero heading and first paragraph. A secondary link beneath the consolidated figure SHALL lead to the working record example.
 
 #### Scenario: First phone screen
-- **WHEN** the homepage is opened at 390 by 844 px
+- **WHEN** the page is opened at 390 by 844 px
 - **THEN** the primary demo request button is fully visible without scrolling
 
 #### Scenario: Short phone screen
-- **WHEN** the homepage is opened at 360 by 640 px
-- **THEN** the bottom edge of the primary demo request button is no lower than 540 px from the top of the viewport
+- **WHEN** the page is opened at 360 by 640 px
+- **THEN** the bottom of the primary button is within 540 px of the viewport top
 
 #### Scenario: No link to a missing video
-- **WHEN** the demo section shows its "yakında" frame
-- **THEN** the hero contains no "Demoyu izleyin" link
+- **WHEN** the homepage presents the working record example
+- **THEN** the hero links to that record and contains no video playback link
+
+#### Scenario: Record selection
+- **WHEN** the visitor follows “Bir kaydın izini sür”
+- **THEN** the sample electricity record is visible below the navigation
 
 ### Requirement: The audit trail is readable as it stands
 On screens narrower than 900 px, when scripts are unavailable, or when reduced motion is requested, the method and assurance section SHALL show every field of one record's audit trail as text, without requiring a drag, hover, focus or key press. On wider screens the fields between the entry and the result MAY be shown through a lens the visitor moves, and every field SHALL then be reachable by pointer drag and by the arrow keys.
@@ -148,11 +152,11 @@ On screens narrower than 900 px, when scripts are unavailable, or when reduced m
 - **THEN** the six fields are all visible and no lens is shown
 
 ### Requirement: The hero total is not the loudest colour on the page
-The consolidated total in the hero SHALL sit on a white panel, and `#39C656` SHALL NOT be used as the ground of any panel or card in the hero.
+The hero SHALL place the six contributions and sourced consolidated total in a single unframed composition on white. The example and reporting period SHALL be identified. The primary demo button SHALL have the only bright green background in the hero.
 
 #### Scenario: Hero panel
-- **WHEN** the hero is shown
-- **THEN** the total's panel has a `#FFFFFF` ground, and the only `#39C656` ground in the hero is the primary button
+- **WHEN** the homepage is shown
+- **THEN** the six sectors lead to 164.700 tCO₂e on white, with its source and a separate link to inspect an example record
 
 ### Requirement: The "Yöntem" link leads to the method section
 Every link on the homepage that targets `#yontem`, including "Yöntem" in the navigation and footer, SHALL bring the method and assurance section into view.
@@ -160,3 +164,18 @@ Every link on the homepage that targets `#yontem`, including "Yöntem" in the na
 #### Scenario: Navigation link
 - **WHEN** "Yöntem" is clicked in the navigation on the homepage
 - **THEN** the section headed "Her rakamın arkasında açık bir yöntem var." is at the top of the viewport, below the navigation bar
+
+### Requirement: A visitor can trace a contribution to its evidence
+The homepage SHALL replace the pending video with a navigable three-stage sample showing the source invoice, its calculation and the approved report entry. It SHALL identify the sample as one contribution and provide a path to its audit history.
+
+#### Scenario: Trace the invoice
+- **WHEN** the visitor inspects the March electricity record for Üretim A.Ş.
+- **THEN** its invoice identifier and 45.000 kWh, its 45 MWh × 0,442 tCO₂e/MWh calculation, and its 19,89 tCO₂e Kapsam 2 report contribution can each be inspected
+
+#### Scenario: Read the history
+- **WHEN** the visitor follows the report entry's audit link
+- **THEN** the audit trail for the same record is reached
+
+#### Scenario: Portable record
+- **WHEN** using a keyboard, a phone, reduced motion or a browser without JavaScript
+- **THEN** each stage is reachable in reading order with its evidence and the page fits the viewport
