@@ -1,6 +1,7 @@
 import { SiteShell } from "@/components/looks/home/Shell";
+import { InvoiceRecord } from "@/components/looks/home/InvoiceRecord";
 import { HeroH } from "@/components/looks/home/HeroH";
-import { StripH, DifferenceH, PlatformH, DemoH, JourneyH, ComplianceH, ProofH, FaqH, FinalCtaH } from "@/components/looks/home/SectionsH";
+import { StripH, DifferenceH, PlatformH, JourneyH, ComplianceH, ProofH, FaqH, FinalCtaH } from "@/components/looks/home/SectionsH";
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       <StripH />
       <DifferenceH />
       <PlatformH />
-      <DemoH />
+      <InvoiceRecord />
       <JourneyH />
       <ComplianceH />
       <ProofH />

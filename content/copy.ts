@@ -43,6 +43,12 @@ export const demo = {
   ],
 };
 
+/** The same evidence is used in the journey, the sample report and the audit history. */
+export const invoiceExample = {
+  consumption: { lead: "Mart faturası okundu", value: "45.000 kWh", source: demo.auditTrail[2].v },
+  emissions: { lead: "Kapsam 2", value: "19,89 tCO₂e", source: "45 MWh × 0,442 tCO₂e/MWh · Türkiye şebeke, 2024" },
+};
+
 export const copy = {
   meta: {
     title: "TonyAI — İşletmeler için karbon yönetimi yazılımı",
@@ -223,8 +229,8 @@ export const copy = {
     exampleLabel: "Örnek",
     steps: [
       { n: "01", name: "Planla", body: "Yapınızı, raporlama sınırını ve dönemi tanımlayın. Hangi şirket hangi kategoriyi girecek, baştan belli olsun.", example: "Kocaeli tesisi · 2026 Ç1 · Elektrik kategorisi açıldı." },
-      { n: "02", name: "Topla", body: "Mevcut tablolarınız ve faturalarınız aktarılır; zorunlu alanlar, birimler ve eksikler anında görünür.", example: "Mart faturası okundu: 45.000 kWh.", figure: { lead: "Mart faturası okundu", value: "45.000 kWh", source: "Fatura 2026-03-ELK-0417.pdf" } },
-      { n: "03", name: "Hesapla", body: "Emisyonlar ISO 14064-1 ve GHG Protokolü'ne göre, tek emisyon faktörü kütüphanesiyle hesaplanır.", example: "45.000 kWh × 0,442 = 19,89 tCO₂e · Kapsam 2.", figure: { lead: "Kapsam 2", value: "19,89 tCO₂e", source: "45 MWh × 0,442 tCO₂e/MWh · Türkiye şebeke, 2024" } },
+      { n: "02", name: "Topla", body: "Mevcut tablolarınız ve faturalarınız aktarılır; zorunlu alanlar, birimler ve eksikler anında görünür.", example: "Mart faturası okundu: 45.000 kWh.", figure: invoiceExample.consumption },
+      { n: "03", name: "Hesapla", body: "Emisyonlar ISO 14064-1 ve GHG Protokolü'ne göre, tek emisyon faktörü kütüphanesiyle hesaplanır.", example: "45.000 kWh × 0,442 = 19,89 tCO₂e · Kapsam 2.", figure: invoiceExample.emissions },
       { n: "04", name: "Doğrula", body: "Kayıtlar incelemeden ve onaydan geçer; her değerin kaynağı ve geçmişi yanında durur.", example: "Veri sorumlusu girdi, grup sürdürülebilirlik onayladı." },
       { n: "05", name: "Raporla", body: "TSRS ile uyumlu raporu yöntem notları ve kanıt bağlantılarıyla üretin; PDF ve Excel olarak paylaşın.", example: "Satır, faturasına bağlı olarak TSRS raporunda." },
       { n: "06", name: "Harekete geç", body: "Emisyonun nereden geldiğini görün, senaryoları karşılaştırın, azaltım önceliklerinizi belirleyin.", example: "LED dönüşümü −%6, güneş çatısı −%14: 2030 hedefine uzaklık güncellendi." },

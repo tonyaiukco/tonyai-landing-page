@@ -3,7 +3,7 @@ import { copy, demo } from "@/content/copy";
 import { formatInt } from "@/lib/format";
 import { Logo } from "@/components/Logo";
 import { AuditLens } from "./AuditLens";
-import { Arrow, Glyph, GroupTree, Play, Plus, Skyline, Windows, type GlyphName } from "./Illustrations";
+import { Arrow, Glyph, GroupTree, Plus, Skyline, Windows, type GlyphName } from "./Illustrations";
 import { Sourced, Title, here } from "./parts";
 
 export function StripH() {
@@ -92,28 +92,7 @@ export function PlatformH() {
             </div>
           </dl>
           <blockquote className="h-ui-note"><span className="h-cap">{ui.reviewer}</span>{ui.reviewNote}</blockquote>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function DemoH() {
-  const d = copy.demoSection;
-  return (
-    <section id="demo" className="h-white h-split h-demo" aria-labelledby="h-demo-baslik">
-      <div className="h-main" data-reveal>
-        <div className="h-video" role="img" aria-label={d.videoLabel}>
-          <span className="h-video-play" aria-hidden="true"><Play size={22} /></span>
-          <span className="h-video-label" aria-hidden="true">{d.videoLabel}</span>
-        </div>
-      </div>
-      <div className="h-panel">
-        <div className="h-panel-in" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
-          <p className="h-eyebrow">{d.eyebrow}</p>
-          <Title id="h-demo-baslik" text={d.title} at={1} className="h-h2 h-h2-sm" />
-          <p>{d.body}</p>
-          <Link href={d.primary.href} className="h-btn">{d.primary.label}<Arrow /></Link>
+          <a href="#demo" className="h-record-link">Mart ayının onaylanan kaydını incele <Arrow /></a>
         </div>
       </div>
     </section>
@@ -128,7 +107,7 @@ export function JourneyH() {
         <div className="h-main h-journey-head" data-reveal>
           <p className="h-eyebrow">{j.eyebrow}</p>
           <Title id="h-nasil-baslik" text={j.title} at={3} accent={1} />
-          <p className="h-lead">{j.lead}</p>
+          <p className="h-lead">Raporlama sınırını belirleyin. Ekiplerinizin topladığı kayıtları aynı yöntemle hesaplayıp onaydan geçirin.</p>
         </div>
         <ol className="h-steps">
           {j.steps.map((s) => (
@@ -162,7 +141,7 @@ export function ComplianceH() {
           </div>
           <p className="h-lead" data-reveal style={{ "--d": 1 } as React.CSSProperties}>{c.body}</p>
         </div>
-        <AuditLens />
+        <div id="denetim-izi" tabIndex={-1}><AuditLens /></div>
         <ul className="h-standards">
           {c.standards.map((s, i) => (
             <li key={s.name} data-reveal style={{ "--d": i } as React.CSSProperties}>
