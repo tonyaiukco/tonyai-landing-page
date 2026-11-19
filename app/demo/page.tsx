@@ -1,3 +1,4 @@
+import "@/components/looks/home/company-contact.css";
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/looks/home/Shell";
 import { FormPageH } from "@/components/looks/home/PagesH";

@@ -4,13 +4,33 @@ Routes: every page except the `/tasarim/` previews · components in `components/
 
 Since 17 November 2026 the homepage look is built on look D ("Orman", `/tasarim/d/`, notes in `components/looks/d/NOTES.md`): its skeleton, grounds and inner pages. Look D itself is unchanged and stays as a preview. On 18 November the homepage moved away from D's drawings and content, following `docs/design-comparison-2026-11-16.md`; that is the second section below.
 
+## Current homepage
+
+On desktop, the opening shows the sample period, sourced group total and invoice disclosure above the six subsidiary contributions. On phones the breakdown opens on demand. The opening’s demo button uses the product’s brand green (#1C5E3A) with white text. White space above the skyline separates the data from the green group chapter, whose columns align with the opening.
+
+The opening pairs the sourced group total with the March electricity invoice. The record disclosure expands below the sourced total. A deep link to the enclosed invoice reveals the same record. Tesis and Grup share a grid cell sized to both views so switching keeps the page stationary. On phones the summary and record control precede the optional company breakdown. The platform chapter follows that record through entry, review and reporting. The scale chapter switches between Tesis A1 and its parent Grup A. The method chapter groups the audit lens, standards and FAQ, followed by the demo invitation.
+
+The original block skyline opens the brand-green group chapter directly below the white hero and reappears above the closing invitation. Group view opens by default. The mist platform chapter includes the group scope breakdown; the method band is green and its reference area is mist. The prototype's platform views present the demo record in HTML. Actual product crops for this record are outstanding.
+
+### Link destinations
+
+| Fragment | Destination |
+| --- | --- |
+| `#demo` | Source invoice in the hero |
+| `#platform` | Three product stages |
+| `#nasil-calisir` | Workflow selector in the platform chapter |
+| `#yontem` | Method and assurance |
+| `#denetim-izi` | Audit history of the same invoice |
+
+## Earlier design decisions (17–18 November)
+
 ## Palette, font and band opener
 
 - **Colours:** the product's palette, from `docs/Tool-Mevcut-Renk-Paleti.pdf`. D's tones map one to one:
 
   | Look D | Here | Palette name |
   |---|---|---|
-  | teal `#06433f`, deep teal `#04312e` (footer) | `#1c5e3a` (footer the same green, a rule between) | Brand green |
+  | teal `#06433f`, deep teal `#04312e` (footer) | `#1c5e3a` (closing band; the footer uses mist with green ink) | Brand green |
   | mint `#2fe6ac` | `#39c656` | Kapsam 1 |
   | mist `#e3efe9` | `#e9faf2` | Canlı veri pill ground |
   | emerald `#08705a` (accent text on light) | `#1c5e3a` | Brand green |
@@ -48,7 +68,3 @@ Still waiting for material: the demo video (the section keeps its "yakında" fra
 ## QA
 
 `qa/shoot.py` takes reduced-motion screenshots of every route, `qa/audit.py` flags any computed colour outside the palette (`qa/palette.py`), and `qa/contrast.py` checks the text pairs. Run them against a static build served on port 8095.
-
-## Anchors
-
-`#platform`, `#demo`, `#nasil-calisir` (the journey) and `#yontem` (method and assurance). The navigation's "Yöntem" link, the footer's and the first platform module's all go to `#yontem`.

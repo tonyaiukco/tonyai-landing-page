@@ -18,30 +18,30 @@ Every colour on a page outside `/tasarim/` SHALL be a colour from the product pa
 - **THEN** none of sand `#ede4d4`, paper `#f6f1e8`, moss `#1f3d2b` or the terracottas `#c96a3d`, `#f0b48f` and `#9a4622` appears
 
 ### Requirement: Accents come from the product's greens
-Primary buttons SHALL be Kapsam 1 green `#39C656` with `#141318` labels on every ground. On light grounds, accent text SHALL be brand green `#1C5E3A`. On brand green grounds, accent text at large sizes SHALL be `#39C656` and smaller accent text SHALL be `#B1D2BD`. Text on a `#39C656` ground SHALL be `#141318`. No hue other than these greens SHALL be used as an accent.
+The homepage opening’s demo button SHALL use brand green `#1C5E3A` with a white label. Other primary buttons SHALL use `#39C656` with `#141318` labels. The hero total SHALL use `#1B5B38` on white. On light grounds accent text SHALL use brand green. On brand green grounds large accent text SHALL use `#39C656` and smaller accent text SHALL use `#B1D2BD`. Text on a `#39C656` ground SHALL use `#141318`. Accents SHALL use the product greens.
 
 #### Scenario: Primary button
-- **WHEN** a primary call-to-action button is shown on a light or a brand green ground
-- **THEN** its ground is `#39C656` and its label is `#141318`
+- **WHEN** the homepage is viewed on a phone or desktop
+- **THEN** the demo button in the opening has a #1C5E3A background and a #FFFFFF label. Other primary buttons, including the closing invitation, use #39C656 with #141318 labels.
 
 #### Scenario: Accent text on a green band
 - **WHEN** a heading on a brand green band marks one line in the accent colour, and an eyebrow or footer heading is shown on the same band
-- **THEN** the marked heading line is `#39C656` at a large text size (at least 24 px, or 18.66 px bold), and the eyebrow or footer heading is `#B1D2BD`
+- **THEN** the marked heading line is #39C656 at a large text size (at least 24 px, or 18.66 px bold), and the eyebrow or footer heading is #B1D2BD.
 
 ### Requirement: Grounds follow look D
-Pages outside `/tasarim/` SHALL use look D's ground plan in the product palette: brand green `#1C5E3A` where look D uses teal, and white `#FFFFFF` or the mist `#E9FAF2` where it uses white or mist. The footer SHALL be the same brand green as the closing call to action, divided from it by a rule.
+The white opening SHALL lead through the original block skyline into a brand-green facility-to-group chapter. The platform and reference area SHALL use mist. The audit area and closing invitation SHALL use brand green. The shared footer SHALL use mist with brand-green lettering. Other pages outside the previews SHALL continue to use look D's ground placement in the product palette.
 
 #### Scenario: Homepage sections
-- **WHEN** the homepage is scrolled from top to bottom
-- **THEN** "TonyAI farkı", the method and assurance section, the closing call to action and the footer have a `#1C5E3A` ground, and every other section has a `#FFFFFF` or `#E9FAF2` ground
+- **WHEN** the homepage is read from top to bottom at 390 px or 1440 px
+- **THEN** the original skyline is visible between the opening and group chapter and again above the closing invitation. The group and audit bands use #1C5E3A, with the #E9FAF2 platform between them.
 
 #### Scenario: Inner pages
 - **WHEN** Şirket, Demo, Kayıt or Bize Ulaşın is opened
-- **THEN** Şirket's principles section and the side panels beside the forms have a `#1C5E3A` ground
+- **THEN** Şirket's principles section and the side panels beside the forms have a #1C5E3A ground.
 
 #### Scenario: Footer
-- **WHEN** the closing call to action is followed by the footer
-- **THEN** both have a `#1C5E3A` ground with a rule between them
+- **WHEN** the closing invitation is followed by the footer
+- **THEN** the #1C5E3A invitation gives way to the #E9FAF2 footer with the TonyAI wordmark, navigation and contact links.
 
 ### Requirement: Text and controls meet WCAG AA contrast
 Text SHALL meet 4.5:1 against its ground, or 3:1 at large text sizes. Form field borders, focus indicators and other graphics that carry meaning SHALL meet 3:1 against their ground.

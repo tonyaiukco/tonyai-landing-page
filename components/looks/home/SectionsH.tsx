@@ -1,129 +1,82 @@
 import Link from "next/link";
-import { copy, demo } from "@/content/copy";
-import { formatInt } from "@/lib/format";
-import { Logo } from "@/components/Logo";
+import { copy, demo, invoiceExample } from "@/content/copy";
 import { AuditLens } from "./AuditLens";
-import { Arrow, Glyph, GroupTree, Plus, Skyline, Windows, type GlyphName } from "./Illustrations";
-import { Sourced, Title, here } from "./parts";
+import { Arrow, Glyph, GroupTree, Skyline, type GlyphName } from "./Illustrations";
+import { Title, Sourced } from "./parts";
 
-export function StripH() {
-  const s = copy.strip;
+const stages = [
+  { icon: "calc", label: "Veri gir", title: "Faturadan tüketim kaydı", text: "Tüketim miktarı, tesis ve fatura aynı kayıtta tutulur.", value: invoiceExample.consumption },
+  { icon: "shield", label: "İncele", title: "Hesabın dayanağı", text: "İnceleyen ekip, tüketimi ve kullanılan şebeke faktörünü kontrol eder.", value: invoiceExample.emissions },
+  { icon: "report", label: "Raporla", title: "Onaylı rapor satırı", text: "Onaylanan elektrik kaydı, raporda kaynağıyla birlikte yer alır.", value: invoiceExample.emissions },
+] satisfies { icon: GlyphName; label: string; title: string; text: string; value: typeof invoiceExample.consumption }[];
+
+function ScopeBreakdown() {
   return (
-    <section className="h-strip" aria-label={s.label}>
-      <div className="h-wrap h-strip-inner">
-        <p className="h-cap">{s.label}</p>
-        <ul>{s.standards.map((st) => (<li key={st}>{st}</li>))}</ul>
-      </div>
-    </section>
+    <figure className="scope-breakdown">
+      <figcaption>Grup emisyonları <span>Örnek dönem / {demo.period}</span></figcaption>
+      <div className="scope-strip" aria-hidden="true">{demo.scopes.map(s => <i key={s.label} style={{ flexGrow: s.value }} />)}</div>
+      <dl>{demo.scopes.map(s => (
+        <div key={s.label}><dt>{s.label}</dt><dd><strong>{Math.round(s.value / demo.total * 100)}%</strong> {s.source}</dd></div>
+      ))}</dl>
+    </figure>
   );
 }
-
-export function DifferenceH() {
-  const d = copy.difference;
-  return (
-    <section className="h-teal h-diff" aria-labelledby="h-fark-baslik">
-      <Skyline />
-      <div className="h-wrap">
-        <div className="h-two h-two-top h-diff-cols">
-          <div data-reveal>
-            <p className="h-eyebrow">{d.eyebrow}</p>
-            <Title id="h-fark-baslik" text={d.title} at={4} />
-            <p className="h-lead">{d.lead}</p>
-            <GroupTree label={d.drawingLabel} tiers={d.tiers} companies={demo.subsidiaries.length} locations={demo.locations} />
-          </div>
-          <ol className="h-diff-list">
-            {d.cards.map((c, i) => (
-              <li key={c.title} data-reveal>
-                <span className="h-diff-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3 className="h-h3">{c.title}</h3>
-                  <p>{c.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const moduleGlyphs: GlyphName[] = ["calc", "merge", "shield", "report", "spark", "target"];
-const statusFill = { ok: 3, warn: 2, miss: 0 };
 
 export function PlatformH() {
-  const p = copy.platform;
-  const ui = p.ui;
   return (
-    <section id="platform" className="h-mist h-split h-platform" aria-labelledby="h-platform-baslik">
-      <div className="h-main">
-        <div data-reveal>
-          <p className="h-eyebrow">{p.eyebrow}</p>
-          <Title id="h-platform-baslik" text={p.title} at={2} />
-          <p className="h-lead">{p.lead}</p>
+    <section id="platform" className="trace-platform h-band" aria-labelledby="platform-title">
+      <div className="trace-two h-wrap">
+        <div>
+          <p className="h-eyebrow">Platform</p>
+          <Title id="platform-title" text="Bir faturadan onaylı rapora." at={2} />
+          <p className="trace-lead">Mart ayı elektrik faturasını kaydedin, hesabı inceleyin ve onaylı rapor satırına ulaşın.</p>
+          <ScopeBreakdown />
         </div>
-        <ol className="h-modules">
-          {p.modules.map((m, i) => (
-            <li key={m.name} data-reveal style={{ "--d": i % 2 } as React.CSSProperties}>
-              <Glyph name={moduleGlyphs[i]} size={44} />
-              <h3 className="h-h3">{m.name}</h3>
-              <p>{m.body}</p>
-              {m.href !== copy.hero.primary.href && <Link href={here(m.href)} className="h-link">{m.cta}<Arrow /></Link>}
-            </li>
-          ))}
-        </ol>
-      </div>
-      <div className="h-panel h-white h-ui">
-        <div className="h-panel-in" data-reveal>
-          <h3 className="h-h3">{ui.entryTitle}</h3>
-          <ul className="h-ui-list">
-            {ui.categories.map(([name, st]) => (
-              <li key={name}>
-                <span>{name}</span>
-                <span className="h-ui-status">{copy.hero.stage.status[st]}<span className="h-ui-bar" aria-hidden="true">{[0, 1, 2].map((k) => (<i key={k} data-on={k < statusFill[st] ? "" : undefined} />))}</span></span>
-              </li>
-            ))}
-          </ul>
-          <dl className="h-ui-facts">
-            <div><dt>{ui.grid}</dt><dd>{ui.gridValue}</dd></div>
-            <div>
-              <dt>{ui.completion}</dt>
-              <dd>{ui.completionNote}<span className="h-ui-bar h-ui-bar-wide" aria-hidden="true">{[0, 1, 2, 3].map((k) => (<i key={k} data-on={k < 2 ? "" : undefined} />))}</span></dd>
+        <fieldset className="trace-views" id="nasil-calisir">
+          <legend className="sr-only">Örnek kaydın işlem adımı</legend>
+          <div className="trace-choices">{stages.map((s, i) => (
+            <label key={s.label}><input type="radio" name="workflow" value={i} defaultChecked={i === 0} /><Glyph name={s.icon} size={22} />{s.label}</label>
+          ))}</div>
+          {stages.map((s, i) => (
+            <div key={s.label} className={`trace-view trace-view-${i}`}>
+              <div className="trace-paper">
+                <div className="trace-ledger-head"><span>Üretim A.Ş.</span><span>Örnek kayıt</span></div>
+                <div className="trace-document-title">
+                  <div><h3>{s.title}</h3><p>{demo.facility} · Mart 2026</p></div>
+                  <span className="trace-document-mark"><Glyph name={s.icon} size={40} /></span>
+                </div>
+                <Sourced {...s.value} />
+                <div className="trace-paper-foot">{[demo.auditTrail[1].v, demo.auditTrail[4].v, "Kapsam 2 · Onaylandı"][i]}</div>
+              </div>
+              <p>{s.text}</p>
             </div>
-          </dl>
-          <blockquote className="h-ui-note"><span className="h-cap">{ui.reviewer}</span>{ui.reviewNote}</blockquote>
-          <a href="#demo" className="h-record-link">Mart ayının onaylanan kaydını incele <Arrow /></a>
-        </div>
+          ))}
+        </fieldset>
       </div>
     </section>
   );
 }
 
-export function JourneyH() {
-  const j = copy.journey;
+export function ScaleH() {
+  const { drawingLabel, tiers } = copy.difference;
   return (
-    <section id="nasil-calisir" className="h-mist h-journey" aria-labelledby="h-nasil-baslik">
-      <div className="h-split">
-        <div className="h-main h-journey-head" data-reveal>
-          <p className="h-eyebrow">{j.eyebrow}</p>
-          <Title id="h-nasil-baslik" text={j.title} at={3} accent={1} />
-          <p className="h-lead">Raporlama sınırını belirleyin. Ekiplerinizin topladığı kayıtları aynı yöntemle hesaplayıp onaydan geçirin.</p>
+    <section className="trace-scale h-teal h-diff" aria-labelledby="scale-title">
+      <Skyline />
+      <div className="h-wrap trace-two">
+        <div>
+          <p className="h-eyebrow">{copy.difference.eyebrow}</p>
+          <Title id="scale-title" text={copy.difference.title} at={4} />
+          <p className="trace-lead">Tek bir elektrik faturasını {demo.facility} kaydından konsolide grup envanterine kadar izleyin.</p>
         </div>
-        <ol className="h-steps">
-          {j.steps.map((s) => (
-            <li key={s.n}>
-              <div className="h-step" data-reveal>
-                <div className="h-rail" aria-hidden="true"><b>{s.n}</b></div>
-                <div>
-                  <h3 className="h-h3">{s.name}</h3>
-                  <p>{s.body}</p>
-                </div>
-              </div>
-              <p className="h-step-ex"><span data-reveal style={{ "--d": 1 } as React.CSSProperties}><span className="h-cap">{j.exampleLabel}</span>{s.figure ? (<>{s.figure.lead}<Sourced value={s.figure.value} source={s.figure.source} /></>) : s.example}</span></p>
-            </li>
-          ))}
-        </ol>
-        <p className="h-main h-disclaimer">{j.note}</p>
+        <fieldset className="trace-views">
+          <legend className="sr-only">Raporlama ölçeği</legend>
+          <div className="trace-choices">{["Tesis", "Grup"].map((s, i) => <label key={s}><input type="radio" name="scale" value={i} defaultChecked={i === 1} />{s}</label>)}</div>
+          <div className="trace-scale-record"><span className="trace-tile" aria-hidden="true">↳</span><div><strong>{demo.facility}</strong><p>{invoiceExample.consumption.source}</p></div></div>
+          <div className="scale-panels">
+            <div className="trace-view trace-view-0"><h3>Tesisin elektrik tüketimi</h3><p>Mart ayı elektrik tüketimi, Üretim A.Ş.’nin Kapsam 2 envanterine dahil edilir.</p><Sourced {...invoiceExample.emissions} /></div>
+            <div className="trace-view trace-view-1"><GroupTree label={drawingLabel} tiers={tiers} companies={demo.subsidiaries.length} locations={demo.locations} /><p>{demo.facility} kaydı, Üretim A.Ş. üzerinden {demo.group} envanterine katılır.</p></div>
+          </div>
+        </fieldset>
       </div>
     </section>
   );
@@ -132,100 +85,15 @@ export function JourneyH() {
 export function ComplianceH() {
   const c = copy.compliance;
   return (
-    <section id="yontem" className="h-teal h-band h-comp" aria-labelledby="h-yontem-baslik">
-      <div className="h-wrap">
-        <div className="h-two h-two-top">
-          <div data-reveal>
-            <p className="h-eyebrow">{c.eyebrow}</p>
-            <Title id="h-yontem-baslik" text={c.title} at={3} />
-          </div>
-          <p className="h-lead" data-reveal style={{ "--d": 1 } as React.CSSProperties}>{c.body}</p>
-        </div>
+    <section id="yontem" className="trace-method" aria-labelledby="method-title">
+      <div className="h-teal h-band"><div className="h-wrap">
+        <p className="h-eyebrow">{c.eyebrow}</p>
+        <div className="trace-two"><Title id="method-title" text={c.title} at={3} /><p className="trace-lead">{c.body}</p></div>
         <div id="denetim-izi" tabIndex={-1}><AuditLens /></div>
-        <ul className="h-standards">
-          {c.standards.map((s, i) => (
-            <li key={s.name} data-reveal style={{ "--d": i } as React.CSSProperties}>
-              <span className="h-cap">{s.role}</span>
-              <h3 className="h-h3">{s.name}</h3>
-              <p>{s.body}</p>
-            </li>
-          ))}
-        </ul>
-        <div className="h-comp-cols">
-          <div data-reveal>
-            <h3 className="h-h3">{c.audit.title}</h3>
-            <ul className="h-ticks">{c.audit.items.map((it) => (<li key={it}><Glyph name="check" size={20} />{it}</li>))}</ul>
-          </div>
-          <div data-reveal style={{ "--d": 1 } as React.CSSProperties}>
-            <h3 className="h-h3">{c.security.title}</h3>
-            <p>{c.security.body}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function ProofH() {
-  const p = copy.proof;
-  const stage = copy.hero.stage;
-  return (
-    <section className="h-white h-proof" aria-labelledby="h-ornek-baslik">
-      <div className="h-wrap">
-        <div className="h-two h-two-top">
-          <div data-reveal>
-            <p className="h-eyebrow">{p.eyebrow}</p>
-            <Title id="h-ornek-baslik" text={p.title} at={2} />
-          </div>
-          <p className="h-lead" data-reveal style={{ "--d": 1 } as React.CSSProperties}>{p.lead}</p>
-        </div>
-        <div className="h-ba">
-          <div data-reveal>
-            <h3 className="h-cap">{p.before.label}</h3>
-            <Windows />
-            <ul className="h-ticks h-ticks-x">{p.before.items.map((it) => (<li key={it}><Glyph name="cross" size={20} />{it}</li>))}</ul>
-          </div>
-          <div data-reveal style={{ "--d": 1 } as React.CSSProperties}>
-            <h3 className="h-cap">{p.after.label} · {p.after.title}</h3>
-            <div className="h-scr">
-              <div className="h-scr-bar"><Logo /><span>{demo.period}</span></div>
-              <div className="h-scr-in">
-                <p className="h-cap">{p.after.metric.label}</p>
-                <p><Sourced className="h-scr-total" value={<>{p.after.metric.value}<small>{p.after.metric.unit}</small></>} source={stage.source} /></p>
-                <ul className="h-scr-scopes">
-                  {demo.scopes.map((sc) => (<li key={sc.label}><span>{sc.label}</span><Sourced value={formatInt(sc.value)} source={sc.source} /></li>))}
-                </ul>
-                <ul className="h-scr-rows">
-                  {demo.subsidiaries.map((sub) => (<li key={sub.name}><span>{sub.name}<small>{sub.sector}</small></span><b>{formatInt(sub.value)}</b></li>))}
-                </ul>
-              </div>
-            </div>
-            <ul className="h-ticks">{p.after.items.map((it) => (<li key={it}><Glyph name="check" size={20} />{it}</li>))}</ul>
-          </div>
-        </div>
-        <p className="h-disclaimer">{p.disclaimer}</p>
-      </div>
-    </section>
-  );
-}
-
-export function FaqH() {
-  const f = copy.faq;
-  return (
-    <section className="h-mist h-split h-faq" aria-labelledby="h-sss-baslik">
-      <div className="h-main" data-reveal>
-        <p className="h-eyebrow">{f.eyebrow}</p>
-        <Title id="h-sss-baslik" text={f.title} at={1} />
-      </div>
-      <div className="h-panel h-white">
-        <div className="h-faq-list">
-          {f.items.map((it, i) => (
-            <details key={it.q} open={i === 0}>
-              <summary><span>{it.q}</span><span className="h-faq-icon" aria-hidden="true"><Plus /></span></summary>
-              <p>{it.a}</p>
-            </details>
-          ))}
-        </div>
+        </div></div>
+      <div className="h-wrap h-band trace-two trace-reference">
+          <div><h3>Standartlar</h3>{c.standards.map(s => <div className="trace-standard" key={s.name}><h4>{s.name}</h4><p>{s.body}</p></div>)}</div>
+          <div><h3>{copy.faq.eyebrow}</h3>{copy.faq.items.map((q, i) => <details key={q.q} open={i === 0}><summary>{q.q}</summary><p>{q.a}</p></details>)}</div>
       </div>
     </section>
   );
@@ -244,35 +112,5 @@ export function FinalCtaH() {
         </div>
       </div>
     </section>
-  );
-}
-
-export function FooterH() {
-  const f = copy.footer;
-  return (
-    <footer className="h-teal h-footer">
-      <div className="h-wrap">
-        <div className="h-footer-top">
-          <div className="h-footer-brand">
-            <Logo dark />
-            <p>{f.tagline}</p>
-            <a href={`mailto:${f.email}`}>{f.email}</a>
-            <span>{f.bases}</span>
-          </div>
-          <div className="h-footer-cols">
-            {f.columns.map((col) => (
-              <nav key={col.title} aria-label={col.title}>
-                <h3>{col.title}</h3>
-                <ul>{col.links.map((l) => (<li key={l.href}><Link href={here(l.href)}>{l.label}</Link></li>))}</ul>
-              </nav>
-            ))}
-          </div>
-        </div>
-        <div className="h-footer-bottom">
-          <ul>{f.legal.map((l) => (<li key={l.href}><Link href={l.href}>{l.label}</Link></li>))}</ul>
-          <span>{f.copyright}</span>
-        </div>
-      </div>
-    </footer>
   );
 }

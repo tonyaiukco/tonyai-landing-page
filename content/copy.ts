@@ -15,8 +15,10 @@ export type Status = "ok" | "warn" | "miss";
 
 export const demo = {
   period: "2026 · Ç1",
+  group: "Grup A",
+  facility: "Tesis A1",
   subsidiaries: [
-    { name: "Üretim A.Ş.", sector: "İmalat", city: "Kocaeli", value: 52600, status: "ok" as Status },
+    { name: "Üretim A.Ş.", sector: "İmalat", value: 52600, status: "ok" as Status },
     { name: "Enerji A.Ş.", sector: "Enerji", city: "İstanbul", value: 41300, status: "ok" as Status },
     { name: "Lojistik A.Ş.", sector: "Taşımacılık", city: "İzmir", value: 31900, status: "ok" as Status },
     { name: "Dağıtım A.Ş.", sector: "Dağıtım", city: "Ankara", value: 19400, status: "warn" as Status },
@@ -121,8 +123,8 @@ export const copy = {
 
   difference: {
     eyebrow: "TonyAI farkı",
-    drawingLabel: "Grup yapısı: bir holding, altında altı şirket, şirketlerin altında on dört lokasyon.",
-    tiers: { holding: "Holding", companies: "Şirketler", locations: "Lokasyonlar" },
+    drawingLabel: `${demo.group}, altı şirket ve bu şirketlere bağlı on dört lokasyon.`,
+    tiers: { holding: demo.group, companies: "Şirketler", locations: "Lokasyonlar" },
     title: "Tek şirket için sade. Grup için bir o kadar kolay.",
     lead: "Tek lokasyonlu bir işletmeye de, yirmi şirketli bir holdinge de en sade ve verimli akışı öneriyoruz. TonyAI yapınızı olduğu gibi modeller ve her rakamı kaynağına bağlar; şirket sayısı arttıkça iş zorlaşmaz, yalnızca toplam büyür. Yapay zekâ destekli öngörü teknikleriyle strateji geliştirmenize yardımcı olur.",
     cards: [
@@ -228,7 +230,7 @@ export const copy = {
     lead: "Altı adım; yanında tek bir elektrik faturasının TonyAI'daki yolculuğu.",
     exampleLabel: "Örnek",
     steps: [
-      { n: "01", name: "Planla", body: "Yapınızı, raporlama sınırını ve dönemi tanımlayın. Hangi şirket hangi kategoriyi girecek, baştan belli olsun.", example: "Kocaeli tesisi · 2026 Ç1 · Elektrik kategorisi açıldı." },
+      { n: "01", name: "Planla", body: "Yapınızı, raporlama sınırını ve dönemi tanımlayın. Hangi şirket hangi kategoriyi girecek, baştan belli olsun.", example: `${demo.facility} · 2026 Ç1 · Elektrik kategorisi açıldı.` },
       { n: "02", name: "Topla", body: "Mevcut tablolarınız ve faturalarınız aktarılır; zorunlu alanlar, birimler ve eksikler anında görünür.", example: "Mart faturası okundu: 45.000 kWh.", figure: invoiceExample.consumption },
       { n: "03", name: "Hesapla", body: "Emisyonlar ISO 14064-1 ve GHG Protokolü'ne göre, tek emisyon faktörü kütüphanesiyle hesaplanır.", example: "45.000 kWh × 0,442 = 19,89 tCO₂e · Kapsam 2.", figure: invoiceExample.emissions },
       { n: "04", name: "Doğrula", body: "Kayıtlar incelemeden ve onaydan geçer; her değerin kaynağı ve geçmişi yanında durur.", example: "Veri sorumlusu girdi, grup sürdürülebilirlik onayladı." },

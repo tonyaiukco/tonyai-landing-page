@@ -1,6 +1,6 @@
 import "./look.css";
 import { NavH } from "./NavH";
-import { FooterH } from "./SectionsH";
+import { FooterH } from "./FooterH";
 import { RevealH } from "./RevealH";
 
 /** Navigation, footer and reveal motion around every page of the site. */

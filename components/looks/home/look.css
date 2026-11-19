@@ -8,7 +8,6 @@
 
 .look-h {
   --h-teal: #1c5e3a;          /* brand green: bands, fills (white text 7.7:1) */
-  --h-teal-deep: #1c5e3a;     /* footer: the same green as the closing band, a rule between */
   --h-mint: #39c656;          /* Kapsam 1 green: buttons, cards, fills; text only at large sizes on green (3.46:1) */
   --h-mint-text: #b1d2bd;     /* donut green: small accent text on green (4.7:1) */
   --h-mist: #e9faf2;          /* "Canlı veri" pill ground */
@@ -26,6 +25,7 @@
   --h-gutter: clamp(1.25rem, 7.8vw, 7rem);
   --h-main: 44rem;
   --h-side: 32rem;
+  --h-opening-space: clamp(2.5rem, 5vw, 5rem);
   --h-band: clamp(4.5rem, 9vw, 8.5rem);
   --h-pad: clamp(2.5rem, 5vw, 4.5rem);
 
@@ -464,23 +464,6 @@
 .look-h .h-final > .h-wrap { padding-block: clamp(2rem, 4vw, 3.5rem) var(--h-band); }
 .look-h .h-final-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.25rem; }
 
-/* ---------- Footer ---------- */
-.look-h .h-footer { background: var(--h-teal-deep); border-top: 1px solid rgba(255, 255, 255, 0.2); padding-block: clamp(3.5rem, 6vw, 5.5rem) 2rem; }
-.look-h .h-footer-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 3rem clamp(2rem, 5vw, 5rem); }
-.look-h .h-footer-brand { display: grid; gap: 0.6rem; justify-items: start; align-content: start; color: var(--h-on-teal-2); }
-.look-h .h-footer-brand p { margin-top: 0.75rem; max-width: 20rem; font-size: 1.125rem; font-weight: 300; color: var(--h-white); }
-.look-h .h-footer-brand a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--h-mint-text); font-weight: 600; }
-.look-h .h-footer-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
-.look-h .h-footer h3 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--h-mint-text); margin-bottom: 0.5rem; }
-.look-h .h-footer li a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--h-on-teal-2); transition: color 0.2s; }
-.look-h .h-footer li a:hover { color: var(--h-white); }
-.look-h .h-footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 2rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.16); font-size: 0.875rem; color: var(--h-on-teal-2); }
-.look-h .h-footer-bottom ul { display: flex; flex-wrap: wrap; gap: 0 1.75rem; }
-@media (max-width: 899px) {
-  .look-h .h-footer-top { grid-template-columns: minmax(0, 1fr); }
-  .look-h .h-footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
 /* ---------- Motion: only when scripts run and motion is welcome ---------- */
 @media (prefers-reduced-motion: no-preference) {
   /* The hero's sum rises once on load; no script involved */
@@ -498,6 +481,30 @@
 .look-h .h-nav [aria-current="page"] { background-size: 100% 2px; }
 .look-h .h-intro { background: linear-gradient(var(--h-white) 30%, var(--h-mist)); padding-block: clamp(3rem, 7vw, 6.5rem) clamp(3rem, 6vw, 5.5rem); }
 .look-h .h-intro .h-h1 { max-width: 19ch; }
+.look-h .h-demo-opening {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center; gap: clamp(2rem, 5vw, 5rem);
+}
+.look-h .h-demo-opening > div { align-self: start; }
+.look-h .h-demo-poster {
+  position: relative; isolation: isolate; overflow: hidden; margin: 0; aspect-ratio: 16 / 9;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem;
+  border-radius: .25rem 2rem .25rem .25rem; color: var(--h-white); background: var(--h-teal);
+}
+.look-h .h-demo-poster .h-sky {
+  position: absolute; z-index: -1; inset: auto 0 0; height: 35%; background: transparent;
+}
+.look-h .h-demo-poster .h-sky-back { fill: #35704d; }
+.look-h .h-demo-poster .h-sky-mid { fill: #29553e; }
+.look-h .h-demo-poster .h-sky-front { fill: #18462e; }
+.look-h .h-demo-play {
+  display: grid; place-items: center; width: clamp(2.75rem, 4.8vw, 4.5rem); aspect-ratio: 1;
+  border: 1.5px solid var(--h-mint-text); border-radius: 50%; padding-left: .17rem;
+}
+.look-h .h-demo-poster figcaption { font-size: .95rem; font-weight: 550; }
+@media (max-width: 740px) {
+  .look-h .h-demo-opening { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+}
 .look-h .h-prose { display: grid; gap: 1.4rem; max-width: 38rem; font-size: 1.125rem; line-height: 1.7; }
 .look-h .h-prose .h-lead { color: var(--h-fg); }
 
@@ -525,6 +532,30 @@
 @media (max-width: 520px) { .look-h .h-principles { grid-template-columns: minmax(0, 1fr); } }
 
 /* Kaynaklar */
+.look-h .h-intro:has(> .h-demo-opening),
+.look-h .h-resource-opening { padding-block-start: var(--h-opening-space); }
+.look-h .h-resource-opening > .h-wrap {
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center; gap: clamp(2rem, 5vw, 5rem);
+}
+.look-h .h-resource-opening .h-h1 { max-width: none; font-size: clamp(2.5rem, 4.55vw, 4.7rem); letter-spacing: -.05em; }
+/* On wide screens the adjacent text sets the height available to each illustration. */
+.look-h .h-opening-art {
+  margin: 0; align-self: stretch; contain: size; display: grid;
+  grid-template-rows: minmax(0, 1fr); justify-items: center;
+}
+.look-h .h-opening-art svg {
+  align-self: center; width: 100%; height: 100%; max-height: 25rem;
+}
+@media (max-width: 800px) {
+  .look-h .company-opening .h-opening-art { contain: none; }
+  .look-h .company-opening .h-opening-art svg { height: clamp(10rem, 45vw, 15rem); }
+}
+@media (max-width: 740px) {
+  .look-h .h-resource-opening > .h-wrap { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .look-h .h-resource-opening .h-opening-art { contain: none; }
+  .look-h .h-resource-opening .h-resource-art { height: clamp(10rem, 45vw, 15rem); }
+}
 .look-h .h-articles-band { padding-bottom: var(--h-band); }
 .look-h .h-articles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
 .look-h .h-articles a { display: grid; gap: 0.9rem; align-content: start; height: 100%; padding: 2rem 1.75rem 1.5rem; background: var(--h-white); border-top: 4px solid var(--h-mint); transition: background-color 0.3s var(--h-ease), color 0.3s var(--h-ease); }

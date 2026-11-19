@@ -1,0 +1,49 @@
+/* Editorial illustration and printed stationery share the homepage's green inks. */
+.company-page .company-opening {
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center; gap: clamp(2rem, 4vw, 4rem); padding-block: var(--h-opening-space);
+}
+.company-page .company-opening .h-h1 { font-size: clamp(2.55rem, 4.55vw, 4.7rem); letter-spacing: -.05em; }
+.company-story { padding-block: clamp(3rem,6vw,5rem) 2rem; }
+.company-story .h-two { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.company-page .company-facts { margin-top: 1.6rem; }
+.company-facts > div { display: grid; grid-template-columns: 6rem 1fr; border-top: 1px solid var(--h-mist-rule); padding-block: .5rem; }
+.company-facts dt { color: var(--h-teal); font-weight: 650; }
+.company-facts dd { font-size: .96rem; }
+.company-story details { border-top: 1px solid var(--h-mist-rule); }
+.company-story summary { cursor: pointer; color: var(--h-teal); font-weight: 650; padding-block: .7rem; }
+.company-story details p + p { margin-top: 1rem; }
+.company-page .h-team-mark { border-radius: .7rem; color: var(--h-teal); font: 600 1rem/1 var(--font-plex-mono), monospace; }
+.company-page .h-principles .h-ico { color: var(--h-mint-text); }
+
+.contact-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1.6rem; margin-top: 1.2rem; }
+.contact-actions a { display: inline-flex; align-items: center; min-height: 44px; color: var(--h-teal); }
+.contact-actions a:hover { text-decoration: underline; text-underline-offset: .2em; }
+.contact-body { padding-block: clamp(2.25rem, 5vw, 5rem); }
+.contact-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+.contact-form-panel { border-top: 2px solid var(--h-teal); padding-top: 1.2rem; }
+.contact-form-panel h2 { scroll-margin-top: 6rem; }
+.look-h .contact-form-panel > p { margin: .35rem 0 1.5rem; color: var(--h-body); }
+.look-h .h-form.contact-form-panel :is(form, [role="status"]) { background: transparent; border: 0; padding: 0; }
+.look-h .h-form.contact-form-panel :is(input:not([type="checkbox"]), select, textarea) {
+  background: var(--h-white); border: 0; border-bottom: 1px solid var(--h-grey); border-radius: .25rem .25rem 0 0;
+}
+.look-h .contact-form-panel [aria-invalid="true"] { outline: 2px solid var(--miss-fg); outline-offset: 1px; }
+.contact-demo { padding: clamp(1.5rem, 3vw, 3rem); border-radius: 0 2.5rem 0 0; }
+.look-h .contact-demo > p:not(.h-eyebrow) { margin-block: 1rem 1.75rem; color: var(--h-on-teal-2); }
+.contact-demo li { display: grid; grid-template-columns: 2ch 1fr; gap: 1rem; border-top: 1px solid var(--h-rule); padding-block: .85rem; }
+.contact-demo li span { color: var(--h-mint-text); font: 500 .85rem/1.9 var(--font-plex-mono), monospace; }
+.demo-layout { align-items: stretch; }
+.demo-steps p { grid-column: 2; color: var(--h-on-teal-2); }
+.demo-steps li { row-gap: .4rem; }
+@media (min-width: 801px) {
+  .demo-steps { height: 100%; display: grid; grid-template-rows: repeat(3, 1fr); }
+  .demo-steps li { align-content: center; }
+}
+@media (max-width: 800px) {
+  .company-page .company-opening, .contact-layout, .company-story .h-two { grid-template-columns: minmax(0,1fr); }
+  .company-page .company-opening { gap: 1.5rem; }
+}
+@media (max-width: 740px) {
+  .look-h .contact-page .h-opening-art svg { height: clamp(8rem, 34vw, 13rem); }
+}

@@ -1,0 +1,75 @@
+.look-h .h-footer {
+  color: var(--h-teal);
+  background: var(--h-mist);
+  border-top: 1px solid var(--h-mist-rule);
+  font-size: .9375rem;
+}
+.look-h .footer-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+  gap: clamp(1.75rem, 4vw, 4rem);
+  padding-block: clamp(1.6rem, 3.5vw, 3.25rem);
+}
+.look-h .h-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  line-height: 1.4;
+}
+.look-h .footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: start;
+}
+.footer-wordmark svg { width: 2.35rem; height: 2.35rem; }
+.footer-wordmark > span > span { font-size: 1.9rem; letter-spacing: -.045em; }
+.look-h .footer-wordmark:hover { text-decoration: none; }
+.look-h .footer-contact p {
+  max-width: 23ch;
+  margin-block: .85rem 1.5rem;
+  color: var(--h-body);
+  font-size: clamp(1.05rem, 1.55vw, 1.4rem);
+  line-height: 1.3;
+  letter-spacing: -.025em;
+}
+.look-h .footer-email {
+  width: 100%;
+  justify-content: space-between;
+  border-top: 1px solid var(--h-mint-text);
+  padding-top: .4rem;
+  font-weight: 600;
+}
+.footer-email svg { transform: rotate(-35deg); }
+.look-h .footer-directory {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.75rem, 2.5vw, 2.5rem);
+}
+.look-h .footer-directory h2 {
+  border-top: 1px solid var(--h-mist-rule);
+  padding-top: .65rem;
+  margin-bottom: .4rem;
+  font-size: .9375rem;
+  font-weight: 650;
+}
+.look-h .footer-directory a { color: var(--h-body); }
+.look-h .h-footer a:hover { text-decoration: underline; text-underline-offset: .22em; }
+.look-h .footer-colophon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .25rem 2rem;
+  border-top: 1px solid var(--h-mist-rule);
+  padding-block: .5rem;
+  font-size: .8125rem;
+}
+.look-h .footer-colophon ul { display: flex; flex-wrap: wrap; column-gap: clamp(1rem, 2vw, 2rem); }
+@media (max-width: 720px) {
+  .look-h .footer-main { grid-template-columns: minmax(0, 1fr); gap: 1.35rem; }
+}
+@media (max-width: 540px) {
+  .look-h .footer-colophon { flex-direction: column-reverse; align-items: flex-start; padding-bottom: 1.25rem; }
+  .look-h .footer-colophon ul { display: grid; width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
